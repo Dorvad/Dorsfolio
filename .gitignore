@@ -3,3 +3,4 @@ Thumbs.db
 *.thumbnail
 node_modules/
 .env
+vendor/
