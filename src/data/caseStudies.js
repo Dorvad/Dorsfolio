@@ -424,98 +424,123 @@ window.caseStudies = [
   },
 
   // ---------------------------------------------------------------------------
-  // 4. ElmShiftr — shift management tool for escape room staff and managers
+  // 4. JAFI VR — guided VR journey through Israel for The Jewish Agency
   // ---------------------------------------------------------------------------
   {
-    slug: "elmshiftr",
-    title: "ElmShiftr",
-    subtitle: "A shift management tool for escape room staff and managers.",
-    category: "UX / Product",
-    categories: ["UX / Product", "Internal Tools"],
-    year: "2026",
-    role: "Product design, UX, front-end concept",
-    status: "Prototype",
-    coverImage: "/projects/elmshiftr/cover.png",
-    accent: "#5B8DEF",
-    tags: ["UX", "Product", "Operations", "Internal Tool"],
+    slug: "jafi-vr",
+    title: "JAFI VR",
+    subtitle: "Turning a donated VR experience into a guided educational journey.",
+    category: "Learning & Development",
+    categories: ["Learning & Development", "UX / Product"],
+    year: "2024",
+    role: "Product design, UX, content design, educational design",
+    status: "Delivered to stakeholders",
+    coverImage: "/projects/jafi-vr/user-testing.jpg",
+    accent: "#0C6FD4",
+    tags: ["VR", "UX", "Educational Design", "Immersive Learning", "The Jewish Agency", "Content Design"],
     summary:
-      "ElmShiftr helps escape room staff submit shifts, managers approve them, and everyone understand the weekly schedule with less friction.",
+      "The Jewish Agency received a VR experience as a donation. Users could move through scenes in Israel, play small interactive games, and explore Israeli culture. The challenge: it existed as a VR demo, not a complete educational experience. My role was to turn it into a guided journey that educators and emissaries could actually use.",
     challenge:
-      "Existing workflow relied on scattered messages, manual coordination, and unclear visibility for both staff and managers. Mistakes were costly: a missed shift meant a locked-out customer.",
+      "The VR experience had strong visual and interactive potential, but it needed structure. Without guidance, users could enjoy the scenes but miss the educational meaning behind them. And since the experience was donated, there was no development team available for major changes — the solution had to be realistic, lightweight, and creative.",
     outcome:
-      "A focused internal tool that makes shift submission, approval, and the weekly overview a single, fast ritual — not a thread of messages.",
+      "A narrative-driven, scene-by-scene educational journey that gave the VR experience context, story, and clear user guidance — without rebuilding the core software. Delivered as a structured product for The Jewish Agency stakeholders.",
     metrics: [
-      { label: "Primary users", value: "Staff + managers" },
-      { label: "Platform", value: "Responsive web app" },
-      { label: "Focus", value: "Operational clarity" }
+      { label: "My role", value: "Product + Content + UX" },
+      { label: "Scenes", value: "8", hint: "Airport → Market → Beach → Jaffa" },
+      { label: "Constraint", value: "No dev team", hint: "Design around existing product" }
     ],
     sections: [
       {
         type: "text",
-        title: "The problem",
+        title: "The situation",
         body:
-          "Staff needed a simpler way to submit availability and managers needed a clearer way to approve and organize shifts. The team was juggling WhatsApp, spreadsheets, and memory."
+          "The Jewish Agency received a VR experience as a donation. The experience allowed users to move through different scenes in Israel, play small interactive games, and get a taste of Israeli culture through immersive environments. The challenge was that it existed as a VR product, but did not yet work as a complete educational experience. Users could explore the scenes, but they lacked context, guidance, and a clear story connecting everything together."
       },
       {
-        type: "metrics",
-        title: "Operational baseline",
+        type: "image",
+        title: "The experience in action",
+        image: "/projects/jafi-vr/user-testing.jpg",
+        caption: "A user navigating the VR world — the monitor shows the scene the user sees inside the headset."
+      },
+      {
+        type: "featureList",
+        title: "Five questions the experience needed to answer",
         items: [
-          { label: "Avg. approval time", value: "26h", hint: "Before redesign" },
-          { label: "Shifts per week", value: "120+", hint: "Across 3 locations" },
-          { label: "Conflicts per month", value: "8", hint: "Double-booked or missed" }
+          { title: "Where am I?", body: "Each scene needed to clearly establish the location and what it represents in Israel." },
+          { title: "What am I supposed to do?", body: "Interactive elements needed clear instructions — users had to understand the action before taking it." },
+          { title: "Why is this scene important?", body: "The educational meaning behind each location had to be surfaced, not assumed." },
+          { title: "How does this connect to Israel?", body: "Cultural context needed to be woven into the narrative without interrupting the immersive feeling." },
+          { title: "What should I take from this?", body: "Each scene and the full journey needed a sense of progression and emotional closure." }
+        ]
+      },
+      {
+        type: "text",
+        title: "The constraint that shaped everything",
+        body:
+          "Because the experience was donated, we did not have a full development team available to make major changes to the software. That meant the solution had to be realistic, lightweight, and creative. Instead of rebuilding the experience, I focused on improving the experience around it — treating the narration and facilitation layer as the UX."
+      },
+      {
+        type: "text",
+        title: "My role",
+        body:
+          "I led the product and content thinking for the experience. My work included mapping the full user journey, identifying moments of confusion, creating a narrative concept for each scene, writing guidance and narration, thinking through how educators could use the experience in real settings, and preparing it for stakeholder presentation. The goal was not only to make the VR experience more enjoyable, but to make it easier to understand, facilitate, and use."
+      },
+      {
+        type: "text",
+        title: "The product idea",
+        body:
+          "Instead of asking users to explore Israel alone inside VR, we turned the experience into a guided journey. The user would move through a sequence of Israeli locations, each with a short narrative introduction, clear instructions, and a light educational connection. The tone needed to be friendly, fun, and accessible — not formal, not museum-like. The narration became the main layer that connected the product together, creating a sense of progression: almost like being accompanied by a guide throughout a visit to Israel."
+      },
+      {
+        type: "process",
+        title: "Experience flow",
+        steps: [
+          { title: "Arrival in Israel", body: "The experience opens at the airport. This scene sets the tone — the user has just arrived and is starting a journey. Its job is orientation: establishing that these are not random mini-games, but scenes in a story." },
+          { title: "Carmel Market", body: "Tel Aviv's Carmel Market: energy, color, noise, and cultural mix. Users feel the movement and atmosphere of everyday Israeli life. Narration adds context about food, people, languages, and daily life." },
+          { title: "Falafel Game", body: "Inside the market, users play a falafel-making game. A playful, interactive moment — food as an entry point into culture." },
+          { title: "The Beach", body: "The scene shifts. After the crowded market, the beach gives a more open, relaxed feeling — another side of Israeli life: informal, social, warm, close to the sea." },
+          { title: "Beach Game", body: "An interaction tied to the beach environment. Designed to stay playful, simple, and intuitive. The game makes the scene more memorable by giving users a physical way to engage." },
+          { title: "Jaffa", body: "Jaffa adds history, depth, and visual contrast — connecting modern Tel Aviv to an older, more layered part of the country. Ancient streets, different cultures, the feeling of walking through a place with many historical layers." },
+          { title: "Word-Jumping Game", body: "In Jaffa, users play a word-based jumping game. This adds a language and meaning layer — connecting movement with words, making the interaction more educational without becoming heavy." },
+          { title: "Ending Scene", body: "Instead of simply stopping, the conclusion gives users a moment of reflection. It reminds them that they have seen only a small piece of Israel — but that each place carries a different story. This ending turns the experience from a demo into a journey with emotional closure." }
+        ]
+      },
+      {
+        type: "gallery",
+        title: "Inside the experience",
+        images: [
+          { src: "/projects/jafi-vr/airport-scene.jpg", caption: "Arrival in Israel — the airport scene with an Israeli passport at the border desk" },
+          { src: "/projects/jafi-vr/beach-game.jpg",    caption: "Beach game — score overlay and interactive floating ring, Tel Aviv coastline" }
         ]
       },
       {
         type: "image",
-        title: "Dashboard concept",
-        image: "/projects/elmshiftr/dashboard.png",
-        caption: "A clear overview of weekly shift submissions."
+        title: "The hardware",
+        image: "/projects/jafi-vr/pico-headset.jpg",
+        caption: "Pico 4 Ultra Enterprise — the standalone VR headset used to run the experience."
       },
       {
-        type: "process",
-        title: "Design process",
-        steps: [
-          { title: "Map", body: "Mapped the current manual workflow and surfaced where information broke down." },
-          { title: "Define", body: "Defined the key user roles: staff, shift manager, owner." },
-          { title: "Design", body: "Created a simple submit → approve → publish flow." },
-          { title: "Refine", body: "Designed mobile-first screens for daily use." }
+        type: "featureList",
+        title: "Design principles",
+        items: [
+          { title: "Keep it simple", body: "VR can already be overwhelming, especially for first-time users. Language had to be short, clear, and easy to follow." },
+          { title: "Guide without overexplaining", body: "The narration needed to help users without interrupting the feeling of being inside the experience. Support immersion — don't compete with it." },
+          { title: "Educational but not academic", body: "The experience was designed for educational use, but it still needed to feel light and engaging. Meaningful content without becoming a lecture." },
+          { title: "Work within real constraints", body: "Because we could not rebuild the product, the solution had to use what already existed. This required thinking creatively about product design, content design, and facilitation." },
+          { title: "Connect scenes into a journey", body: "Each scene had to feel like part of one continuous experience. The narration created that connection — a thread that ran from the airport to the final reflection." }
         ]
-      },
-      {
-        type: "insight",
-        title: "Key design decision",
-        body:
-          "The system should feel less like a form and more like a weekly work ritual. Submitting availability had to take under 30 seconds on a phone."
       },
       {
         type: "beforeAfter",
         title: "What changed",
-        before: { label: "Before", body: "Group chat threads, manual spreadsheets, and last-minute calls to fill gaps." },
-        after: { label: "After", body: "One weekly view, two taps to submit, one screen for managers to approve." }
+        before: { label: "Before", body: "A donated VR demo. Visually impressive, but structurally loose — users could explore scenes without understanding where they were, why it mattered, or how each scene connected to the next." },
+        after:  { label: "After",  body: "A guided educational journey with narrative context, scene-by-scene structure, user instructions, and emotional closure. A product educators could present to real audiences." }
       },
       {
-        type: "gallery",
-        title: "Screens",
-        images: [
-          { src: "/projects/elmshiftr/screen-1.png", caption: "Weekly availability" },
-          { src: "/projects/elmshiftr/screen-2.png", caption: "Manager approval" },
-          { src: "/projects/elmshiftr/screen-3.png", caption: "Published schedule" }
-        ]
-      },
-      {
-        type: "featureList",
-        title: "What I shipped",
-        items: [
-          { title: "One-tap availability", body: "Submit a full week in under 30 seconds on mobile." },
-          { title: "Approval queue", body: "Managers triage all pending shifts from a single screen." },
-          { title: "Conflict detection", body: "Surfaces double-bookings before the schedule publishes." }
-        ]
-      },
-      {
-        type: "quote",
+        type: "insight",
+        title: "What I learned",
         body:
-          "The first week we used it nobody asked 'who's working Saturday?' in the group chat. That was the goal.",
-        attribution: "Operations lead, pilot location"
+          "This project taught me that product work is not always about building new features. Sometimes the most important product decision is understanding what can realistically be changed — and then designing the best possible experience within those limits. The core VR product already existed. The real challenge was to make it usable, understandable, and meaningful. That required combining UX thinking, educational design, storytelling, and product strategy. It was a reminder that good experience design is not only about screens and interfaces. It is also about context, timing, emotion, and the way a user moves through an experience from beginning to end."
       }
     ]
   }
