@@ -225,14 +225,18 @@ function MacProjectCard({ project, tokens }) {
           {project.slug}.app
         </span>
       </div>
-      <div style={{ aspectRatio: "16/9", background: tokens.surfaceAlt || tokens.surfaceSolid }}>
+      <div style={{ aspectRatio: "16/9", background: tokens.surfaceAlt || tokens.surfaceSolid, overflow: "hidden" }}>
         <window.ProjectImage
           src={project.coverImage}
           slug={project.slug}
           label={project.title}
           accent={project.accent}
           alt={project.title}
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          style={{
+            width: "100%", height: "100%", objectFit: "cover", display: "block",
+            transform: hover && !reduced ? "scale(1.04)" : "scale(1)",
+            transition: reduced ? "none" : "transform 350ms cubic-bezier(.2,.8,.2,1)"
+          }}
         />
       </div>
       <div style={{ padding: "16px 18px 18px" }}>

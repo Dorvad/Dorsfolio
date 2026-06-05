@@ -9,8 +9,7 @@ window.portfolioInfo = {
   tagline: "Hi, I'm Dor Vadai.",
   intro:
     "Learning technology and digital product professional — I turn complex ideas into clear, usable, and engaging experiences.",
-  footer:
-    "Designed as one portfolio, explored through four interface worlds.",
+  footer: "",
 
   ctas: {
     primary:   { label: "View projects", href: "#/projects" },
@@ -65,10 +64,8 @@ window.portfolioInfo = {
     headline: "Get in touch",
     lead: "Open to learning-tech roles, product design work, and interesting collaborations.",
     links: [
-      { label: "Email",     value: "hello@dorsfolio.example", href: "mailto:hello@dorsfolio.example" },
-      { label: "LinkedIn",  value: "linkedin.com/in/dor",     href: "https://linkedin.com/in/" },
-      { label: "Portfolio", value: "dorsfolio.example",       href: "#/" },
-      { label: "GitHub",    value: "github.com/dor",          href: "https://github.com/" }
+      { label: "Email",    value: "dor1612@gmail.com",                          href: "mailto:dor1612@gmail.com" },
+      { label: "LinkedIn", value: "linkedin.com/in/dor-vadai-071102240",        href: "https://www.linkedin.com/in/dor-vadai-071102240/" }
     ]
   },
 

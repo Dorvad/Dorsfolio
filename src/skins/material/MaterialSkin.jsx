@@ -115,8 +115,18 @@ function MaterialPortfolioShell({ children, route }) {
         textDecoration: "none",
         boxShadow: "0 6px 16px rgba(125,82,96,0.4)",
         fontSize: "22px",
-        zIndex: 70
-      }}>✉</a>
+        zIndex: 70,
+        position: "fixed"
+      }}>
+        ✉
+        <span aria-hidden="true" style={{
+          position: "absolute", inset: 0,
+          borderRadius: "18px",
+          border: "2px solid #7d5260",
+          animation: "pulseRing 2.4s ease-out 1.5s infinite",
+          pointerEvents: "none"
+        }} />
+      </a>
 
       <style>{`
         @media (max-width: 720px) {
@@ -158,7 +168,11 @@ function MaterialProjectCard({ project, tokens }) {
           borderRadius: "20px", overflow: "hidden",
           aspectRatio: "16/10"
         }}>
-          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={accent} alt={project.title} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={accent} alt={project.title} style={{
+            width: "100%", height: "100%", objectFit: "cover", display: "block",
+            transform: hover && !reduced ? "scale(1.04)" : "scale(1)",
+            transition: reduced ? "none" : "transform 350ms cubic-bezier(.2,.8,.2,1)"
+          }} />
         </div>
       </div>
       <div style={{ padding: "16px 20px 20px" }}>

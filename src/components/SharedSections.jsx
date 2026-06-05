@@ -22,6 +22,10 @@ function HomeSection() {
   const info = window.portfolioInfo;
   const projects = (window.caseStudies || []).slice(0, 3);
   const portrait = HERO_PORTRAITS[skin] || HERO_PORTRAITS.mac;
+  const reduced = window.useReducedMotion();
+
+  const anim = (name, delay = 0) =>
+    reduced ? {} : { animation: `${name} 0.45s cubic-bezier(.2,.8,.2,1) ${delay}ms both` };
 
   const portraitRadius = skin === "win95" ? "0px" : skin === "material" ? "50%" : "20px";
   const portraitBorder = skin === "win95"
@@ -37,8 +41,11 @@ function HomeSection() {
           display: "flex", alignItems: "center", gap: "clamp(24px, 4vw, 56px)",
           flexWrap: "wrap"
         }}>
-          {/* Portrait */}
-          <div style={{ flexShrink: 0 }}>
+          {/* Portrait — floats gently on Mac */}
+          <div style={{
+            flexShrink: 0,
+            ...(!reduced && skin === "mac" ? { animation: "floatPortrait 5s ease-in-out 0.8s infinite" } : {})
+          }}>
             <img
               src={portrait}
               alt="Dor Vadai"
@@ -54,16 +61,18 @@ function HomeSection() {
                   ? "0 16px 40px rgba(15,23,42,0.18)"
                   : skin === "material"
                   ? `0 6px 24px ${tokens.accent}44`
-                  : "none"
+                  : "none",
+                ...anim("scaleIn", 0)
               }}
             />
           </div>
 
-          {/* Text */}
+          {/* Text — staggered */}
           <div style={{ flex: "1 1 260px", minWidth: 0 }}>
             <div style={{
               fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted,
-              textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "14px"
+              textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "14px",
+              ...anim("fadeUp", 60)
             }}>{info.brand} · {info.skins.find((s) => s.id === skin)?.name}</div>
             <h1 style={{
               fontFamily: tokens.displayFont || tokens.font,
@@ -73,7 +82,8 @@ function HomeSection() {
               fontWeight: 600,
               color: tokens.text,
               margin: "0 0 16px",
-              textWrap: "balance"
+              textWrap: "balance",
+              ...anim("fadeUp", 130)
             }}>{info.tagline}</h1>
             <p style={{
               fontFamily: tokens.font,
@@ -82,10 +92,14 @@ function HomeSection() {
               color: tokens.muted,
               margin: 0,
               maxWidth: "52ch",
-              textWrap: "pretty"
+              textWrap: "pretty",
+              ...anim("fadeUp", 200)
             }}>{info.intro}</p>
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "24px" }}>
+            <div style={{
+              display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "24px",
+              ...anim("fadeUp", 270)
+            }}>
               {[info.ctas.primary, info.ctas.secondary, info.ctas.tertiary].map((cta, i) => (
                 <SkinButton
                   key={cta.label}
@@ -164,6 +178,7 @@ function SectionHeader({ title, hint, link, tokens }) {
 
 // ---- Skin-aware ProjectGrid (delegates to skin's ProjectCard) -----------
 function SkinProjectGrid({ projects, tokens, skin, compact = false }) {
+  const reduced = window.useReducedMotion();
   const cardComponents = {
     mac:      window.MacProjectCard,
     win95:    window.Win95ProjectCard,
@@ -179,7 +194,14 @@ function SkinProjectGrid({ projects, tokens, skin, compact = false }) {
         ? "repeat(auto-fit, minmax(260px, 1fr))"
         : "repeat(auto-fit, minmax(280px, 1fr))"
     }}>
-      {projects.map((p) => <Card key={p.slug} project={p} tokens={tokens} />)}
+      {projects.map((p, i) => (
+        <div key={p.slug} style={{
+          animation: reduced ? "none" : `fadeUp 0.45s cubic-bezier(.2,.8,.2,1) ${i * 75}ms both`,
+          height: "100%", display: "flex", flexDirection: "column"
+        }}>
+          <Card project={p} tokens={tokens} />
+        </div>
+      ))}
     </div>
   );
 }

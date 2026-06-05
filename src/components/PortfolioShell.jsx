@@ -5,6 +5,7 @@
 function PortfolioShell() {
   const { skin } = window.useSkin();
   const route = window.useRoute();
+  const reduced = window.useReducedMotion();
 
   // Pick skin shell
   const shells = {
@@ -25,7 +26,16 @@ function PortfolioShell() {
   else if (route.name === "gallery") content = <window.GalleryPage />;
   else content = <window.HomeSection />;
 
-  return <Shell route={route}>{content}</Shell>;
+  return (
+    <Shell route={route}>
+      <div
+        key={route.path}
+        style={{ animation: reduced ? "none" : "routeFadeIn 0.28s cubic-bezier(.2,.8,.2,1) both" }}
+      >
+        {content}
+      </div>
+    </Shell>
+  );
 }
 
 window.PortfolioShell = PortfolioShell;

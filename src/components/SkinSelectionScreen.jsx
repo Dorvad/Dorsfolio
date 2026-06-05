@@ -43,7 +43,8 @@ function SkinSelectionScreen() {
       <div style={{
         display: "flex", alignItems: "center", gap: "10px",
         fontSize: "13px", color: "#6c6c70",
-        fontFamily: 'ui-monospace, Menlo, monospace'
+        fontFamily: 'ui-monospace, Menlo, monospace',
+        animation: reduced ? "none" : "fadeIn 0.5s ease both"
       }}>
         <span aria-hidden="true" style={{
           width: 14, height: 14, borderRadius: "4px",
@@ -68,7 +69,8 @@ function SkinSelectionScreen() {
           letterSpacing: "-0.02em",
           lineHeight: 1.1,
           margin: 0,
-          textWrap: "balance"
+          textWrap: "balance",
+          animation: reduced ? "none" : "fadeUp 0.5s cubic-bezier(.2,.8,.2,1) 0.1s both"
         }}>
           What kind of person are you?
         </h1>

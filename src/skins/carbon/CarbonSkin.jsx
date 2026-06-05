@@ -150,6 +150,8 @@ function CarbonPortfolioShell({ children, route }) {
 // ---- Project card --------------------------------------------------------
 function CarbonProjectCard({ project, tokens }) {
   const [hover, setHover] = React.useState(false);
+  const reduced = window.useReducedMotion();
+  const accent = project.accent || tokens.accent;
   return (
     <a
       href={`#/projects/${project.slug}`}
@@ -157,15 +159,19 @@ function CarbonProjectCard({ project, tokens }) {
       style={{
         display: "grid", gridTemplateRows: "auto 1fr auto",
         textDecoration: "none", color: tokens.text,
-        background: hover ? "#2c2c2c" : tokens.surface,
+        background: hover ? tokens.surfaceAlt : tokens.surface,
         border: `1px solid ${tokens.border}`,
-        borderLeft: `3px solid ${project.accent || tokens.accent}`,
-        transition: "background 120ms linear",
+        borderLeft: `3px solid ${hover ? accent : accent + "88"}`,
+        transition: reduced ? "none" : "background 180ms ease, border-left-color 180ms ease",
         minHeight: "100%"
       }}
     >
-      <div style={{ background: "#0c0c0c" }}>
-        <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block", opacity: 0.95 }} />
+      <div style={{ background: "#0c0c0c", overflow: "hidden" }}>
+        <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} style={{
+          width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block", opacity: 0.95,
+          transform: hover && !reduced ? "scale(1.04)" : "scale(1)",
+          transition: reduced ? "none" : "transform 350ms cubic-bezier(.2,.8,.2,1)"
+        }} />
       </div>
       <div style={{ padding: "16px 18px" }}>
         <div style={{ fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>

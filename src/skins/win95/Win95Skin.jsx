@@ -120,6 +120,7 @@ function Win95PortfolioShell({ children, route }) {
             <span style={{ color: tokens.muted }}>Address</span>
             <div style={{ flex: 1, background: "#fff", boxShadow: W95.bevelIn, padding: "2px 6px", fontFamily: tokens.monoFont, fontSize: "11px" }}>
               C:\Dorsfolio{route.path === "/" ? "\\Home" : "\\" + route.path.replace(/\//g, "\\")}
+              <span style={{ animation: "blink 1.1s step-start infinite" }}>_</span>
             </div>
           </div>
 
