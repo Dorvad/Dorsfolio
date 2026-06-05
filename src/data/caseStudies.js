@@ -284,7 +284,147 @@ window.caseStudies = [
   },
 
   // ---------------------------------------------------------------------------
-  // 3. ElmShiftr
+  // 3. ElmTrackr — personal shift-tracking app for hourly workers
+  // ---------------------------------------------------------------------------
+  {
+    slug: "elmtrackr",
+    title: "ElmTrackr",
+    subtitle: "A personal shift-tracking app for hourly workers.",
+    category: "UX / Product",
+    categories: ["UX / Product", "Internal Tools"],
+    year: "2025",
+    role: "Product design, UX, UI, front-end product thinking",
+    status: "Functional prototype",
+    coverImage: "/projects/elmtrackr/dashboard-home.jpg",
+    accent: "#5b35d5",
+    tags: ["UX", "Mobile", "Productivity", "Internal Tool", "Next.js"],
+    summary:
+      "ElmTrackr is a mobile-first shift-tracking app designed for hourly workers who need a simple way to clock in, clock out, review their shifts, and understand how much they are earning.",
+    challenge:
+      "Hourly workers rely on memory, messages, and spreadsheets to track their time. Monthly salary expectations stay unclear until payday, overtime and special rates are hard to calculate, and small reimbursements like travel refunds are easy to forget.",
+    outcome:
+      "A lightweight personal tool that answers three questions fast: Am I working right now? How much did I work this month? What should I review before payroll?",
+    metrics: [
+      { label: "Platform", value: "Mobile-first", hint: "Next.js · React · Supabase" },
+      { label: "Sections", value: "5", hint: "Home · Shifts · Reports · Projects · Settings" },
+      { label: "Status", value: "Prototype", hint: "Functional end-to-end" }
+    ],
+    sections: [
+      {
+        type: "text",
+        title: "The situation",
+        body:
+          "ElmTrackr started from a very practical need: shift work creates small but persistent moments of uncertainty. Did I clock in? How many hours did I work this month? What is my estimated gross pay? Did I remember to report travel refunds? Instead of building a heavy HR system, the goal was a lightweight personal tool that gives workers clarity in the moments they actually need it."
+      },
+      {
+        type: "image",
+        title: "Home dashboard",
+        image: "/projects/elmtrackr/dashboard-idle.jpg",
+        caption: "The home screen — work status front and center, monthly summary below."
+      },
+      {
+        type: "text",
+        title: "The problem",
+        body:
+          "Hourly workers often rely on a mix of memory, WhatsApp messages, spreadsheets, notes, and employer systems to track their work. People forget exact start and end times. Monthly salary expectations stay unclear until payday. Overtime, weekend hours, and special rates are hard to calculate manually. Small reimbursements like travel refunds are easy to miss. Existing tools often feel too complex for everyday use. The core challenge was to design something simple enough to use during a real shift, but detailed enough to become useful at the end of the month."
+      },
+      {
+        type: "featureList",
+        title: "Three questions the app had to answer",
+        items: [
+          { title: "Am I currently working?", body: "The clock widget sits at the center of the home screen. Work status is always visible and the primary action — clock in or out — is always one tap away." },
+          { title: "How much did I work this month?", body: "Monthly hours, recent shifts, and estimated gross pay are visible on the home screen without navigating to reports." },
+          { title: "What should I review before payroll?", body: "Reports provide a clear breakdown of regular, overtime, and weekend hours, plus contextual reminders for pending travel refunds." }
+        ]
+      },
+      {
+        type: "image",
+        title: "Monthly summary",
+        image: "/projects/elmtrackr/dashboard-home.jpg",
+        caption: "Monthly hour distribution — regular vs. overtime breakdown visible on the home screen."
+      },
+      {
+        type: "text",
+        title: "Product structure",
+        body:
+          "ElmTrackr is built around five screens, each with a clear purpose. Home shows current shift status, monthly summary, gross pay, and recent shifts. Shifts shows the full monthly history and lets users add shifts manually. Reports shows totals, breakdowns, insights, and export options. Projects supports tracking work by client or task. Settings handles personal configuration: hourly rates, overtime rules, weekend days, and optional features."
+      },
+      {
+        type: "image",
+        title: "A busy month",
+        image: "/projects/elmtrackr/dashboard-breakdown.jpg",
+        caption: "93.4 hours across regular, overtime, and weekend work — the distribution visible at a glance."
+      },
+      {
+        type: "process",
+        title: "UX process",
+        steps: [
+          { title: "Discover", body: "Mapped the small moments of uncertainty around shift work: starting a shift, ending it, reconstructing the month, checking pay, realizing a mistake." },
+          { title: "Define", body: "Organized the product around three layers — immediate action, monthly review, and payroll confidence — to keep every feature focused." },
+          { title: "Design", body: "Chose a soft, mobile-first, card-based visual direction. The app should feel like a personal utility, not a corporate HR tool." },
+          { title: "Build", body: "Built as a Next.js web app with Supabase, which allowed testing real flows — active shifts, month switching, pay calculations, reminders — rather than only static prototypes." }
+        ]
+      },
+      {
+        type: "featureList",
+        title: "Key product decisions",
+        items: [
+          { title: "Make the home screen action-based", body: "The app answers 'What do I do now?' before 'What happened before?' — work status is always on the first screen, and the primary action is always one tap away." },
+          { title: "Show monthly progress without it feeling like accounting", body: "Estimated gross pay and hour summaries appear before month-end. The goal is not to replace payroll software — it's to give workers a personal estimate so they feel more in control." },
+          { title: "Design for corrections, not perfection", body: "People forget to clock in. They clock in late. The app supports manual shift creation and editing start times — making the product forgiving and realistic for normal work conditions." },
+          { title: "Use contextual reminders, not permanent warnings", body: "Travel refund reminders appear near month-end when unresolved refunds exist. The interface is quiet most of the time, but helpful when it matters." },
+          { title: "Keep reporting visual and scannable", body: "Reports use cards and summaries first, detailed data second. Insight cards give the pay data a human, readable layer." }
+        ]
+      },
+      {
+        type: "gallery",
+        title: "Reports and pay breakdown",
+        images: [
+          { src: "/projects/elmtrackr/reports-insights.jpg", caption: "Reports — overtime, weekend, gross pay, and insight cards" },
+          { src: "/projects/elmtrackr/reports-road-trip.jpg", caption: "Monthly report — pay summary and contextual insight" },
+          { src: "/projects/elmtrackr/reports-basic.jpg", caption: "Reports view on a lighter month" }
+        ]
+      },
+      {
+        type: "image",
+        title: "Desktop view",
+        image: "/projects/elmtrackr/dashboard-desktop.jpg",
+        caption: "The same data model renders in a wider layout on desktop."
+      },
+      {
+        type: "gallery",
+        title: "Configuration and features",
+        images: [
+          { src: "/projects/elmtrackr/settings-payroll.jpg", caption: "Payroll settings — weekend days and hourly base rates by time of day" },
+          { src: "/projects/elmtrackr/settings-features.jpg", caption: "Manage Features — toggles for travel refunds, paid projects, insights, and clock styles" }
+        ]
+      },
+      {
+        type: "beforeAfter",
+        title: "What changed",
+        before: { label: "Before", body: "Memory, WhatsApp threads, and spreadsheets. Monthly pay unclear until the employer sends it. Easy to forget overtime rates or travel refunds." },
+        after:  { label: "After",  body: "One app to clock in, review the month, see estimated pay, and check refunds — all before payday. A personal record the worker owns and controls." }
+      },
+      {
+        type: "metrics",
+        title: "Prototype scope",
+        items: [
+          { label: "Core flow", value: "End-to-end", hint: "Clock in → review → report → export" },
+          { label: "Pay types", value: "4 tracked", hint: "Regular · Overtime · Weekend · Holiday" },
+          { label: "Export", value: "CSV + PDF", hint: "Monthly reports exportable" }
+        ]
+      },
+      {
+        type: "insight",
+        title: "What I learned",
+        body:
+          "Small operational tools can still require deep product thinking. The hardest part was not designing a clock-in button — it was deciding what information should appear around it, what should wait for reports, and how much complexity the user should see at any moment. I also learned that 'simple' tools become valuable when they respect messy real-life behavior: forgetting, correcting, reviewing, and checking. A good shift tracker should not only record time. It should help the user feel calm and in control."
+      }
+    ]
+  },
+
+  // ---------------------------------------------------------------------------
+  // 4. ElmShiftr
   // ---------------------------------------------------------------------------
   {
     slug: "elmshiftr",
