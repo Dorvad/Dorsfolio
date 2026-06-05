@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Dorsfolio — one portfolio, four interface worlds</title>
+  <meta name="description" content="Dor's portfolio: learning technology, product design, brand. Explore it through Mac/iOS, Windows 95, Material You, or IBM Carbon interfaces." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Roboto:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&family=Roboto+Flex:opsz,wght@8..144,300..800&display=swap" />
+
+  <style>
+    /* ---- Global reset / safe defaults ---- */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      background: #1c1c1e;
+      color: #1c1c1e;
+    }
+    #root { isolation: isolate; min-height: 100vh; }
+    img { max-width: 100%; }
+    button { font-family: inherit; }
+    a { color: inherit; }
+    :focus-visible { outline: 2px solid #0a84ff; outline-offset: 2px; border-radius: 4px; }
+
+    /* Reduce motion respect */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* Ensure dock / fixed elements don't get clipped on iOS */
+    @supports(padding: max(0px)) {
+      body { padding-bottom: env(safe-area-inset-bottom); }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <!-- React + Babel -->
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <!-- Data layer (plain JS) -->
+  <script src="src/data/caseStudies.js"></script>
+  <script src="src/data/portfolioInfo.js"></script>
+
+  <!-- Theme tokens (plain JS) -->
+  <script src="src/theme/skinTokens.js"></script>
+
+  <!-- Theme provider + helpers (JSX) -->
+  <script type="text/babel" src="src/theme/SkinProvider.jsx"></script>
+
+  <!-- Case study blocks + renderer (JSX) -->
+  <script type="text/babel" src="src/components/case-study-blocks/blocks.jsx"></script>
+  <script type="text/babel" src="src/components/CaseStudyBlockRenderer.jsx"></script>
+  <script type="text/babel" src="src/components/CaseStudyPage.jsx"></script>
+
+  <!-- Shared chrome + sections (JSX) -->
+  <script type="text/babel" src="src/components/SkinSwitcher.jsx"></script>
+  <script type="text/babel" src="src/components/SharedSections.jsx"></script>
+  <script type="text/babel" src="src/components/SkinSelectionScreen.jsx"></script>
+
+  <!-- Skins (JSX) -->
+  <script type="text/babel" src="src/skins/mac/MacSkin.jsx"></script>
+  <script type="text/babel" src="src/skins/win95/Win95Skin.jsx"></script>
+  <script type="text/babel" src="src/skins/material/MaterialSkin.jsx"></script>
+  <script type="text/babel" src="src/skins/carbon/CarbonSkin.jsx"></script>
+
+  <!-- Top-level (JSX) -->
+  <script type="text/babel" src="src/components/PortfolioShell.jsx"></script>
+  <script type="text/babel" src="src/App.jsx"></script>
+</body>
+</html>
