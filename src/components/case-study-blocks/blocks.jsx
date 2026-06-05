@@ -451,8 +451,443 @@ function TimelineBlock({ block, ctx }) {
   );
 }
 
+// ---- 12. LogoHeroBlock ---------------------------------------------------
+// Animated branching SVG logo + project tagline + external CTA.
+// Used as the first section of the Branchlab case study.
+
+function BranchlabLogoAnim({ accent }) {
+  return (
+    <div style={{ lineHeight: 0 }}>
+      <style>{`
+        @keyframes bl-line { from { stroke-dashoffset: var(--l); } to { stroke-dashoffset: 0; } }
+        @keyframes bl-dot  { from { opacity: 0; } to   { opacity: 1; } }
+      `}</style>
+      <svg viewBox="0 0 200 110" width="200" aria-hidden="true"
+        style={{ maxWidth: "100%", display: "block", margin: "0 auto", overflow: "visible" }}>
+        {/* lines drawn first */}
+        <line x1="100" y1="22" x2="46" y2="76" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeDasharray="74" style={{ "--l": "74", animation: "bl-line 0.5s ease both 0.2s" }} />
+        <line x1="100" y1="22" x2="154" y2="76" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeDasharray="74" style={{ "--l": "74", animation: "bl-line 0.5s ease both 0.28s" }} />
+        <line x1="46" y1="76" x2="18" y2="104" stroke={accent} strokeWidth="1.5" strokeLinecap="round" strokeDasharray="38" strokeOpacity="0.45" style={{ "--l": "38", animation: "bl-line 0.35s ease both 0.84s" }} />
+        <line x1="46" y1="76" x2="74" y2="104" stroke={accent} strokeWidth="1.5" strokeLinecap="round" strokeDasharray="38" strokeOpacity="0.45" style={{ "--l": "38", animation: "bl-line 0.35s ease both 0.92s" }} />
+        {/* labels */}
+        <text x="100" y="11" textAnchor="middle" fontSize="6.5" fill={accent} fontFamily="ui-monospace,monospace" letterSpacing="0.08em" style={{ animation: "bl-dot 0.3s ease both 0s" }}>ENTRY</text>
+        <text x="154" y="89" textAnchor="middle" fontSize="5.5" fill={accent} fontFamily="ui-monospace,monospace" opacity="0.6" style={{ animation: "bl-dot 0.3s ease both 0.85s" }}>ENDING</text>
+        <text x="46" y="110" textAnchor="middle" fontSize="5.5" fill={accent} fontFamily="ui-monospace,monospace" opacity="0.5" style={{ animation: "bl-dot 0.3s ease both 1.18s" }}>ENDINGS</text>
+        {/* nodes */}
+        <circle cx="100" cy="22" r="8" fill={accent} style={{ animation: "bl-dot 0.35s ease both 0.1s" }} />
+        <circle cx="46"  cy="76" r="6" fill={accent} opacity="0.85" style={{ animation: "bl-dot 0.35s ease both 0.68s" }} />
+        <circle cx="154" cy="76" r="6" fill={accent} opacity="0.85" style={{ animation: "bl-dot 0.35s ease both 0.72s" }} />
+        <circle cx="18"  cy="104" r="5" fill={accent} opacity="0.38" style={{ animation: "bl-dot 0.3s ease both 1.12s" }} />
+        <circle cx="74"  cy="104" r="5" fill={accent} opacity="0.38" style={{ animation: "bl-dot 0.3s ease both 1.18s" }} />
+      </svg>
+    </div>
+  );
+}
+
+function LogoHeroBlock({ block, ctx }) {
+  const { tokens, project } = ctx;
+  const accent = project?.accent || tokens.accent;
+  const isWin95   = tokens.name === "Windows 95";
+  const isCarbon  = tokens.name === "IBM Carbon";
+
+  return (
+    <section style={{ margin: "40px 0 32px" }}>
+      <div style={{
+        display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+        gap: "20px", padding: isWin95 ? "28px 20px" : "44px 24px", textAlign: "center",
+        background: isWin95 ? tokens.surfaceSolid : isCarbon ? `${accent}09` : `${accent}07`,
+        border: isWin95 ? `2px solid ${tokens.border}` : `1px solid ${accent}28`,
+        borderRadius: isWin95 ? 0 : (tokens.radiusLg || tokens.radius),
+        boxShadow: isWin95
+          ? `inset 1px 1px 0 ${tokens.bevelLight}, inset -1px -1px 0 ${tokens.bevelDark}`
+          : "none"
+      }}>
+        <BranchlabLogoAnim accent={accent} />
+
+        <div style={{
+          fontFamily: tokens.displayFont || tokens.font,
+          fontSize: "clamp(24px, 3.5vw, 32px)", fontWeight: 700,
+          color: tokens.text, letterSpacing: isWin95 ? 0 : "-0.02em", lineHeight: 1
+        }}>Branchlab</div>
+
+        <div style={{
+          fontFamily: tokens.font, fontSize: "14px", color: tokens.muted,
+          maxWidth: "36ch", lineHeight: 1.5
+        }}>A tool for creating interactive branching video scenarios</div>
+
+        {block.websiteUrl && (
+          <a href={block.websiteUrl} target="_blank" rel="noopener noreferrer"
+            aria-label="View Branchlab marketing website (opens in new tab)"
+            style={{
+              display: "inline-flex", alignItems: "center", gap: "8px",
+              padding: isWin95 ? "4px 14px" : "11px 20px",
+              background: isWin95 ? tokens.surface : accent,
+              color: isWin95 ? tokens.text : "#fff",
+              border: isWin95 ? "none" : `1px solid ${accent}`,
+              borderRadius: isWin95 ? 0 : (tokens.radius === "0px" ? 0 : "10px"),
+              textDecoration: "none", fontFamily: tokens.font,
+              fontSize: isWin95 ? "12px" : "14px", fontWeight: 600, cursor: "pointer",
+              boxShadow: isWin95
+                ? `inset 1px 1px 0 ${tokens.bevelLight}, inset -1px -1px 0 ${tokens.bevelDark}, 1px 1px 0 ${tokens.bevelDarker}`
+                : "none"
+            }}>
+            <span>{block.websiteLabel || "View website"}</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        )}
+      </div>
+    </section>
+  );
+}
+
+// ---- 13. BranchlabPlayerBlock -------------------------------------------
+// Interactive branching video player for the Branchlab case study.
+// Embeds both demo scenarios (Ask your crush to prom + Wild west).
+// Supports desktop/mobile device frame toggle and skin-aware chrome.
+
+const _BLAB = {
+  askyourcrushtoprom: {
+    title: "Ask your crush to prom",
+    startNodeId: "n-start",
+    nodes: {
+      "n-start": {
+        id: "n-start", type: "start", title: "Opening Scene",
+        description: "Set the scene. What happens first?",
+        choices: [
+          { id: "c1", label: "Try to be funny",  targetNodeId: "n-pathb" },
+          { id: "c2", label: "Ask honestly",      targetNodeId: "n-win"   }
+        ],
+        clip: {
+          url:   "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/82ca46e6-d457-4981-8e61-c307334c4202.mp4",
+          thumb: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/82ca46e6-d457-4981-8e61-c307334c4202-thumb.jpg"
+        }
+      },
+      "n-pathb": {
+        id: "n-pathb", type: "scene", title: "Path B",
+        choices: [ { id: "c3", label: "\"Maya, wait!\"", targetNodeId: "n-checkpoint" } ],
+        clip: {
+          url:   "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/d85993ce-cafb-4fa8-bee3-e80662d8192a.mp4",
+          thumb: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/d85993ce-cafb-4fa8-bee3-e80662d8192a-thumb.jpg"
+        }
+      },
+      "n-win": {
+        id: "n-win", type: "ending", title: "You did it!", outcome: "correct", choices: [],
+        clip: {
+          url:   "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/b999c34c-0123-41ca-855c-d843fd603f76.mp4",
+          thumb: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/b999c34c-0123-41ca-855c-d843fd603f76-thumb.jpg"
+        }
+      },
+      "n-checkpoint": {
+        id: "n-checkpoint", type: "scene", title: "New Scene", isCheckpoint: true,
+        choices: [
+          { id: "c4", label: "Ask honestly",          targetNodeId: "n-win"  },
+          { id: "c5", label: "Try to be funny, again.", targetNodeId: "n-lose" }
+        ],
+        clip: {
+          url:   "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/e65701bd-0787-4dbd-82c7-6a6f74c4e54b.mp4",
+          thumb: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/e65701bd-0787-4dbd-82c7-6a6f74c4e54b-thumb.jpg"
+        }
+      },
+      "n-lose": {
+        id: "n-lose", type: "ending", title: "You messed up", choices: [],
+        clip: {
+          url:   "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/d954fced-3f65-481d-8c8a-b933ea19bbb2.mp4",
+          thumb: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/d954fced-3f65-481d-8c8a-b933ea19bbb2-thumb.jpg"
+        }
+      }
+    }
+  },
+  wildwest: {
+    title: "Wild west",
+    startNodeId: "ww-start",
+    nodes: {
+      "ww-start": {
+        id: "ww-start", type: "start", title: "Start",
+        choices: [
+          { id: "wc1", label: "New choice", targetNodeId: "ww-e1" },
+          { id: "wc2", label: "New choice", targetNodeId: "ww-e2" },
+          { id: "wc3", label: "New choice", targetNodeId: "ww-e3" },
+          { id: "wc4", label: "New choice", targetNodeId: "ww-e4" }
+        ],
+        clip: {
+          url:   "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/74d87d86-b956-410f-93e3-5aa915e5cbee.mp4",
+          thumb: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/74d87d86-b956-410f-93e3-5aa915e5cbee-thumb.jpg"
+        }
+      },
+      "ww-e1": { id: "ww-e1", type: "ending", title: "New Scene", choices: [], clip: { url: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/aa78646c-d24e-4bc6-813d-ba41d879ddda.mp4", thumb: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/aa78646c-d24e-4bc6-813d-ba41d879ddda-thumb.jpg" } },
+      "ww-e2": { id: "ww-e2", type: "ending", title: "New Scene", choices: [], clip: { url: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/1ff2bddf-4fbe-4c88-8711-ba6c73cd0af3.mp4", thumb: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/1ff2bddf-4fbe-4c88-8711-ba6c73cd0af3-thumb.jpg" } },
+      "ww-e3": { id: "ww-e3", type: "ending", title: "New Scene", choices: [], clip: { url: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/ddef5983-0797-4e22-947a-87adbae4f701.mp4", thumb: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/ddef5983-0797-4e22-947a-87adbae4f701-thumb.jpg" } },
+      "ww-e4": { id: "ww-e4", type: "ending", title: "New Scene", choices: [], clip: { url: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/1ff3f73e-8363-41c0-ac05-a6f2ae66eaad.mp4", thumb: "https://intzkjqmxrlfcbqjlaoj.supabase.co/storage/v1/object/public/Assets/6eea7bca-e4c2-413a-82fa-e406c9abdc82/1ff3f73e-8363-41c0-ac05-a6f2ae66eaad-thumb.jpg" } }
+    }
+  }
+};
+
+function BranchlabPlayerBlock({ block, ctx }) {
+  const { tokens, project } = ctx;
+  const accent    = project?.accent || "#2dc08b";
+  const isWin95   = tokens.name === "Windows 95";
+  const isCarbon  = tokens.name === "IBM Carbon";
+  const isMaterial = tokens.name === "Material You";
+  const brandGreen = "#2dc08b";
+
+  const [scenarioId, setScenarioId] = React.useState("askyourcrushtoprom");
+  const [device,     setDevice]     = React.useState("desktop");
+  const [nodeId,     setNodeId]     = React.useState(null); // null = title screen
+  const scenario   = _BLAB[scenarioId];
+  const currentNode = nodeId ? scenario.nodes[nodeId] : null;
+  const isEnding   = currentNode?.type === "ending";
+  const isDesktop  = device === "desktop";
+
+  const start = () => setNodeId(scenario.startNodeId);
+
+  const choose = (targetId) => setNodeId(targetId);
+
+  const restart = () => setNodeId(scenario.startNodeId);
+
+  const switchScenario = (id) => { setScenarioId(id); setNodeId(null); };
+
+  // Chip/tab button style (scenario selector + device toggle)
+  const chipStyle = (active) => ({
+    padding: isWin95 ? "3px 10px" : (isMaterial ? "7px 16px" : "7px 14px"),
+    fontFamily: tokens.font, fontSize: "13px", fontWeight: active ? 600 : 400,
+    cursor: "pointer",
+    border: isWin95 ? "none" : `1px solid ${active ? accent : tokens.border}`,
+    borderRadius: isWin95 ? 0 : (tokens.radius === "0px" ? 0 : (isMaterial ? "999px" : "999px")),
+    background: active
+      ? (isWin95 ? tokens.surface : `${accent}18`)
+      : (isWin95 ? tokens.surface : "transparent"),
+    color: active ? accent : tokens.muted,
+    boxShadow: isWin95
+      ? (active
+          ? `inset 1px 1px 0 ${tokens.bevelDark}, inset -1px -1px 0 ${tokens.bevelLight}`
+          : `inset 1px 1px 0 ${tokens.bevelLight}, inset -1px -1px 0 ${tokens.bevelDark}`)
+      : "none",
+    transition: isWin95 ? "none" : "background 120ms, color 120ms, border-color 120ms"
+  });
+
+  // The player content rendered inside the device frame
+  const PlayerContent = () => {
+    if (!currentNode) {
+      // Title / intro screen
+      return (
+        <div style={{
+          width: "100%", height: "100%", background: "#0c0c0c",
+          display: "flex", flexDirection: "column",
+          alignItems: "center", justifyContent: "center",
+          gap: "16px", padding: "20px", textAlign: "center"
+        }}>
+          <div style={{
+            fontFamily: "'IBM Plex Mono','IBM Plex Sans','Inter',monospace",
+            fontSize: "9px", color: brandGreen,
+            letterSpacing: "0.15em", textTransform: "uppercase"
+          }}>Interactive scenario</div>
+          <div style={{
+            fontFamily: "'IBM Plex Sans','Inter',sans-serif",
+            fontSize: isDesktop ? "20px" : "16px", fontWeight: 700,
+            color: "#f4f4f4", lineHeight: 1.2, maxWidth: "22ch"
+          }}>{scenario.title}</div>
+          <button type="button" onClick={start}
+            style={{
+              marginTop: "6px", padding: "10px 22px",
+              background: brandGreen, color: "#000", border: "none",
+              borderRadius: "5px",
+              fontFamily: "'IBM Plex Sans','Inter',sans-serif",
+              fontSize: "13px", fontWeight: 700, cursor: "pointer"
+            }}>▶  Start</button>
+        </div>
+      );
+    }
+
+    return (
+      <div style={{ width: "100%", height: "100%", position: "relative", background: "#000" }}>
+        <video
+          key={nodeId}
+          src={currentNode.clip.url}
+          poster={currentNode.clip.thumb}
+          autoPlay playsInline muted
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+        />
+        {/* Overlay gradient + controls */}
+        <div style={{
+          position: "absolute", inset: 0, display: "flex",
+          flexDirection: "column", justifyContent: "flex-end",
+          padding: isDesktop ? "16px" : "12px",
+          background: "linear-gradient(to top, rgba(0,0,0,0.82) 50%, transparent 100%)"
+        }}>
+          {/* Scene label */}
+          <div style={{
+            fontFamily: "'IBM Plex Mono','IBM Plex Sans',monospace",
+            fontSize: "9px",
+            color: isEnding ? brandGreen : "rgba(255,255,255,0.55)",
+            textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: "8px"
+          }}>
+            {isEnding ? "● Ending" : "● Scene"} · {currentNode.title}
+          </div>
+
+          {/* Choices */}
+          {!isEnding && currentNode.choices.length > 0 && (
+            <div style={{ display: "grid", gap: "5px" }}>
+              {currentNode.choices.map((c, i) => (
+                <button key={c.id} type="button" onClick={() => choose(c.targetNodeId)}
+                  style={{
+                    width: "100%", padding: isDesktop ? "9px 12px" : "8px 10px",
+                    background: "rgba(255,255,255,0.11)", backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    border: "1px solid rgba(255,255,255,0.22)",
+                    borderRadius: "5px", color: "#fff",
+                    fontFamily: "'IBM Plex Sans','Inter',sans-serif",
+                    fontSize: isDesktop ? "13px" : "11px", fontWeight: 500,
+                    textAlign: "left", cursor: "pointer",
+                    display: "flex", alignItems: "center", gap: "8px"
+                  }}>
+                  <span style={{
+                    fontFamily: "'IBM Plex Mono',monospace", fontSize: "9px",
+                    color: brandGreen, flexShrink: 0, minWidth: "10px"
+                  }}>{String.fromCharCode(65 + i)}</span>
+                  <span>{c.label}</span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Ending */}
+          {isEnding && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              <div style={{
+                fontFamily: "'IBM Plex Sans','Inter',sans-serif",
+                fontSize: isDesktop ? "20px" : "16px", fontWeight: 700,
+                color: "#fff", lineHeight: 1.2
+              }}>{currentNode.title}</div>
+              <button type="button" onClick={restart}
+                style={{
+                  alignSelf: "flex-start", padding: "7px 14px",
+                  background: "transparent", border: `1px solid ${brandGreen}`,
+                  borderRadius: "4px", color: brandGreen,
+                  fontFamily: "'IBM Plex Sans','Inter',sans-serif",
+                  fontSize: "11px", fontWeight: 600, cursor: "pointer"
+                }}>↩  Start over</button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  // Desktop browser frame
+  const DesktopFrame = () => (
+    <div style={{
+      width: "100%", overflow: "hidden", borderRadius: "8px",
+      boxShadow: "0 12px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18)"
+    }}>
+      {/* Browser chrome */}
+      <div style={{
+        background: "#1c1c1c", padding: "8px 12px",
+        display: "flex", alignItems: "center", gap: "8px"
+      }}>
+        <div style={{ display: "flex", gap: "5px", flexShrink: 0 }}>
+          {["#ff5f57","#febc2e","#28c840"].map((c, i) => (
+            <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />
+          ))}
+        </div>
+        <div style={{
+          flex: 1, background: "#2c2c2c", borderRadius: "4px",
+          padding: "3px 10px", fontFamily: "ui-monospace,monospace",
+          fontSize: "10px", color: "#777",
+          overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"
+        }}>branchlab.app/play/{scenarioId}</div>
+      </div>
+      {/* Player area */}
+      <div style={{ aspectRatio: "16/9", position: "relative", overflow: "hidden" }}>
+        <PlayerContent />
+      </div>
+    </div>
+  );
+
+  // Mobile phone frame
+  const MobileFrame = () => (
+    <div style={{
+      margin: "0 auto", maxWidth: "232px",
+      background: "#1a1a1a", borderRadius: "38px",
+      padding: "12px 8px",
+      boxShadow: "0 16px 48px rgba(0,0,0,0.42), 0 0 0 1px rgba(255,255,255,0.07)"
+    }}>
+      {/* Notch */}
+      <div style={{
+        width: "80px", height: "20px", background: "#0d0d0d",
+        borderRadius: "0 0 14px 14px", margin: "0 auto 8px",
+        display: "flex", alignItems: "center", justifyContent: "center", gap: "6px"
+      }}>
+        <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#282828" }} />
+        <div style={{ width: 28, height: 5, borderRadius: "999px", background: "#282828" }} />
+      </div>
+      {/* Player area */}
+      <div style={{ aspectRatio: "9/16", position: "relative", overflow: "hidden", borderRadius: "16px" }}>
+        <PlayerContent />
+      </div>
+      {/* Home bar */}
+      <div style={{
+        width: "80px", height: "4px", background: "rgba(255,255,255,0.28)",
+        borderRadius: "999px", margin: "10px auto 0"
+      }} />
+    </div>
+  );
+
+  return (
+    <section style={{ margin: "48px 0" }}>
+      {/* Section label */}
+      <div style={{
+        fontFamily: tokens.monoFont, fontSize: "11px", color: accent,
+        textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "14px"
+      }}>▶ Try it yourself</div>
+
+      {/* Controls */}
+      <div style={{
+        display: "flex", flexWrap: "wrap", gap: "10px", alignItems: "center",
+        justifyContent: "space-between", marginBottom: "16px"
+      }}>
+        {/* Scenario tabs */}
+        <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
+          {Object.entries(_BLAB).map(([id, s]) => (
+            <button key={id} type="button" onClick={() => switchScenario(id)}
+              style={chipStyle(scenarioId === id)}>{s.title}</button>
+          ))}
+        </div>
+        {/* Device toggle */}
+        <div style={{ display: "flex", gap: "4px" }}>
+          {[["desktop","🖥","Desktop"],["mobile","📱","Mobile"]].map(([mode,icon,label]) => (
+            <button key={mode} type="button" onClick={() => setDevice(mode)}
+              aria-label={`${label} preview`} aria-pressed={device === mode}
+              style={{ ...chipStyle(device === mode), padding: isWin95 ? "2px 8px" : "6px 10px", fontSize: "14px" }}>
+              {icon}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Player stage */}
+      <div style={{
+        background: tokens.surfaceAlt || tokens.surfaceSolid,
+        border: `1px solid ${tokens.border}`,
+        borderRadius: tokens.radius,
+        padding: isWin95 ? "8px" : "28px 24px",
+        display: "flex", justifyContent: "center",
+        boxShadow: isCarbon || isWin95 ? "none" : tokens.shadow
+      }}>
+        <div style={{
+          width: "100%",
+          maxWidth: isDesktop ? "580px" : "260px",
+          transition: isWin95 ? "none" : "max-width 0.25s cubic-bezier(.4,0,.2,1)"
+        }}>
+          {isDesktop ? <DesktopFrame /> : <MobileFrame />}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 Object.assign(window, {
   TextBlock, ImageBlock, GalleryBlock, MetricsBlock, QuoteBlock,
   ProcessBlock, BeforeAfterBlock, InsightBlock, LinksBlock,
-  FeatureListBlock, TimelineBlock
+  FeatureListBlock, TimelineBlock,
+  BranchlabLogoAnim, LogoHeroBlock, BranchlabPlayerBlock
 });

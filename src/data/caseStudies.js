@@ -157,7 +157,134 @@ window.caseStudies = [
   },
 
   // ---------------------------------------------------------------------------
-  // 2. ElmShiftr
+  // 2. Branchlab — interactive branching video scenario tool
+  // ---------------------------------------------------------------------------
+  {
+    slug: "branchlab",
+    title: "Branchlab",
+    subtitle: "Designing a tool for creating interactive branching video scenarios.",
+    category: "UX / Product",
+    categories: ["UX / Product", "Learning & Development", "Product Management"],
+    year: "2026",
+    role: "Product strategy, UX design, interaction design",
+    status: "In development",
+    coverImage: "/projects/branchlab/cover.jpg",
+    accent: "#2dc08b",
+    tags: ["UX", "Product Design", "Interactive Video", "Learning Technology", "Product Strategy"],
+    summary:
+      "Branchlab is a product concept for creating interactive video experiences — where viewers make choices that change what happens next. The format is useful for training, simulations, onboarding, and educational scenarios. The goal was to build a tool where teams can create, edit, preview, and share branching video scenarios in a clear and visual way.",
+    challenge:
+      "Branching content can quickly become messy. A simple scenario turns into a complicated tree of scenes, choices, outcomes, and conditions. If the tool is not designed well, creators easily lose track of the structure. The challenge was to design a product that makes a complex format feel simple.",
+    outcome:
+      "A clear product concept defining the main structure, core user flows, editor experience, player experience, and future roadmap. Branchlab helps teams turn video into active learning experiences, without managing the complexity manually.",
+    metrics: [
+      { label: "My role", value: "Solo", hint: "Strategy · UX · Interaction" },
+      { label: "Use cases", value: "6+", hint: "Training · Onboarding · Simulations" },
+      { label: "Status", value: "MVP", hint: "In development" }
+    ],
+    sections: [
+      {
+        type: "logoHero",
+        websiteUrl: "https://branchlab-website.vercel.app/",
+        websiteLabel: "View marketing website"
+      },
+      {
+        type: "text",
+        title: "The situation",
+        body:
+          "Interactive video is powerful because it turns passive watching into active decision-making. A learner can watch a workplace scenario, choose how to respond, and immediately see the result of that decision. But there is a problem: branching content can quickly become messy. A simple scenario can turn into a complicated tree of scenes, choices, outcomes, and conditions. The challenge was to design a product that makes a complex format feel simple."
+      },
+      {
+        type: "image",
+        title: "The scenario editor",
+        image: "/projects/branchlab/editor-node-map.jpg",
+        caption: "The visual node map — creators see how every scene connects in the branching structure."
+      },
+      {
+        type: "text",
+        title: "The design challenge",
+        body:
+          "The main challenge was to help users create branching video scenarios without feeling overwhelmed. The product needed to serve two fundamentally different experiences: a creator workspace for building and editing, and a focused video player for the learner. Both needed to feel simple, but they had very different needs."
+      },
+      {
+        type: "beforeAfter",
+        title: "Two experiences, two modes",
+        before: { label: "Creator mode", body: "A workspace for building and editing scenarios. Needs control, structure, and a clear view of the entire branching structure at all times." },
+        after:  { label: "Player mode",  body: "A video player for the learner. Needs focus, clarity, and immersion — not a form or a technical system." }
+      },
+      {
+        type: "featureList",
+        title: "What the product needed to support",
+        items: [
+          { title: "Uploading and organizing video clips", body: "Built-in asset management with support for stock video from Pexels, Coverr, and Pixabay." },
+          { title: "Visual branching structure", body: "A node map where scenes, choices, and outcomes are laid out spatially — easy to navigate, read, and update." },
+          { title: "Previewing the learner experience", body: "A real-time preview so creators can experience the scenario from the learner's perspective before publishing." },
+          { title: "Collaborating and sharing", body: "Invite editors and viewers, set permissions, and share published scenarios via a public URL." }
+        ]
+      },
+      {
+        type: "text",
+        title: "My role",
+        body:
+          "Branchlab is my own product concept. I worked on the product strategy, UX structure, interaction design, and feature planning. This meant thinking not only as a designer, but also as a product owner — asking not just 'Is this usable?' but also 'Is this valuable, scalable, and clear enough to become a real product?'"
+      },
+      {
+        type: "text",
+        title: "The scenario editor",
+        body:
+          "The editor needed to help users understand the structure of the scenario at all times. The most important design decision was to treat the branching scenario as a map — instead of hiding the logic behind menus, the product helps creators see how scenes connect to each other. The core question that became central to the design: where does each choice lead?"
+      },
+      {
+        type: "gallery",
+        title: "Inside the editor",
+        images: [
+          { src: "/projects/branchlab/scene-editor.jpg",       caption: "Scene panel — identity, video clip, description, and branches to next scenes" },
+          { src: "/projects/branchlab/editor-with-library.jpg", caption: "Full editor — node map, scene panel, and stock video library open side by side" }
+        ]
+      },
+      {
+        type: "text",
+        title: "The interactive player",
+        body:
+          "In the player, the video stays at the center. The interface should not feel like a form, a quiz, or a technical system — it should feel like an interactive moment inside the story. Choices appear directly over the video, unnecessary chrome is hidden, and all player text is editable. The goal was to make the viewer feel like they are inside the scenario, not inside a learning management system."
+      },
+      {
+        type: "featureList",
+        title: "Key design decisions",
+        items: [
+          { title: "Make the structure visible", body: "A node map lets creators see the entire scenario at once — how scenes connect, where each choice leads, and where the story ends. This reduces cognitive load and makes it easier to find and fix problems." },
+          { title: "Separate editing from viewing", body: "Editor mode is for building. Player mode is for experiencing. Keeping them separate keeps each experience clean and focused." },
+          { title: "Keep the player immersive", body: "Choices are placed directly over the video. Navigation chrome is hidden. Everything reinforces the feeling of being inside the scenario, not a learning management system." },
+          { title: "Design for teams", body: "Branching scenarios are rarely made by one person. The product supports inviting editors and viewers, setting permissions, and collaborative review." },
+          { title: "Think beyond the MVP", body: "The first version needs to be buildable. But the product also needs a clear direction: analytics, LMS integrations, templates, version history, and team workspaces." }
+        ]
+      },
+      {
+        type: "image",
+        title: "Clip editor",
+        image: "/projects/branchlab/clip-editor.jpg",
+        caption: "The clip editor lets creators trim video clips precisely, with start and end point controls."
+      },
+      {
+        type: "image",
+        title: "Analytics dashboard",
+        image: "/projects/branchlab/analytics.jpg",
+        caption: "Analytics show total plays, completion rates, choice breakdowns by scene, and drop-off points."
+      },
+      {
+        type: "branchlabPlayer"
+      },
+      {
+        type: "insight",
+        title: "Reflection",
+        body:
+          "Branchlab represents how I think as a product designer. The most interesting challenge was not designing a beautiful interface — it was designing a system that makes a complicated creative process feel understandable. Branching scenarios are naturally complex: every choice creates another path, and every path creates more decisions for the creator. The design challenge was to reduce that complexity without reducing the creative possibilities. It is not just a tool for making videos. It is a tool for designing decisions."
+      }
+    ]
+  },
+
+  // ---------------------------------------------------------------------------
+  // 3. ElmShiftr
   // ---------------------------------------------------------------------------
   {
     slug: "elmshiftr",
