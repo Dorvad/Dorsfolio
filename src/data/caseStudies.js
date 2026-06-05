@@ -33,11 +33,11 @@
 
 window.caseStudies = [
   // ---------------------------------------------------------------------------
-  // 1. Ezer L’Chaim — volunteer ride service dashboard (4-month internship)
+  // 1. Ezer L'Chaim — volunteer ride service dashboard (4-month internship)
   // ---------------------------------------------------------------------------
   {
     slug: "ezer-lachaim",
-    title: "Ezer L’Chaim",
+    title: "Ezer L'Chaim",
     subtitle: "Designing a dashboard for a volunteer ride service.",
     category: "UX / Product",
     categories: ["UX / Product", "Internal Tools", "Product Management"],
@@ -48,7 +48,7 @@ window.caseStudies = [
     accent: "#1E6FA8",
     tags: ["UX", "Product Management", "Dashboard", "Nonprofit", "Service Design"],
     summary:
-      "Ezer L’Chaim is a volunteer-based transportation service that helps patients get to hospitals and medical appointments. I designed a dashboard that turns a phone-and-paper coordination process into a clear digital workflow — so managers can run the service with less stress and more certainty.",
+      "Ezer L'Chaim is a volunteer-based transportation service that helps patients get to hospitals and medical appointments. I designed a dashboard that turns a phone-and-paper coordination process into a clear digital workflow — so managers can run the service with less stress and more certainty.",
     challenge:
       "The organization was doing important work, but coordination was almost entirely manual. Rides were arranged by phone; managers had to track drivers, patients, schedules, and updates across different channels. The work was hard to scale, and easy to drop.",
     outcome:
@@ -63,7 +63,7 @@ window.caseStudies = [
         type: "text",
         title: "The situation",
         body:
-          "Ezer L’Chaim connects patients with volunteer drivers. It sounds simple, but in practice it involves many moving parts. Managers need to know which rides are scheduled, which volunteers are available, and whether each ride is being handled. Volunteers need to find relevant rides and understand where they need to go. Patients need to feel that their ride is reliable, clear, and safe. Before the dashboard, most of this depended on manual coordination — hard to scale, with too much room for confusion, delays, or missed information."
+          "Ezer L'Chaim connects patients with volunteer drivers. It sounds simple, but in practice it involves many moving parts. Managers need to know which rides are scheduled, which volunteers are available, and whether each ride is being handled. Volunteers need to find relevant rides and understand where they need to go. Patients need to feel that their ride is reliable, clear, and safe. Before the dashboard, most of this depended on manual coordination — hard to scale, with too much room for confusion, delays, or missed information."
       },
       {
         type: "image",
@@ -75,7 +75,7 @@ window.caseStudies = [
         type: "text",
         title: "The design challenge",
         body:
-          "Give managers a clear overview of the entire operation — see upcoming rides, track volunteer availability, understand the status of each ride, access important data quickly, reduce repeated phone coordination, and present the organization’s activity in a clear and professional way. This was not only a design challenge. It was a service challenge: helping patients get to medical care with less stress and more certainty."
+          "Give managers a clear overview of the entire operation — see upcoming rides, track volunteer availability, understand the status of each ride, access important data quickly, reduce repeated phone coordination, and present the organization's activity in a clear and professional way. This was not only a design challenge. It was a service challenge: helping patients get to medical care with less stress and more certainty."
       },
       {
         type: "featureList",
@@ -94,7 +94,7 @@ window.caseStudies = [
       },
       {
         type: "image",
-        title: "Overview — the manager’s starting point",
+        title: "Overview — the manager's starting point",
         image: "/projects/ezer-lachaim/dashboard-info.png",
         caption: "Top-line numbers, rides by city, and trends — so managers can read the day in seconds."
       },
@@ -108,9 +108,9 @@ window.caseStudies = [
         type: "featureList",
         title: "Key design decisions",
         items: [
-          { title: "Make the dashboard useful at a glance", body: "Show the most important information first — ride status, volunteer activity, upcoming rides, and key numbers — so managers don’t have to search to understand what’s happening." },
+          { title: "Make the dashboard useful at a glance", body: "Show the most important information first — ride status, volunteer activity, upcoming rides, and key numbers — so managers don't have to search to understand what's happening." },
           { title: "Organize around real user needs", body: "Structure the dashboard by what managers actually do, not by internal categories. What do they need to know right now? Which rides need attention? Where might something slip?" },
-          { title: "Support both daily work and organizational growth", body: "The dashboard helps run today’s shift and helps tell the organization’s story — using real data about rides, volunteers, and activity to show donors and stakeholders the impact of the service." },
+          { title: "Support both daily work and organizational growth", body: "The dashboard helps run today's shift and helps tell the organization's story — using real data about rides, volunteers, and activity to show donors and stakeholders the impact of the service." },
           { title: "Design for trust", body: "Patients trust that someone will arrive. Volunteers trust that the information is clear. Managers trust that the system reflects what is really happening. Every screen was designed to reduce uncertainty." }
         ]
       },
@@ -151,7 +151,7 @@ window.caseStudies = [
         type: "insight",
         title: "Reflection",
         body:
-          "This project helped me understand how UX can support services that are deeply human. The challenge wasn’t just to design screens — it was to design a system that helps people coordinate care, reduce stress, and make important work easier to manage. Good UX isn’t only about making things look better. It’s about making meaningful services work better."
+          "This project helped me understand how UX can support services that are deeply human. The challenge wasn't just to design screens — it was to design a system that helps people coordinate care, reduce stress, and make important work easier to manage. Good UX isn't only about making things look better. It's about making meaningful services work better."
       }
     ]
   },
@@ -284,147 +284,7 @@ window.caseStudies = [
   },
 
   // ---------------------------------------------------------------------------
-  // 3. ElmTrackr — personal shift-tracking app for hourly workers
-  // ---------------------------------------------------------------------------
-  {
-    slug: "elmtrackr",
-    title: "ElmTrackr",
-    subtitle: "A personal shift-tracking app for hourly workers.",
-    category: "UX / Product",
-    categories: ["UX / Product", "Internal Tools"],
-    year: "2025",
-    role: "Product design, UX, UI, front-end product thinking",
-    status: "Functional prototype",
-    coverImage: "/projects/elmtrackr/dashboard-home.jpg",
-    accent: "#5b35d5",
-    tags: ["UX", "Mobile", "Productivity", "Internal Tool", "Next.js"],
-    summary:
-      "ElmTrackr is a mobile-first shift-tracking app designed for hourly workers who need a simple way to clock in, clock out, review their shifts, and understand how much they are earning.",
-    challenge:
-      "Hourly workers rely on memory, messages, and spreadsheets to track their time. Monthly salary expectations stay unclear until payday, overtime and special rates are hard to calculate, and small reimbursements like travel refunds are easy to forget.",
-    outcome:
-      "A lightweight personal tool that answers three questions fast: Am I working right now? How much did I work this month? What should I review before payroll?",
-    metrics: [
-      { label: "Platform", value: "Mobile-first", hint: "Next.js · React · Supabase" },
-      { label: "Sections", value: "5", hint: "Home · Shifts · Reports · Projects · Settings" },
-      { label: "Status", value: "Prototype", hint: "Functional end-to-end" }
-    ],
-    sections: [
-      {
-        type: "text",
-        title: "The situation",
-        body:
-          "ElmTrackr started from a very practical need: shift work creates small but persistent moments of uncertainty. Did I clock in? How many hours did I work this month? What is my estimated gross pay? Did I remember to report travel refunds? Instead of building a heavy HR system, the goal was a lightweight personal tool that gives workers clarity in the moments they actually need it."
-      },
-      {
-        type: "image",
-        title: "Home dashboard",
-        image: "/projects/elmtrackr/dashboard-idle.jpg",
-        caption: "The home screen — work status front and center, monthly summary below."
-      },
-      {
-        type: "text",
-        title: "The problem",
-        body:
-          "Hourly workers often rely on a mix of memory, WhatsApp messages, spreadsheets, notes, and employer systems to track their work. People forget exact start and end times. Monthly salary expectations stay unclear until payday. Overtime, weekend hours, and special rates are hard to calculate manually. Small reimbursements like travel refunds are easy to miss. Existing tools often feel too complex for everyday use. The core challenge was to design something simple enough to use during a real shift, but detailed enough to become useful at the end of the month."
-      },
-      {
-        type: "featureList",
-        title: "Three questions the app had to answer",
-        items: [
-          { title: "Am I currently working?", body: "The clock widget sits at the center of the home screen. Work status is always visible and the primary action — clock in or out — is always one tap away." },
-          { title: "How much did I work this month?", body: "Monthly hours, recent shifts, and estimated gross pay are visible on the home screen without navigating to reports." },
-          { title: "What should I review before payroll?", body: "Reports provide a clear breakdown of regular, overtime, and weekend hours, plus contextual reminders for pending travel refunds." }
-        ]
-      },
-      {
-        type: "image",
-        title: "Monthly summary",
-        image: "/projects/elmtrackr/dashboard-home.jpg",
-        caption: "Monthly hour distribution — regular vs. overtime breakdown visible on the home screen."
-      },
-      {
-        type: "text",
-        title: "Product structure",
-        body:
-          "ElmTrackr is built around five screens, each with a clear purpose. Home shows current shift status, monthly summary, gross pay, and recent shifts. Shifts shows the full monthly history and lets users add shifts manually. Reports shows totals, breakdowns, insights, and export options. Projects supports tracking work by client or task. Settings handles personal configuration: hourly rates, overtime rules, weekend days, and optional features."
-      },
-      {
-        type: "image",
-        title: "A busy month",
-        image: "/projects/elmtrackr/dashboard-breakdown.jpg",
-        caption: "93.4 hours across regular, overtime, and weekend work — the distribution visible at a glance."
-      },
-      {
-        type: "process",
-        title: "UX process",
-        steps: [
-          { title: "Discover", body: "Mapped the small moments of uncertainty around shift work: starting a shift, ending it, reconstructing the month, checking pay, realizing a mistake." },
-          { title: "Define", body: "Organized the product around three layers — immediate action, monthly review, and payroll confidence — to keep every feature focused." },
-          { title: "Design", body: "Chose a soft, mobile-first, card-based visual direction. The app should feel like a personal utility, not a corporate HR tool." },
-          { title: "Build", body: "Built as a Next.js web app with Supabase, which allowed testing real flows — active shifts, month switching, pay calculations, reminders — rather than only static prototypes." }
-        ]
-      },
-      {
-        type: "featureList",
-        title: "Key product decisions",
-        items: [
-          { title: "Make the home screen action-based", body: "The app answers 'What do I do now?' before 'What happened before?' — work status is always on the first screen, and the primary action is always one tap away." },
-          { title: "Show monthly progress without it feeling like accounting", body: "Estimated gross pay and hour summaries appear before month-end. The goal is not to replace payroll software — it's to give workers a personal estimate so they feel more in control." },
-          { title: "Design for corrections, not perfection", body: "People forget to clock in. They clock in late. The app supports manual shift creation and editing start times — making the product forgiving and realistic for normal work conditions." },
-          { title: "Use contextual reminders, not permanent warnings", body: "Travel refund reminders appear near month-end when unresolved refunds exist. The interface is quiet most of the time, but helpful when it matters." },
-          { title: "Keep reporting visual and scannable", body: "Reports use cards and summaries first, detailed data second. Insight cards give the pay data a human, readable layer." }
-        ]
-      },
-      {
-        type: "gallery",
-        title: "Reports and pay breakdown",
-        images: [
-          { src: "/projects/elmtrackr/reports-insights.jpg", caption: "Reports — overtime, weekend, gross pay, and insight cards" },
-          { src: "/projects/elmtrackr/reports-road-trip.jpg", caption: "Monthly report — pay summary and contextual insight" },
-          { src: "/projects/elmtrackr/reports-basic.jpg", caption: "Reports view on a lighter month" }
-        ]
-      },
-      {
-        type: "image",
-        title: "Desktop view",
-        image: "/projects/elmtrackr/dashboard-desktop.jpg",
-        caption: "The same data model renders in a wider layout on desktop."
-      },
-      {
-        type: "gallery",
-        title: "Configuration and features",
-        images: [
-          { src: "/projects/elmtrackr/settings-payroll.jpg", caption: "Payroll settings — weekend days and hourly base rates by time of day" },
-          { src: "/projects/elmtrackr/settings-features.jpg", caption: "Manage Features — toggles for travel refunds, paid projects, insights, and clock styles" }
-        ]
-      },
-      {
-        type: "beforeAfter",
-        title: "What changed",
-        before: { label: "Before", body: "Memory, WhatsApp threads, and spreadsheets. Monthly pay unclear until the employer sends it. Easy to forget overtime rates or travel refunds." },
-        after:  { label: "After",  body: "One app to clock in, review the month, see estimated pay, and check refunds — all before payday. A personal record the worker owns and controls." }
-      },
-      {
-        type: "metrics",
-        title: "Prototype scope",
-        items: [
-          { label: "Core flow", value: "End-to-end", hint: "Clock in → review → report → export" },
-          { label: "Pay types", value: "4 tracked", hint: "Regular · Overtime · Weekend · Holiday" },
-          { label: "Export", value: "CSV + PDF", hint: "Monthly reports exportable" }
-        ]
-      },
-      {
-        type: "insight",
-        title: "What I learned",
-        body:
-          "Small operational tools can still require deep product thinking. The hardest part was not designing a clock-in button — it was deciding what information should appear around it, what should wait for reports, and how much complexity the user should see at any moment. I also learned that 'simple' tools become valuable when they respect messy real-life behavior: forgetting, correcting, reviewing, and checking. A good shift tracker should not only record time. It should help the user feel calm and in control."
-      }
-    ]
-  },
-
-  // ---------------------------------------------------------------------------
-  // 4. ElmShiftr
+  // 3. ElmShiftr — shift management tool for escape room staff and managers
   // ---------------------------------------------------------------------------
   {
     slug: "elmshiftr",
@@ -516,199 +376,6 @@ window.caseStudies = [
         body:
           "The first week we used it nobody asked 'who's working Saturday?' in the group chat. That was the goal.",
         attribution: "Operations lead, pilot location"
-      }
-    ]
-  },
-
-  // ---------------------------------------------------------------------------
-  // 2. OfekOS
-  // ---------------------------------------------------------------------------
-  {
-    slug: "ofekos",
-    title: "OfekOS",
-    subtitle: "A digital learning operating system for management training programs.",
-    category: "Learning & Development",
-    categories: ["Learning & Development", "Product Management"],
-    year: "2025",
-    role: "Product strategy, learning design, UX",
-    status: "Live",
-    coverImage: "/projects/ofekos/cover.png",
-    accent: "#9C7CF4",
-    tags: ["L&D", "Product Strategy", "Learning Experience", "Platform Design"],
-    summary:
-      "OfekOS turns a management training program into a structured digital journey for participants, facilitators, and administrators.",
-    challenge:
-      "A multi-month management program was being delivered through scattered slides, PDFs, and emails. Participants lost the thread, facilitators repeated themselves, and admins had no visibility.",
-    outcome:
-      "A learning operating system where each cohort moves through modules together — with clear pathways for the three different roles using the platform.",
-    metrics: [
-      { label: "Cohorts run", value: "6" },
-      { label: "Participants", value: "180+" },
-      { label: "Roles supported", value: "3" }
-    ],
-    sections: [
-      {
-        type: "text",
-        title: "Three users, one system",
-        body:
-          "Participants need momentum and clarity. Facilitators need session prep and live tools. Admins need a bird's-eye view across cohorts. The platform had to serve all three without compromise."
-      },
-      {
-        type: "timeline",
-        title: "Program rollout",
-        items: [
-          { date: "Q1", title: "Discovery", body: "Shadowed 4 facilitators across 2 cohorts." },
-          { date: "Q2", title: "Prototype", body: "Built a single-module pilot." },
-          { date: "Q3", title: "Full rollout", body: "Migrated 6 cohorts onto the platform." },
-          { date: "Q4", title: "Iteration", body: "Added admin dashboard and analytics." }
-        ]
-      },
-      {
-        type: "image",
-        title: "Participant journey",
-        image: "/projects/ofekos/journey.png",
-        caption: "Modules unlock progressively as the cohort moves through the program."
-      },
-      {
-        type: "featureList",
-        title: "Core modules",
-        items: [
-          { title: "Cohort hub", body: "Where participants land — what's now, what's next." },
-          { title: "Session studio", body: "Facilitators prep, run, and debrief sessions in one place." },
-          { title: "Admin console", body: "Cross-cohort visibility, content versioning, attendance." }
-        ]
-      },
-      {
-        type: "insight",
-        title: "What I learned",
-        body:
-          "A learning platform isn't a content delivery tool — it's a coordination tool. The hardest design decisions were about visibility between roles, not about the content itself."
-      },
-      {
-        type: "gallery",
-        title: "Interface highlights",
-        images: [
-          { src: "/projects/ofekos/screen-1.png", caption: "Participant cohort hub" },
-          { src: "/projects/ofekos/screen-2.png", caption: "Facilitator session view" },
-          { src: "/projects/ofekos/screen-3.png", caption: "Admin cross-cohort dashboard" }
-        ]
-      }
-    ]
-  },
-
-  // ---------------------------------------------------------------------------
-  // 4. AI Facilitation Tools
-  // ---------------------------------------------------------------------------
-  {
-    slug: "ai-facilitation-tools",
-    title: "AI Facilitation Tools",
-    subtitle: "Lightweight AI-powered tools for workshops, reflection, and group facilitation.",
-    category: "Learning & Development",
-    categories: ["Learning & Development", "UX / Product"],
-    year: "2025",
-    role: "Product thinking, prompt design, prototyping",
-    status: "Active",
-    coverImage: "/projects/ai-facilitation-tools/cover.png",
-    accent: "#E0744A",
-    tags: ["AI", "L&D", "Facilitation", "Product Thinking"],
-    summary:
-      "A collection of small digital tools designed to make workshops more interactive, adaptive, and engaging.",
-    challenge:
-      "AI in L&D is usually framed as 'replace the facilitator' or 'auto-generate content.' Neither is what working facilitators actually want — they want a smart assistant in the room, not a substitute.",
-    outcome:
-      "A growing toolkit of focused, single-purpose AI tools that sit alongside a human facilitator. Each tool does one thing well, in under a minute.",
-    metrics: [
-      { label: "Tools shipped", value: "7" },
-      { label: "Avg. interaction", value: "< 60s" },
-      { label: "Posture", value: "Assist, don't replace" }
-    ],
-    sections: [
-      {
-        type: "text",
-        title: "Design principle: tools, not assistants",
-        body:
-          "Every tool answers one question for one role at one moment in a workshop. No chat interfaces, no open-ended prompts. The facilitator stays in charge."
-      },
-      {
-        type: "featureList",
-        title: "The toolkit",
-        items: [
-          { title: "Warmup generator", body: "Three tailored warmups for your group, in 20 seconds." },
-          { title: "Reflection mirror", body: "Summarizes a group's reflections back to them without flattening differences." },
-          { title: "Tension finder", body: "Surfaces the disagreements hiding in a discussion transcript." },
-          { title: "Closing prompt", body: "Generates a closing question matched to the session's energy." }
-        ]
-      },
-      {
-        type: "insight",
-        title: "What I learned",
-        body:
-          "The fastest way to make AI useful in a workshop is to make it boring and predictable. Surprise is bad in a room of 20 people."
-      },
-      {
-        type: "links",
-        title: "Read more",
-        items: [
-          { label: "Design notes (Notion)", href: "#" },
-          { label: "Tool demo", href: "#" }
-        ]
-      }
-    ]
-  },
-
-  // ---------------------------------------------------------------------------
-  // 5. UX Case Study System
-  // ---------------------------------------------------------------------------
-  {
-    slug: "ux-case-study-system",
-    title: "UX Case Study System",
-    subtitle: "A modular framework for presenting UX projects in a clear and engaging way.",
-    category: "UX / Product",
-    categories: ["UX / Product", "UI & Branding"],
-    year: "2026",
-    role: "System design, content design, front-end",
-    status: "This site",
-    coverImage: "/projects/ux-case-study-system/cover.png",
-    accent: "#D49A2A",
-    tags: ["UX", "Storytelling", "Interaction Design", "Content Design"],
-    summary:
-      "A reusable case study structure that helps complex projects become easier to understand, scan, and remember.",
-    challenge:
-      "Portfolios usually trade off depth for scannability. Long case studies don't get read. Short ones don't earn trust.",
-    outcome:
-      "A block-based case study system: same content, swappable presentation. This portfolio renders four entirely different interface skins on top of one content model.",
-    metrics: [
-      { label: "Skins", value: "4" },
-      { label: "Block types", value: "11" },
-      { label: "Source of truth", value: "1 data file" }
-    ],
-    sections: [
-      {
-        type: "text",
-        title: "One model, many surfaces",
-        body:
-          "Every case study is a list of typed content blocks. Skins decide how those blocks look. Adding a new project means editing one file."
-      },
-      {
-        type: "featureList",
-        title: "Block types",
-        items: [
-          { title: "Narrative blocks", body: "text, quote, insight — for the story." },
-          { title: "Visual blocks", body: "image, gallery, beforeAfter — for the work." },
-          { title: "Structured blocks", body: "metrics, process, timeline, featureList, links — for the evidence." }
-        ]
-      },
-      {
-        type: "beforeAfter",
-        title: "What the system replaces",
-        before: { label: "Before", body: "One bespoke page per project. Each one a custom build." },
-        after: { label: "After", body: "One data file. Eleven block components. Four skins. Auto-routed." }
-      },
-      {
-        type: "insight",
-        title: "Why four skins",
-        body:
-          "Each skin is a real design system worth knowing: Mac/iOS, Win95, Material You, IBM Carbon. Switching between them on the same content makes the design choices visible — which is the point of a portfolio."
       }
     ]
   }
