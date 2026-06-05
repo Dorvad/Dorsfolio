@@ -510,14 +510,18 @@ window.caseStudies = [
         title: "Inside the experience",
         images: [
           { src: "/projects/jafi-vr/airport-scene.jpg", caption: "Arrival in Israel — the airport scene with an Israeli passport at the border desk" },
+          { src: "/projects/jafi-vr/falafel-game.jpg",  caption: "Falafel game — hands-on interaction inside the Carmel Market scene" },
           { src: "/projects/jafi-vr/beach-game.jpg",    caption: "Beach game — score overlay and interactive floating ring, Tel Aviv coastline" }
         ]
       },
       {
-        type: "image",
+        type: "gallery",
         title: "The hardware",
-        image: "/projects/jafi-vr/pico-headset.jpg",
-        caption: "Pico 4 Ultra Enterprise — the standalone VR headset used to run the experience."
+        images: [
+          { src: "/projects/jafi-vr/headset-1.jpg", caption: "The Pico 4 Ultra Enterprise headset in use during a session" },
+          { src: "/projects/jafi-vr/headset-2.jpg", caption: "Headset view — the experience running on the standalone device" },
+          { src: "/projects/jafi-vr/pico-headset.jpg", caption: "Pico 4 Ultra Enterprise — the hardware used to run the experience" }
+        ]
       },
       {
         type: "featureList",
