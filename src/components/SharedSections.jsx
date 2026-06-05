@@ -9,50 +9,94 @@
 // in by the skin shells themselves; this is the content-level UI.
 // =============================================================================
 
+const HERO_PORTRAITS = {
+  mac:      "src/assets/portraits/portrait-mac.png",
+  material: "src/assets/portraits/portrait-material.png",
+  win95:    "src/assets/portraits/portrait-win95.png",
+  carbon:   "src/assets/portraits/portrait-carbon.png"
+};
+
 function HomeSection() {
   const { skin } = window.useSkin();
   const tokens = window.skinTokens.get(skin);
   const info = window.portfolioInfo;
   const projects = (window.caseStudies || []).slice(0, 3);
+  const portrait = HERO_PORTRAITS[skin] || HERO_PORTRAITS.mac;
+
+  const portraitRadius = skin === "win95" ? "0px" : skin === "material" ? "50%" : "20px";
+  const portraitBorder = skin === "win95"
+    ? `3px solid ${tokens.bevelLight || "#fff"}`
+    : skin === "carbon"
+    ? `2px solid ${tokens.accent}`
+    : `2px solid ${tokens.border}`;
 
   return (
     <div data-screen-label="Home">
       <section style={{ padding: "8px 0 24px" }}>
         <div style={{
-          fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted,
-          textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "16px"
-        }}>{info.brand} · {info.skins.find((s) => s.id === skin)?.name}</div>
-        <h1 style={{
-          fontFamily: tokens.displayFont || tokens.font,
-          fontSize: "clamp(34px, 5.4vw, 56px)",
-          lineHeight: 1.05,
-          letterSpacing: "-0.02em",
-          fontWeight: 600,
-          color: tokens.text,
-          margin: "0 0 20px",
-          maxWidth: "22ch",
-          textWrap: "balance"
-        }}>{info.tagline}</h1>
-        <p style={{
-          fontFamily: tokens.font,
-          fontSize: "clamp(16px, 1.8vw, 19px)",
-          lineHeight: 1.55,
-          color: tokens.muted,
-          margin: 0,
-          maxWidth: "60ch",
-          textWrap: "pretty"
-        }}>{info.intro}</p>
+          display: "flex", alignItems: "center", gap: "clamp(24px, 4vw, 56px)",
+          flexWrap: "wrap"
+        }}>
+          {/* Portrait */}
+          <div style={{ flexShrink: 0 }}>
+            <img
+              src={portrait}
+              alt="Dor Vadai"
+              style={{
+                width: "clamp(110px, 18vw, 180px)",
+                height: "clamp(110px, 18vw, 180px)",
+                objectFit: "cover",
+                objectPosition: "top center",
+                borderRadius: portraitRadius,
+                border: portraitBorder,
+                display: "block",
+                boxShadow: skin === "mac"
+                  ? "0 16px 40px rgba(15,23,42,0.18)"
+                  : skin === "material"
+                  ? `0 6px 24px ${tokens.accent}44`
+                  : "none"
+              }}
+            />
+          </div>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "28px" }}>
-          {[info.ctas.primary, info.ctas.secondary, info.ctas.tertiary].map((cta, i) => (
-            <SkinButton
-              key={cta.label}
-              href={cta.href}
-              variant={i === 0 ? "primary" : "ghost"}
-              tokens={tokens}
-              skin={skin}
-            >{cta.label}</SkinButton>
-          ))}
+          {/* Text */}
+          <div style={{ flex: "1 1 260px", minWidth: 0 }}>
+            <div style={{
+              fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted,
+              textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "14px"
+            }}>{info.brand} · {info.skins.find((s) => s.id === skin)?.name}</div>
+            <h1 style={{
+              fontFamily: tokens.displayFont || tokens.font,
+              fontSize: "clamp(34px, 5.4vw, 56px)",
+              lineHeight: 1.05,
+              letterSpacing: "-0.02em",
+              fontWeight: 600,
+              color: tokens.text,
+              margin: "0 0 16px",
+              textWrap: "balance"
+            }}>{info.tagline}</h1>
+            <p style={{
+              fontFamily: tokens.font,
+              fontSize: "clamp(15px, 1.6vw, 18px)",
+              lineHeight: 1.55,
+              color: tokens.muted,
+              margin: 0,
+              maxWidth: "52ch",
+              textWrap: "pretty"
+            }}>{info.intro}</p>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "24px" }}>
+              {[info.ctas.primary, info.ctas.secondary, info.ctas.tertiary].map((cta, i) => (
+                <SkinButton
+                  key={cta.label}
+                  href={cta.href}
+                  variant={i === 0 ? "primary" : "ghost"}
+                  tokens={tokens}
+                  skin={skin}
+                >{cta.label}</SkinButton>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 

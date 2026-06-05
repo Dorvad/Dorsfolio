@@ -4,11 +4,11 @@
 // =============================================================================
 
 window.portfolioInfo = {
-  name: "Dor",
+  name: "Dor Vadai",
   brand: "Dorsfolio",
-  tagline: "Designing learning experiences, digital products, and useful systems.",
+  tagline: "Hi, I'm Dor Vadai.",
   intro:
-    "I'm Dor — a learning technology and digital product professional focused on turning complex ideas into clear, usable, and engaging experiences.",
+    "Learning technology and digital product professional — I turn complex ideas into clear, usable, and engaging experiences.",
   footer:
     "Designed as one portfolio, explored through four interface worlds.",
 
