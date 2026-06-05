@@ -16,6 +16,16 @@ const macStyles = {
   }
 };
 
+// Responsive: ≤640px hides the dock and collapses the menu bar date
+const macResponsiveCSS = `
+  @media (max-width: 640px) {
+    [data-mac-dock]       { display: none !important; }
+    [data-mac-date]       { display: none !important; }
+    [data-mac-nav] a      { padding: 4px 7px !important; font-size: 12px !important; }
+    [data-skin-scroll]    { padding-bottom: 32px !important; }
+  }
+`;
+
 function MacPortfolioShell({ children, route }) {
   const tokens = window.skinTokens.get("mac");
   const navItems = window.portfolioInfo.nav;
@@ -23,6 +33,8 @@ function MacPortfolioShell({ children, route }) {
 
   return (
     <div style={macStyles.wallpaper}>
+      <style>{macResponsiveCSS}</style>
+
       {/* Top menu bar */}
       <div style={{
         position: "sticky", top: 0, zIndex: 50,
@@ -31,16 +43,16 @@ function MacPortfolioShell({ children, route }) {
         backdropFilter: tokens.blur, WebkitBackdropFilter: tokens.blur,
         border: `1px solid ${tokens.border}`, borderRadius: "12px",
         display: "flex", alignItems: "center", gap: "16px",
-        fontSize: "13px"
+        fontSize: "13px", flexWrap: "nowrap", minWidth: 0
       }}>
-        <a href="#/" style={{ display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none", color: tokens.text }}>
+        <a href="#/" style={{ display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none", color: tokens.text, flexShrink: 0 }}>
           <span aria-hidden="true" style={{
             width: 14, height: 14, borderRadius: "3px",
             background: "conic-gradient(from 220deg, #0a84ff, #bf5af2, #28c840, #ff9f0a, #0a84ff)"
           }} />
           <span style={{ fontWeight: 600 }}>Dorsfolio</span>
         </a>
-        <nav style={{ display: "flex", gap: "4px", marginLeft: "4px" }}>
+        <nav data-mac-nav style={{ display: "flex", gap: "4px", marginLeft: "4px", flexShrink: 0 }}>
           {navItems.slice(1).map((n) => {
             const active =
               (n.href === "#/projects" && (route.name === "projects" || route.name === "case-study")) ||
@@ -55,8 +67,8 @@ function MacPortfolioShell({ children, route }) {
             );
           })}
         </nav>
-        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "10px", color: tokens.muted, fontFamily: tokens.monoFont, fontSize: "11px" }}>
-          <span>{new Date().toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</span>
+        <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "10px", color: tokens.muted, fontFamily: tokens.monoFont, fontSize: "11px", flexShrink: 0 }}>
+          <span data-mac-date>{new Date().toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric" })}</span>
           <window.SkinSwitcher inline />
         </div>
       </div>
@@ -85,8 +97,10 @@ function MacPortfolioShell({ children, route }) {
         }}><window.SkinFooter /></footer>
       </div>
 
-      {/* Bottom dock */}
-      <MacDock route={route} tokens={tokens} />
+      {/* Bottom dock — hidden on narrow viewports */}
+      <div data-mac-dock>
+        <MacDock route={route} tokens={tokens} />
+      </div>
     </div>
   );
 }

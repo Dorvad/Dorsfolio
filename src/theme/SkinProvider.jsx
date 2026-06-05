@@ -59,7 +59,14 @@ function parseHash(hash) {
 function useRoute() {
   const [route, setRoute] = useState(() => parseHash(window.location.hash));
   useEffect(() => {
-    const onChange = () => setRoute(parseHash(window.location.hash));
+    const onChange = () => {
+      setRoute(parseHash(window.location.hash));
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: "auto" });
+        const main = document.querySelector("[data-skin-scroll]");
+        if (main) main.scrollTo({ top: 0, behavior: "auto" });
+      });
+    };
     window.addEventListener("hashchange", onChange);
     return () => window.removeEventListener("hashchange", onChange);
   }, []);
