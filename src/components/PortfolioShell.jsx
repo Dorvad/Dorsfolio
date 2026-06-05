@@ -22,6 +22,7 @@ function PortfolioShell() {
   else if (route.name === "case-study") content = <window.CaseStudyPage slug={route.slug} />;
   else if (route.name === "about")  content = <window.AboutSection />;
   else if (route.name === "contact") content = <window.ContactSection />;
+  else if (route.name === "gallery") content = <window.GalleryPage />;
   else content = <window.HomeSection />;
 
   return <Shell route={route}>{content}</Shell>;

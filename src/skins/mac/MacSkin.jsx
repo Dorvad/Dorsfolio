@@ -137,6 +137,7 @@ function MacDock({ route, tokens }) {
   const items = [
     { id: "home",     href: "#/",          label: "Home",    color: "#0a84ff", glyph: "◉" },
     { id: "projects", href: "#/projects",  label: "Projects",color: "#bf5af2", glyph: "▦" },
+    { id: "gallery",  href: "#/gallery",   label: "Gallery", color: "#ff6b6b", glyph: "⊞" },
     { id: "about",    href: "#/about",     label: "About",   color: "#34c759", glyph: "✦" },
     { id: "contact",  href: "#/contact",   label: "Contact", color: "#ff9f0a", glyph: "✉" }
   ];

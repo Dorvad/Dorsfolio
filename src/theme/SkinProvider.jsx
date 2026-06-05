@@ -53,6 +53,7 @@ function parseHash(hash) {
   if (segs[0] === "projects" && segs.length >= 2) return { name: "case-study", slug: segs[1], path: clean };
   if (segs[0] === "about")   return { name: "about",   path: "/about" };
   if (segs[0] === "contact") return { name: "contact", path: "/contact" };
+  if (segs[0] === "gallery") return { name: "gallery", path: "/gallery" };
   return { name: "home", path: "/" };
 }
 
