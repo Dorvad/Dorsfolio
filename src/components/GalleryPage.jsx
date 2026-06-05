@@ -10,12 +10,25 @@ function GalleryPage() {
   const tokens = window.skinTokens.get(skin);
   const images = window.galleryImages || [];
 
-  const [lightbox, setLightbox] = useState(null); // index or null
+  // Filter state — computed before lightbox so prev/next stay in-filter
+  const projects = ["All", ...Array.from(new Set(images.map((img) => img.project).filter(Boolean)))];
+  const [activeProject, setActiveProject] = useState("All");
+  const filtered = activeProject === "All"
+    ? images
+    : images.filter((img) => img.project === activeProject);
 
+  // Lightbox index into `filtered` (not global images)
+  const [lightbox, setLightbox] = useState(null);
   const open  = useCallback((i) => setLightbox(i), []);
   const close = useCallback(() => setLightbox(null), []);
-  const prev  = useCallback(() => setLightbox((i) => (i - 1 + images.length) % images.length), [images.length]);
-  const next  = useCallback(() => setLightbox((i) => (i + 1) % images.length), [images.length]);
+  const prev  = useCallback(() => setLightbox((i) => (i - 1 + filtered.length) % filtered.length), [filtered.length]);
+  const next  = useCallback(() => setLightbox((i) => (i + 1) % filtered.length), [filtered.length]);
+
+  // Close lightbox when filter changes
+  const handleFilterChange = useCallback((p) => {
+    setActiveProject(p);
+    setLightbox(null);
+  }, []);
 
   // Keyboard nav for lightbox
   useEffect(() => {
@@ -28,14 +41,6 @@ function GalleryPage() {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [lightbox, close, prev, next]);
-
-  // Unique project tags for filter pills
-  const projects = ["All", ...Array.from(new Set(images.map((img) => img.project).filter(Boolean)))];
-  const [activeProject, setActiveProject] = useState("All");
-
-  const filtered = activeProject === "All"
-    ? images
-    : images.filter((img) => img.project === activeProject);
 
   return (
     <div>
@@ -60,7 +65,7 @@ function GalleryPage() {
           {projects.map((p) => (
             <button
               key={p}
-              onClick={() => setActiveProject(p)}
+              onClick={() => handleFilterChange(p)}
               style={{
                 padding: "6px 14px",
                 borderRadius: "999px",
@@ -102,26 +107,23 @@ function GalleryPage() {
           columns: "3 280px",
           columnGap: "12px"
         }}>
-          {filtered.map((img, i) => {
-            const globalIndex = images.indexOf(img);
-            return (
-              <GalleryThumb
-                key={img.src + i}
-                img={img}
-                tokens={tokens}
-                onClick={() => open(globalIndex)}
-              />
-            );
-          })}
+          {filtered.map((img, i) => (
+            <GalleryThumb
+              key={img.src + i}
+              img={img}
+              tokens={tokens}
+              onClick={() => open(i)}
+            />
+          ))}
         </div>
       )}
 
-      {/* Lightbox */}
-      {lightbox !== null && images[lightbox] && (
+      {/* Lightbox — navigates within current filter */}
+      {lightbox !== null && filtered[lightbox] && (
         <GalleryLightbox
-          img={images[lightbox]}
+          img={filtered[lightbox]}
           index={lightbox}
-          total={images.length}
+          total={filtered.length}
           tokens={tokens}
           onClose={close}
           onPrev={prev}

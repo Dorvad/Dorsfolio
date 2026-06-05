@@ -49,6 +49,7 @@ function Win95PortfolioShell({ children, route }) {
       }} className="w95-desktop-icons">
         {[
           { label: "Projects", href: "#/projects", glyph: "▦" },
+          { label: "Gallery",  href: "#/gallery",  glyph: "⊞" },
           { label: "About",    href: "#/about",    glyph: "★" },
           { label: "Contact",  href: "#/contact",  glyph: "✉" }
         ].map((d) => (
@@ -192,6 +193,7 @@ function Win95PortfolioShell({ children, route }) {
               {[
                 { label: "Home",     href: "#/",         glyph: "🏠" },
                 { label: "Projects", href: "#/projects", glyph: "📁" },
+                { label: "Gallery",  href: "#/gallery",  glyph: "🖼" },
                 { label: "About",    href: "#/about",    glyph: "ℹ" },
                 { label: "Contact",  href: "#/contact",  glyph: "✉" }
               ].map((it) => (
@@ -228,6 +230,7 @@ function w95TitleFor(route) {
   if (route.name === "case-study") return route.slug + ".prj";
   if (route.name === "about") return "About.txt";
   if (route.name === "contact") return "Contact.txt";
+  if (route.name === "gallery") return "Gallery";
   return "Window";
 }
 

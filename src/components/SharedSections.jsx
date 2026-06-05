@@ -125,6 +125,8 @@ function HomeSection() {
 // ---- Buttons ------------------------------------------------------------
 function SkinButton({ children, href, onClick, variant = "primary", tokens, skin }) {
   const isPrimary = variant === "primary";
+  // Carbon uses a darker blue for button BG (white text on #78a9ff fails contrast)
+  const carbonPrimaryBg = "#0f62fe";
   const baseStyle = {
     display: "inline-flex", alignItems: "center", gap: "8px",
     padding: skin === "win95" ? "4px 14px" : "12px 20px",
@@ -133,10 +135,11 @@ function SkinButton({ children, href, onClick, variant = "primary", tokens, skin
     borderRadius: tokens.radius === "0px" ? 0 : (skin === "material" ? "999px" : "10px"),
     color: isPrimary ? (skin === "win95" ? tokens.text : "#fff") : tokens.text,
     background: isPrimary
-      ? (skin === "win95" ? tokens.surface : tokens.accent)
+      ? (skin === "win95" ? tokens.surface : skin === "carbon" ? carbonPrimaryBg : tokens.accent)
       : (skin === "win95" ? tokens.surface : "transparent"),
     border:
       skin === "win95" ? "none" :
+      skin === "carbon" && isPrimary ? "none" :
       isPrimary ? `1px solid ${tokens.accent}` : `1px solid ${tokens.border}`,
     boxShadow:
       skin === "win95"

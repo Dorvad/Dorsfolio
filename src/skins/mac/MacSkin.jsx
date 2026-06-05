@@ -111,6 +111,7 @@ function macTitleFor(route) {
   if (route.name === "case-study") return `Dorsfolio — ${route.slug}`;
   if (route.name === "about") return "Dorsfolio — About";
   if (route.name === "contact") return "Dorsfolio — Contact";
+  if (route.name === "gallery") return "Dorsfolio — Gallery";
   return "Dorsfolio";
 }
 

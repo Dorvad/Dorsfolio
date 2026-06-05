@@ -7,6 +7,7 @@ function MaterialPortfolioShell({ children, route }) {
   const navItems = [
     { id: "home",     href: "#/",         label: "Home",     glyph: "⌂" },
     { id: "projects", href: "#/projects", label: "Projects", glyph: "▦" },
+    { id: "gallery",  href: "#/gallery",  label: "Gallery",  glyph: "⊞" },
     { id: "about",    href: "#/about",    label: "About",    glyph: "★" },
     { id: "contact",  href: "#/contact",  label: "Contact",  glyph: "✉" }
   ];
@@ -115,8 +116,7 @@ function MaterialPortfolioShell({ children, route }) {
         textDecoration: "none",
         boxShadow: "0 6px 16px rgba(125,82,96,0.4)",
         fontSize: "22px",
-        zIndex: 70,
-        position: "fixed"
+        zIndex: 70
       }}>
         ✉
         <span aria-hidden="true" style={{

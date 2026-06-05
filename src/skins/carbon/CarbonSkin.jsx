@@ -8,6 +8,7 @@ function CarbonPortfolioShell({ children, route }) {
   const navItems = [
     { id: "home",     href: "#/",         label: "Home" },
     { id: "projects", href: "#/projects", label: "Projects" },
+    { id: "gallery",  href: "#/gallery",  label: "Gallery" },
     { id: "about",    href: "#/about",    label: "About" },
     { id: "contact",  href: "#/contact",  label: "Contact" }
   ];
