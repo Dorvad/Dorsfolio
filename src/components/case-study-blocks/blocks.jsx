@@ -541,13 +541,29 @@ function LogoHeroBlock({ block, ctx }) {
 }
 
 // ---- 13. BranchlabPlayerBlock -------------------------------------------
-// Embeds the live Branchlab player (branchlab.online) in a device frame.
-// Scenarios: Wild West + Teen Room. Supports desktop/mobile toggle.
+// Embeds the official Branchlab player via <branchlab-player> web component.
+// Scenarios: Wild West + Teen rom-com. Supports desktop/mobile toggle.
 
 const _BLAB_SCENARIOS = [
-  { id: "wildwest", title: "Wild West", url: "https://www.branchlab.online/play/wildwest" },
-  { id: "teenrom",  title: "Teen Room", url: "https://www.branchlab.online/play/teenrom"  }
+  { id: "wildwest", title: "Wild West" },
+  { id: "teenrom",  title: "Teen rom-com" }
 ];
+
+// Mounts a <branchlab-player slug="..."> web component into a ref'd div.
+// Stable component (defined outside BranchlabPlayerBlock) so React doesn't
+// remount it on every parent render — only when slug changes.
+function BranchlabEmbed({ slug }) {
+  const ref = React.useRef(null);
+  React.useEffect(() => {
+    if (!ref.current) return;
+    const el = document.createElement("branchlab-player");
+    el.setAttribute("slug", slug);
+    el.style.cssText = "width:100%;height:100%;display:block;";
+    ref.current.innerHTML = "";
+    ref.current.appendChild(el);
+  }, [slug]);
+  return <div ref={ref} style={{ width: "100%", height: "100%" }} />;
+}
 
 function BranchlabPlayerBlock({ block, ctx }) {
   const { tokens, project } = ctx;
@@ -560,6 +576,15 @@ function BranchlabPlayerBlock({ block, ctx }) {
   const [device,      setDevice]      = React.useState("desktop");
   const scenario  = _BLAB_SCENARIOS[scenarioIdx];
   const isDesktop = device === "desktop";
+
+  // Lazy-inject the Branchlab embed script once per page load
+  React.useEffect(() => {
+    const EMBED_SRC = "https://www.branchlab.online/api/embed";
+    if (!document.querySelector(`script[src="${EMBED_SRC}"]`)) {
+      const s = Object.assign(document.createElement("script"), { src: EMBED_SRC, defer: true });
+      document.head.appendChild(s);
+    }
+  }, []);
 
   const chipStyle = (active) => ({
     padding: isWin95 ? "3px 10px" : (isMaterial ? "7px 16px" : "7px 14px"),
@@ -598,16 +623,10 @@ function BranchlabPlayerBlock({ block, ctx }) {
           padding: "3px 10px", fontFamily: "ui-monospace,monospace",
           fontSize: "10px", color: "#aaa",
           overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"
-        }}>branchlab.online/play/{scenario.id}</div>
+        }}>branchlab.online · {scenario.title}</div>
       </div>
-      <div style={{ aspectRatio: "16/9", position: "relative" }}>
-        <iframe
-          key={scenario.url}
-          src={scenario.url}
-          title={scenario.title}
-          allow="autoplay; fullscreen"
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none", display: "block" }}
-        />
+      <div style={{ aspectRatio: "16/9", position: "relative", overflow: "hidden" }}>
+        <BranchlabEmbed slug={scenario.id} />
       </div>
     </div>
   );
@@ -628,13 +647,7 @@ function BranchlabPlayerBlock({ block, ctx }) {
         <div style={{ width: 28, height: 5, borderRadius: "999px", background: "#282828" }} />
       </div>
       <div style={{ aspectRatio: "9/16", position: "relative", overflow: "hidden", borderRadius: "16px" }}>
-        <iframe
-          key={scenario.url}
-          src={scenario.url}
-          title={scenario.title}
-          allow="autoplay; fullscreen"
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none", display: "block" }}
-        />
+        <BranchlabEmbed slug={scenario.id} />
       </div>
       <div style={{
         width: "80px", height: "4px", background: "rgba(255,255,255,0.28)",
