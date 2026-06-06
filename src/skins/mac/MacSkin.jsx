@@ -12,7 +12,8 @@ const macStyles = {
       "linear-gradient(180deg, #eef0f3 0%, #e8e3ec 100%)",
     color: "#1c1c1e",
     fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", system-ui, sans-serif',
-    display: "flex", flexDirection: "column"
+    display: "flex", flexDirection: "column",
+    overflowX: "hidden"
   }
 };
 
@@ -43,7 +44,7 @@ function MacPortfolioShell({ children, route }) {
         backdropFilter: tokens.blur, WebkitBackdropFilter: tokens.blur,
         border: `1px solid ${tokens.border}`, borderRadius: "12px",
         display: "flex", alignItems: "center", gap: "16px",
-        fontSize: "13px", flexWrap: "nowrap", minWidth: 0
+        fontSize: "13px", flexWrap: "nowrap", minWidth: 0, overflow: "hidden"
       }}>
         <a href="#/" style={{ display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none", color: tokens.text, flexShrink: 0 }}>
           <span aria-hidden="true" style={{
@@ -74,7 +75,7 @@ function MacPortfolioShell({ children, route }) {
       </div>
 
       {/* Main content area — windowed */}
-      <div data-skin-scroll style={{ flex: 1, padding: "12px clamp(10px, 2vw, 24px) 110px", overflow: "visible" }}>
+      <div data-skin-scroll style={{ flex: 1, padding: "12px clamp(10px, 2vw, 24px) 110px", overflowX: "hidden" }}>
         <div style={{
           maxWidth: isHome ? "1100px" : "1080px",
           margin: "0 auto",
@@ -146,6 +147,7 @@ function MacDock({ route, tokens }) {
     <div style={{
       position: "fixed", left: "50%", bottom: "16px",
       transform: "translateX(-50%)",
+      maxWidth: "calc(100vw - 32px)",
       zIndex: 60,
       padding: "8px",
       background: "rgba(255,255,255,0.6)",
