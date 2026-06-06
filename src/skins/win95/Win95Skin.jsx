@@ -232,10 +232,13 @@ function Win95PortfolioShell({ children, route }) {
         </div>
       )}
 
-      {/* Small screens: hide desktop icons (they overlap) */}
+      {/* Small screens: hide desktop icons, tighten window chrome */}
       <style>{`
         @media (max-width: 720px) {
           .w95-desktop-icons { display: none !important; }
+        }
+        @media (max-width: 480px) {
+          [data-skin-scroll] { padding-left: 8px !important; padding-right: 8px !important; }
         }
       `}</style>
     </div>

@@ -317,6 +317,11 @@ function ContactSection() {
   const c = window.portfolioInfo.contact;
   return (
     <div data-screen-label="Contact">
+      <style>{`
+        @media (max-width: 540px) {
+          .ds-contact-link { grid-template-columns: auto 1fr auto !important; gap: 10px !important; }
+        }
+      `}</style>
       <SectionHeader title={c.headline} tokens={tokens} />
       <p style={{
         fontFamily: tokens.font, fontSize: "17px", lineHeight: 1.55,
@@ -329,6 +334,7 @@ function ContactSection() {
             href={l.href}
             target={l.href?.startsWith("http") ? "_blank" : undefined}
             rel="noopener noreferrer"
+            className="ds-contact-link"
             style={{
               display: "grid", gridTemplateColumns: "100px 1fr auto",
               gap: "16px", alignItems: "center",
@@ -345,7 +351,7 @@ function ContactSection() {
               fontFamily: tokens.monoFont, fontSize: "11px",
               color: tokens.muted, textTransform: "uppercase", letterSpacing: "0.1em"
             }}>{l.label}</span>
-            <span style={{ fontSize: "15px", fontWeight: 500 }}>{l.value}</span>
+            <span style={{ fontSize: "15px", fontWeight: 500, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{l.value}</span>
             <span aria-hidden="true" style={{ color: tokens.accent }}>→</span>
           </a>
         ))}

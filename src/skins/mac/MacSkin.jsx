@@ -17,13 +17,19 @@ const macStyles = {
   }
 };
 
-// Responsive: ≤640px hides the dock and collapses the menu bar date
+// Responsive: compact dock on mobile instead of hiding it (dock = only nav on small screens)
 const macResponsiveCSS = `
   @media (max-width: 640px) {
-    [data-mac-dock]       { display: none !important; }
     [data-mac-date]       { display: none !important; }
     [data-mac-nav] a      { padding: 4px 7px !important; font-size: 12px !important; }
-    [data-skin-scroll]    { padding-bottom: 32px !important; }
+    [data-skin-scroll]    { padding-bottom: 84px !important; }
+  }
+  @media (max-width: 480px) {
+    [data-mac-dock] ul    { gap: 4px !important; }
+    [data-mac-dock] a     { width: 40px !important; height: 40px !important; font-size: 17px !important; border-radius: 10px !important; }
+  }
+  @media (max-width: 420px) {
+    [data-mac-nav]        { display: none !important; }
   }
 `;
 

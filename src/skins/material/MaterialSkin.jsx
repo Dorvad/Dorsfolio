@@ -134,6 +134,10 @@ function MaterialPortfolioShell({ children, route }) {
           .material-bottom-nav { display: grid !important; }
           .material-fab { bottom: 96px !important; }
         }
+        @media (max-width: 400px) {
+          .material-bottom-nav a > div:last-child { display: none !important; }
+          .material-bottom-nav a { padding: 14px 4px !important; }
+        }
       `}</style>
     </div>
   );
