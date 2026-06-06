@@ -16,6 +16,7 @@ const W95 = {
 
 function Win95PortfolioShell({ children, route }) {
   const tokens = window.skinTokens.get("win95");
+  const { clearSkin } = window.useSkin();
   const [startOpen, setStartOpen] = React.useState(false);
   const [time, setTime] = React.useState(() => formatTime());
 
@@ -104,7 +105,7 @@ function Win95PortfolioShell({ children, route }) {
             borderBottom: "1px solid #808080"
           }}>
             {["File","Edit","View","Help"].map((m) => (
-              <span key={m} style={{ padding: "1px 4px" }}><u>{m[0]}</u>{m.slice(1)}</span>
+              <span key={m} style={{ padding: "1px 4px", cursor: "default", userSelect: "none" }}>{m}</span>
             ))}
             <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "8px" }}>
               <window.SkinSwitcher inline />
@@ -163,9 +164,13 @@ function Win95PortfolioShell({ children, route }) {
 
         <div style={{ width: 2, height: "70%", background: "#808080", boxShadow: "1px 0 0 #fff", margin: "0 4px" }} />
 
-        <button type="button" onClick={() => window.navigate("/")} style={{
+        <button type="button" onClick={() => {
+          const dest = route.name === "case-study" ? "#/projects"
+            : route.name === "home" ? "#/" : `#/${route.name}`;
+          window.navigate(dest);
+        }} style={{
           padding: "2px 8px", background: W95.surface, fontFamily: tokens.font, fontSize: "12px",
-          boxShadow: route.name === "home" ? W95.buttonPressed : W95.buttonRaised, border: "none", cursor: "pointer"
+          boxShadow: W95.buttonRaised, border: "none", cursor: "pointer"
         }}>📁 {w95TitleFor(route)}</button>
 
         <div style={{ marginLeft: "auto", padding: "2px 8px", background: W95.surface, boxShadow: W95.bevelIn, fontFamily: tokens.font, fontSize: "11px", display: "flex", alignItems: "center", gap: "4px" }}>
@@ -208,7 +213,20 @@ function Win95PortfolioShell({ children, route }) {
                 </a>
               ))}
               <div style={{ height: 1, background: "#808080", boxShadow: "0 1px 0 #fff", margin: "4px 8px" }} />
-              <div style={{ padding: "6px 12px", fontSize: "11px", color: tokens.muted }}>Pick a skin →</div>
+              <button
+                type="button"
+                onClick={() => { setStartOpen(false); clearSkin(); }}
+                style={{
+                  display: "flex", alignItems: "center", gap: "10px",
+                  width: "100%", padding: "6px 12px",
+                  background: "transparent", border: "none",
+                  fontFamily: tokens.font, fontSize: "11px",
+                  color: tokens.muted, cursor: "pointer", textAlign: "left"
+                }}
+              >
+                <span style={{ width: 20, textAlign: "center" }}>🎨</span>
+                <span>Change interface…</span>
+              </button>
             </div>
           </div>
         </div>

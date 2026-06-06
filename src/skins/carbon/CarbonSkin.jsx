@@ -83,22 +83,23 @@ function CarbonPortfolioShell({ children, route }) {
           position: "sticky", top: "48px",
           overflowY: "auto"
         }}>
-          <div style={{ padding: "0 16px 8px", fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted, textTransform: "uppercase", letterSpacing: "0.1em" }}>
-            Navigate
+          <div className="carbon-sidenav-pages">
+            <div style={{ padding: "0 16px 8px", fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted, textTransform: "uppercase", letterSpacing: "0.1em" }}>
+              Navigate
+            </div>
+            {navItems.map((n) => (
+              <a key={n.id} href={n.href} onClick={() => setNavOpen(false)} style={{
+                display: "flex", alignItems: "center",
+                padding: "10px 16px",
+                borderLeft: isActive(n.id) ? `3px solid ${tokens.accent}` : "3px solid transparent",
+                background: isActive(n.id) ? tokens.surface : "transparent",
+                color: tokens.text,
+                fontSize: "14px",
+                textDecoration: "none"
+              }}>{n.label}</a>
+            ))}
+            <div style={{ height: 1, background: tokens.border, margin: "16px 0" }} />
           </div>
-          {navItems.map((n) => (
-            <a key={n.id} href={n.href} onClick={() => setNavOpen(false)} style={{
-              display: "flex", alignItems: "center",
-              padding: "10px 16px",
-              borderLeft: isActive(n.id) ? `3px solid ${tokens.accent}` : "3px solid transparent",
-              background: isActive(n.id) ? tokens.surface : "transparent",
-              color: tokens.text,
-              fontSize: "14px",
-              textDecoration: "none"
-            }}>{n.label}</a>
-          ))}
-
-          <div style={{ height: 1, background: tokens.border, margin: "16px 0" }} />
 
           <div style={{ padding: "0 16px 8px", fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted, textTransform: "uppercase", letterSpacing: "0.1em" }}>
             Projects
@@ -137,11 +138,13 @@ function CarbonPortfolioShell({ children, route }) {
       </div>
 
       <style>{`
+        .carbon-sidenav-pages { display: none; }
         @media (max-width: 720px) {
           .carbon-top-nav { display: none !important; }
           .carbon-burger { display: flex !important; }
           .carbon-body { grid-template-columns: 1fr !important; }
           .carbon-side { display: ${navOpen ? "block" : "none"} !important; position: fixed !important; top: 48px; left: 0; right: 0; height: auto !important; max-height: calc(100vh - 48px); width: 100% !important; z-index: 80; }
+          .carbon-sidenav-pages { display: block; }
         }
       `}</style>
     </div>

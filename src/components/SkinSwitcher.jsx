@@ -36,7 +36,7 @@ function SkinSwitcher({ position = "top-right", inline = false }) {
     };
   }, [open]);
 
-  const pick = (id) => { setSkin(id); setOpen(false); };
+  const pick = (id) => { setSkin(id); setOpen(false); if (window.navigate) window.navigate("#/"); };
 
   if (skin === "win95") {
     return (
