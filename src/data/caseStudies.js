@@ -229,6 +229,12 @@ window.caseStudies = [
           "Branchlab is my own product concept. I worked on the product strategy, UX structure, interaction design, and feature planning. This meant thinking not only as a designer, but also as a product owner — asking not just 'Is this usable?' but also 'Is this valuable, scalable, and clear enough to become a real product?'"
       },
       {
+        type: "image",
+        title: "Initial wireframes",
+        image: "/projects/branchlab/wireframe-figma.png",
+        caption: "Early Figma exploration — mapping the branching node structure and editor layout before high-fidelity design."
+      },
+      {
         type: "text",
         title: "The scenario editor",
         body:
@@ -364,6 +370,12 @@ window.caseStudies = [
           { title: "Design", body: "Chose a soft, mobile-first, card-based visual direction. The app should feel like a personal utility, not a corporate HR tool." },
           { title: "Build", body: "Built as a Next.js web app with Supabase, which allowed testing real flows — active shifts, month switching, pay calculations, reminders — rather than only static prototypes." }
         ]
+      },
+      {
+        type: "image",
+        title: "Initial wireframes",
+        image: "/projects/elmtrackr/wireframe-figma.png",
+        caption: "Early wireframes in Figma — four core screens laid out before building: Home Dashboard, Shifts List, Reports, and New Shift Form."
       },
       {
         type: "featureList",
