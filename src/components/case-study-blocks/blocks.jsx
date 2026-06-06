@@ -581,8 +581,11 @@ function BranchlabPlayerBlock({ block, ctx }) {
 
   const [scenarioIdx, setScenarioIdx] = React.useState(0);
   const [device,      setDevice]      = React.useState("desktop");
+  const [playing,     setPlaying]     = React.useState(false);
   const scenario  = _BLAB_SCENARIOS[scenarioIdx];
   const isDesktop = device === "desktop";
+
+  const switchScenario = (i) => { setScenarioIdx(i); setPlaying(false); };
 
   // Lazy-inject the Branchlab embed script once per page load
   React.useEffect(() => {
@@ -611,6 +614,24 @@ function BranchlabPlayerBlock({ block, ctx }) {
     transition: isWin95 ? "none" : "background 120ms, color 120ms, border-color 120ms"
   });
 
+  const FrameContent = () => playing
+    ? <BranchlabEmbed slug={scenario.id} />
+    : (
+      <div onClick={() => setPlaying(true)} style={{
+        width: "100%", height: "100%", background: "#0c0c0c",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        cursor: "pointer"
+      }}>
+        <div style={{
+          width: 56, height: 56, borderRadius: "50%",
+          background: "rgba(255,255,255,0.9)",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: "20px", paddingLeft: "4px",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.4)"
+        }}>▶</div>
+      </div>
+    );
+
   const DesktopFrame = () => (
     <div style={{
       width: "100%", overflow: "hidden", borderRadius: "8px",
@@ -633,33 +654,30 @@ function BranchlabPlayerBlock({ block, ctx }) {
         }}>branchlab.online · {scenario.title}</div>
       </div>
       <div style={{ aspectRatio: "16/9", position: "relative", overflow: "hidden" }}>
-        <BranchlabEmbed slug={scenario.id} />
+        <FrameContent />
       </div>
     </div>
   );
 
   const MobileFrame = () => (
     <div style={{
-      margin: "0 auto", maxWidth: "260px",
-      background: "#1a1a1a", borderRadius: "38px",
-      padding: "12px 8px",
+      margin: "0 auto",
+      background: "#1a1a1a", borderRadius: "32px",
+      padding: "10px 20px",
+      display: "flex", alignItems: "center", gap: "10px",
       boxShadow: "0 16px 48px rgba(0,0,0,0.42), 0 0 0 1px rgba(255,255,255,0.07)"
     }}>
-      <div style={{
-        width: "80px", height: "20px", background: "#0d0d0d",
-        borderRadius: "0 0 14px 14px", margin: "0 auto 8px",
-        display: "flex", alignItems: "center", justifyContent: "center", gap: "6px"
-      }}>
+      {/* Side notch: camera dot + speaker pill */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "5px", flexShrink: 0 }}>
         <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#282828" }} />
-        <div style={{ width: 28, height: 5, borderRadius: "999px", background: "#282828" }} />
+        <div style={{ width: 5, height: 24, borderRadius: "999px", background: "#1d1d1d" }} />
       </div>
-      <div style={{ aspectRatio: "9/16", position: "relative", overflow: "hidden", borderRadius: "16px" }}>
-        <BranchlabEmbed slug={scenario.id} />
+      {/* Player area */}
+      <div style={{ flex: 1, aspectRatio: "16/9", position: "relative", overflow: "hidden", borderRadius: "14px" }}>
+        <FrameContent />
       </div>
-      <div style={{
-        width: "80px", height: "4px", background: "rgba(255,255,255,0.28)",
-        borderRadius: "999px", margin: "10px auto 0"
-      }} />
+      {/* Home bar (right side) */}
+      <div style={{ width: "4px", height: "56px", background: "rgba(255,255,255,0.28)", borderRadius: "999px", flexShrink: 0 }} />
     </div>
   );
 
@@ -676,7 +694,7 @@ function BranchlabPlayerBlock({ block, ctx }) {
       }}>
         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
           {_BLAB_SCENARIOS.map((s, i) => (
-            <button key={s.id} type="button" onClick={() => setScenarioIdx(i)}
+            <button key={s.id} type="button" onClick={() => switchScenario(i)}
               style={chipStyle(scenarioIdx === i)}>{s.title}</button>
           ))}
         </div>
@@ -701,7 +719,7 @@ function BranchlabPlayerBlock({ block, ctx }) {
       }}>
         <div style={{
           width: "100%",
-          maxWidth: isDesktop ? "620px" : "280px",
+          maxWidth: isDesktop ? "620px" : "560px",
           transition: isWin95 ? "none" : "max-width 0.25s cubic-bezier(.4,0,.2,1)"
         }}>
           {isDesktop ? <DesktopFrame /> : <MobileFrame />}
