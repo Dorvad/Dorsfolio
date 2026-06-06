@@ -23,7 +23,7 @@ function CaseStudyPage({ slug }) {
 // Shared "not found" message rendered in skin-neutral form
 function NotFound({ slug }) {
   const { skin } = window.useSkin();
-  const tokens = window.skinTokens.get(skin);
+  const tokens = window.skinTokens.get(skin) || window.skinTokens.get("mac");
   return (
     <div style={{
       padding: "60px 24px", textAlign: "center", color: tokens.text, fontFamily: tokens.font
@@ -78,7 +78,7 @@ function CaseStudySections({ project, tokens }) {
 
       {/* Sections from data */}
       {(project.sections || []).map((block, i) => (
-        <window.CaseStudyBlockRenderer key={i} block={block} ctx={ctx} />
+        <window.CaseStudyBlockRenderer key={`${block.type}-${i}`} block={block} ctx={ctx} />
       ))}
 
       {/* Outcome */}

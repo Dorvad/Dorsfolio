@@ -27,12 +27,8 @@ function HomeSection() {
   const anim = (name, delay = 0) =>
     reduced ? {} : { animation: `${name} 0.45s cubic-bezier(.2,.8,.2,1) ${delay}ms both` };
 
-  const portraitRadius = skin === "win95" ? "0px" : skin === "material" ? "50%" : "20px";
-  const portraitBorder = skin === "win95"
-    ? `3px solid ${tokens.bevelLight || "#fff"}`
-    : skin === "carbon"
-    ? `2px solid ${tokens.accent}`
-    : `2px solid ${tokens.border}`;
+  // Crop each themed portrait image to show only the face, not the app chrome
+  const portraitPos = { mac: "center 35%", material: "center 22%", win95: "center 40%", carbon: "20% 28%" }[skin] || "center 30%";
 
   return (
     <div data-screen-label="Home">
@@ -53,15 +49,9 @@ function HomeSection() {
                 width: "clamp(110px, 18vw, 180px)",
                 height: "clamp(110px, 18vw, 180px)",
                 objectFit: "cover",
-                objectPosition: "top center",
-                borderRadius: portraitRadius,
-                border: portraitBorder,
+                objectPosition: portraitPos,
+                borderRadius: skin === "win95" ? "4px" : "14px",
                 display: "block",
-                boxShadow: skin === "mac"
-                  ? "0 16px 40px rgba(15,23,42,0.18)"
-                  : skin === "material"
-                  ? `0 6px 24px ${tokens.accent}44`
-                  : "none",
                 ...anim("scaleIn", 0)
               }}
             />

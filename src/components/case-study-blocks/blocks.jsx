@@ -614,7 +614,9 @@ function BranchlabPlayerBlock({ block, ctx }) {
     transition: isWin95 ? "none" : "background 120ms, color 120ms, border-color 120ms"
   });
 
-  const FrameContent = () => playing
+  // Plain JSX variable — avoids unstable component identity that would
+  // remount BranchlabEmbed (and reset the player) on every state change.
+  const frameContent = playing
     ? <BranchlabEmbed slug={scenario.id} />
     : (
       <div onClick={() => setPlaying(true)} style={{
@@ -631,55 +633,6 @@ function BranchlabPlayerBlock({ block, ctx }) {
         }}>▶</div>
       </div>
     );
-
-  const DesktopFrame = () => (
-    <div style={{
-      width: "100%", overflow: "hidden", borderRadius: "8px",
-      boxShadow: "0 12px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18)"
-    }}>
-      <div style={{
-        background: "#1c1c1c", padding: "8px 12px",
-        display: "flex", alignItems: "center", gap: "8px"
-      }}>
-        <div style={{ display: "flex", gap: "5px", flexShrink: 0 }}>
-          {["#ff5f57","#febc2e","#28c840"].map((c, i) => (
-            <div key={i} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />
-          ))}
-        </div>
-        <div style={{
-          flex: 1, background: "#2c2c2c", borderRadius: "4px",
-          padding: "3px 10px", fontFamily: "ui-monospace,monospace",
-          fontSize: "10px", color: "#aaa",
-          overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"
-        }}>branchlab.online · {scenario.title}</div>
-      </div>
-      <div style={{ aspectRatio: "16/9", position: "relative", overflow: "hidden" }}>
-        <FrameContent />
-      </div>
-    </div>
-  );
-
-  const MobileFrame = () => (
-    <div style={{
-      margin: "0 auto",
-      background: "#1a1a1a", borderRadius: "32px",
-      padding: "10px 20px",
-      display: "flex", alignItems: "center", gap: "10px",
-      boxShadow: "0 16px 48px rgba(0,0,0,0.42), 0 0 0 1px rgba(255,255,255,0.07)"
-    }}>
-      {/* Side notch: camera dot + speaker pill */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "5px", flexShrink: 0 }}>
-        <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#282828" }} />
-        <div style={{ width: 5, height: 24, borderRadius: "999px", background: "#1d1d1d" }} />
-      </div>
-      {/* Player area */}
-      <div style={{ flex: 1, aspectRatio: "16/9", position: "relative", overflow: "hidden", borderRadius: "14px" }}>
-        <FrameContent />
-      </div>
-      {/* Home bar (right side) */}
-      <div style={{ width: "4px", height: "56px", background: "rgba(255,255,255,0.28)", borderRadius: "999px", flexShrink: 0 }} />
-    </div>
-  );
 
   return (
     <section style={{ margin: "48px 0" }}>
@@ -722,7 +675,41 @@ function BranchlabPlayerBlock({ block, ctx }) {
           maxWidth: isDesktop ? "620px" : "560px",
           transition: isWin95 ? "none" : "max-width 0.25s cubic-bezier(.4,0,.2,1)"
         }}>
-          {isDesktop ? <DesktopFrame /> : <MobileFrame />}
+          {isDesktop ? (
+            <div style={{
+              width: "100%", overflow: "hidden", borderRadius: "8px",
+              boxShadow: "0 12px 40px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18)"
+            }}>
+              <div style={{ background: "#1c1c1c", padding: "8px 12px", display: "flex", alignItems: "center", gap: "8px" }}>
+                <div style={{ display: "flex", gap: "5px", flexShrink: 0 }}>
+                  {["#ff5f57","#febc2e","#28c840"].map((c) => (
+                    <div key={c} style={{ width: 10, height: 10, borderRadius: "50%", background: c }} />
+                  ))}
+                </div>
+                <div style={{ flex: 1, background: "#2c2c2c", borderRadius: "4px", padding: "3px 10px", fontFamily: "ui-monospace,monospace", fontSize: "10px", color: "#aaa", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                  branchlab.online · {scenario.title}
+                </div>
+              </div>
+              <div style={{ aspectRatio: "16/9", position: "relative", overflow: "hidden" }}>
+                {frameContent}
+              </div>
+            </div>
+          ) : (
+            <div style={{
+              margin: "0 auto", background: "#1a1a1a", borderRadius: "32px",
+              padding: "10px 20px", display: "flex", alignItems: "center", gap: "10px",
+              boxShadow: "0 16px 48px rgba(0,0,0,0.42), 0 0 0 1px rgba(255,255,255,0.07)"
+            }}>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "5px", flexShrink: 0 }}>
+                <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#282828" }} />
+                <div style={{ width: 5, height: 24, borderRadius: "999px", background: "#1d1d1d" }} />
+              </div>
+              <div style={{ flex: 1, aspectRatio: "16/9", position: "relative", overflow: "hidden", borderRadius: "14px" }}>
+                {frameContent}
+              </div>
+              <div style={{ width: "4px", height: "56px", background: "rgba(255,255,255,0.28)", borderRadius: "999px", flexShrink: 0 }} />
+            </div>
+          )}
         </div>
       </div>
     </section>
