@@ -704,9 +704,47 @@ function BranchlabPlayerBlock({ block, ctx }) {
   );
 }
 
+// ---- 14. YouTubeBlock -------------------------------------------------------
+function YouTubeBlock({ block, ctx }) {
+  const { tokens } = ctx;
+  const isWin95 = tokens.name === "Windows 95";
+  const { title, videoId, caption } = block;
+  return (
+    <section style={{ margin: "48px 0" }}>
+      {title && <BlockTitle tokens={tokens}>{title}</BlockTitle>}
+      <div style={{
+        borderRadius: isWin95 ? 0 : tokens.radiusLg || tokens.radius,
+        overflow: "hidden",
+        border: isWin95
+          ? `2px solid ${tokens.border}`
+          : `1px solid ${tokens.border}`,
+        boxShadow: isWin95 ? "none" : tokens.shadow,
+        aspectRatio: "16/9",
+        position: "relative"
+      }}>
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0`}
+          title={title || "Demo video"}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none", display: "block" }}
+        />
+      </div>
+      {caption && (
+        <div style={{
+          fontFamily: tokens.monoFont || tokens.font,
+          fontSize: "12px", color: tokens.muted,
+          marginTop: "10px", lineHeight: 1.4
+        }}>{caption}</div>
+      )}
+    </section>
+  );
+}
+
 Object.assign(window, {
   TextBlock, ImageBlock, GalleryBlock, MetricsBlock, QuoteBlock,
   ProcessBlock, BeforeAfterBlock, InsightBlock, LinksBlock,
   FeatureListBlock, TimelineBlock,
-  BranchlabLogoAnim, LogoHeroBlock, BranchlabPlayerBlock
+  BranchlabLogoAnim, LogoHeroBlock, BranchlabPlayerBlock,
+  YouTubeBlock
 });

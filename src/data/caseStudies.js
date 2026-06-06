@@ -515,6 +515,12 @@ window.caseStudies = [
         ]
       },
       {
+        type: "youtube",
+        title: "Demo",
+        videoId: "tf3WwMk3n60",
+        caption: "Full walkthrough of the guided VR journey — airport arrival through the Jaffa reflection."
+      },
+      {
         type: "gallery",
         title: "The hardware",
         images: [
