@@ -259,7 +259,7 @@ function CarbonCaseStudyLayout({ project }) {
 
         {/* Cover image */}
         <div style={{ borderBottom: `1px solid ${tokens.border}` }}>
-          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} style={{ width: "100%", aspectRatio: "16/7", objectFit: "cover", display: "block" }} />
+          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: project.coverImage, alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/7", objectFit: "cover", display: "block" }} />
         </div>
 
         {/* Meta dashboard row */}

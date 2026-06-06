@@ -34,7 +34,12 @@ function SkinProvider({ children }) {
   }, []);
 
   const value = useMemo(() => ({ skin, setSkin, clearSkin }), [skin, setSkin, clearSkin]);
-  return <SkinContext.Provider value={value}>{children}</SkinContext.Provider>;
+  return (
+    <SkinContext.Provider value={value}>
+      {children}
+      <LightboxRoot />
+    </SkinContext.Provider>
+  );
 }
 
 function useSkin() {
@@ -151,7 +156,7 @@ function resolveAsset(src) {
 }
 
 // Wraps a real-but-likely-missing image with the placeholder
-function ProjectImage({ src, alt, slug, label, accent, style, className }) {
+function ProjectImage({ src, alt, slug, label, accent, style, className, onClick }) {
   const [errored, setErrored] = useState(false);
   const fallback = getPlaceholderImage(slug || "project", label || alt || "image", accent || "#8b8b8b");
   const resolved = resolveAsset(src);
@@ -161,9 +166,141 @@ function ProjectImage({ src, alt, slug, label, accent, style, className }) {
       alt={alt || label || ""}
       loading="lazy"
       onError={() => setErrored(true)}
-      style={style}
+      onClick={onClick}
+      style={{ ...style, cursor: onClick ? "zoom-in" : style?.cursor }}
       className={className}
     />
+  );
+}
+
+// Global image lightbox — renders at root, driven by window.lightboxOpen(items, index)
+function LightboxRoot() {
+  const [lb, setLb] = useState(null); // { items:[{src,alt}], index }
+
+  useEffect(() => {
+    window.lightboxOpen = (items, index = 0) => {
+      const arr = Array.isArray(items) ? items : [{ src: items, alt: "" }];
+      setLb({ items: arr, index: Math.max(0, Math.min(index, arr.length - 1)) });
+    };
+    return () => { delete window.lightboxOpen; };
+  }, []);
+
+  // Lock body scroll while open
+  useEffect(() => {
+    if (!lb) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [!!lb]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    if (!lb) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") setLb(null);
+      if (e.key === "ArrowLeft"  && lb.index > 0)                setLb(s => ({ ...s, index: s.index - 1 }));
+      if (e.key === "ArrowRight" && lb.index < lb.items.length - 1) setLb(s => ({ ...s, index: s.index + 1 }));
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [lb]);
+
+  if (!lb) return null;
+  const { items, index } = lb;
+  const curr = items[index];
+  const hasPrev = index > 0;
+  const hasNext = index < items.length - 1;
+  const close = () => setLb(null);
+  const go = (delta) => setLb(s => ({ ...s, index: s.index + delta }));
+
+  const navBtn = (visible, label, delta, symbol) => (
+    <button
+      onClick={visible ? (e) => { e.stopPropagation(); go(delta); } : undefined}
+      aria-label={label}
+      style={{
+        background: "rgba(255,255,255,0.12)",
+        border: "1px solid rgba(255,255,255,0.2)",
+        backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)",
+        color: "#fff", borderRadius: "50%",
+        width: 44, height: 44, flexShrink: 0,
+        display: "flex", alignItems: "center", justifyContent: "center",
+        cursor: visible ? "pointer" : "default",
+        fontSize: "22px", lineHeight: 1,
+        opacity: visible ? 1 : 0.2
+      }}
+    >{symbol}</button>
+  );
+
+  return (
+    <div
+      onClick={close}
+      style={{
+        position: "fixed", inset: 0, zIndex: 9999,
+        background: "rgba(0,0,0,0.88)",
+        backdropFilter: "blur(4px)", WebkitBackdropFilter: "blur(4px)",
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        padding: "20px", cursor: "zoom-out"
+      }}
+    >
+      {/* Close button */}
+      <button
+        onClick={(e) => { e.stopPropagation(); close(); }}
+        aria-label="Close"
+        style={{
+          position: "fixed", top: 16, right: 16,
+          background: "rgba(255,255,255,0.12)",
+          border: "1px solid rgba(255,255,255,0.2)",
+          backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)",
+          color: "#fff", borderRadius: "50%",
+          width: 40, height: 40, fontSize: "18px",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          cursor: "pointer"
+        }}
+      >✕</button>
+
+      {/* Image row */}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{ display: "flex", alignItems: "center", gap: 12, maxWidth: "100%", cursor: "default" }}
+      >
+        {navBtn(hasPrev, "Previous", -1, "‹")}
+        <img
+          key={curr.src}
+          src={curr.src}
+          alt={curr.alt || ""}
+          style={{
+            maxWidth: "min(88vw, 1200px)",
+            maxHeight: "calc(100vh - 160px)",
+            objectFit: "contain",
+            borderRadius: 10,
+            boxShadow: "0 24px 80px rgba(0,0,0,0.5)",
+            display: "block"
+          }}
+        />
+        {navBtn(hasNext, "Next", 1, "›")}
+      </div>
+
+      {/* Caption + counter */}
+      {(curr.alt || items.length > 1) && (
+        <div
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            marginTop: 14, textAlign: "center",
+            color: "rgba(255,255,255,0.72)", fontSize: 13,
+            fontFamily: "system-ui, sans-serif", lineHeight: 1.4,
+            cursor: "default"
+          }}
+        >
+          {curr.alt}
+          {items.length > 1 && (
+            <span style={{ marginLeft: curr.alt ? 8 : 0, opacity: 0.5 }}>
+              {index + 1} / {items.length}
+            </span>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
 

@@ -320,7 +320,7 @@ function Win95CaseStudyLayout({ project }) {
         </div>
         <div style={{ padding: "10px" }}>
           <div style={{ background: "#fff", boxShadow: W95.bevelIn, padding: "4px" }}>
-            <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }} />
+            <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: project.coverImage, alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }} />
           </div>
         </div>
       </div>

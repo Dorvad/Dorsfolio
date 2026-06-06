@@ -59,6 +59,9 @@ function TextBlock({ block, ctx }) {
 // ---- 2. ImageBlock -------------------------------------------------------
 function ImageBlock({ block, ctx }) {
   const { tokens, project } = ctx;
+  const openLightbox = () => window.lightboxOpen && window.lightboxOpen(
+    [{ src: window.resolveAsset ? window.resolveAsset(block.image) : block.image, alt: block.caption || block.title || "" }], 0
+  );
   return (
     <section style={{ margin: "40px 0" }}>
       {block.title && <BlockTitle tokens={tokens}>{block.title}</BlockTitle>}
@@ -75,6 +78,7 @@ function ImageBlock({ block, ctx }) {
           label={block.title || "image"}
           accent={project?.accent}
           alt={block.caption || block.title || ""}
+          onClick={openLightbox}
           style={{ width: "100%", height: "auto", display: "block", aspectRatio: "16/10", objectFit: "cover" }}
         />
       </div>
@@ -86,6 +90,8 @@ function ImageBlock({ block, ctx }) {
 // ---- 3. GalleryBlock -----------------------------------------------------
 function GalleryBlock({ block, ctx }) {
   const { tokens, project } = ctx;
+  const resolve = window.resolveAsset || (s => s);
+  const lbItems = block.images.map(img => ({ src: resolve(img.src), alt: img.caption || "" }));
   return (
     <section style={{ margin: "40px 0" }}>
       {block.title && <BlockTitle tokens={tokens}>{block.title}</BlockTitle>}
@@ -109,6 +115,7 @@ function GalleryBlock({ block, ctx }) {
                 label={img.caption || `image ${i + 1}`}
                 accent={project?.accent}
                 alt={img.caption || ""}
+                onClick={() => window.lightboxOpen && window.lightboxOpen(lbItems, i)}
                 style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", display: "block" }}
               />
             </div>

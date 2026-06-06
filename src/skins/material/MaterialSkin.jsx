@@ -255,7 +255,7 @@ function MaterialCaseStudyLayout({ project }) {
           background: "#fff",
           boxShadow: "0 6px 24px rgba(0,0,0,0.08)"
         }}>
-          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={accent} alt={project.title} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }} />
+          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: project.coverImage, alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }} />
         </div>
       </div>
 

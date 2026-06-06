@@ -307,6 +307,7 @@ function MacCaseStudyLayout({ project }) {
             label={project.title}
             accent={project.accent}
             alt={project.title}
+            onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: project.coverImage, alt: project.title }], 0)}
             style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }}
           />
         </div>
