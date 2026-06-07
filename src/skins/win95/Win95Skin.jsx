@@ -46,7 +46,7 @@ function Win95PortfolioShell({ children, route }) {
         position: "absolute", top: "12px", left: "12px",
         display: "grid", gap: "16px",
         gridTemplateColumns: "auto",
-        zIndex: 1
+        zIndex: 3
       }} className="w95-desktop-icons">
         {[
           { label: "Projects", href: "#/projects", glyph: "▦" },
