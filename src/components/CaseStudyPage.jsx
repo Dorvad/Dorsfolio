@@ -2,6 +2,17 @@
 // CaseStudyPage — picks project by slug, routes to skin-specific layout
 // =============================================================================
 
+// Splits a one-paragraph summary into a strong opening line ("lede") and the
+// remaining context, so the intro reads as a hook plus supporting detail
+// rather than one dense block. Falls back to lede-only when the summary is a
+// single sentence — no second field to maintain in the data file.
+function splitLede(text) {
+  if (!text) return { lede: "", rest: "" };
+  const match = text.match(/^([^.!?]*[.!?]+)\s*([\s\S]*)$/);
+  if (!match) return { lede: text, rest: "" };
+  return { lede: match[1].trim(), rest: match[2].trim() };
+}
+
 function CaseStudyPage({ slug }) {
   const { skin } = window.useSkin();
   const project = window.getProject(slug);
@@ -45,17 +56,37 @@ function CaseStudySections({ project, tokens }) {
   const ctx = { tokens, project, skin: window.useSkin().skin };
   return (
     <div style={{ display: "grid", gap: "8px" }}>
-      {/* Summary */}
+      {/* Summary — a strong lede sentence followed by softer supporting context */}
       <section style={{ margin: "16px 0 24px" }}>
-        <div style={{
-          fontFamily: tokens.displayFont || tokens.font,
-          fontSize: "clamp(20px, 2.6vw, 26px)",
-          lineHeight: 1.4,
-          fontWeight: 500,
-          color: tokens.text,
-          textWrap: "pretty",
-          maxWidth: "70ch"
-        }}>{project.summary}</div>
+        {(() => {
+          const { lede, rest } = splitLede(project.summary);
+          return (
+            <React.Fragment>
+              <div style={{
+                fontFamily: tokens.displayFont || tokens.font,
+                fontSize: "clamp(21px, 2.8vw, 28px)",
+                lineHeight: 1.35,
+                fontWeight: 600,
+                letterSpacing: "-0.01em",
+                color: tokens.text,
+                textWrap: "pretty",
+                maxWidth: "60ch"
+              }}>{lede}</div>
+              {rest && (
+                <div style={{
+                  marginTop: "10px",
+                  fontFamily: tokens.font,
+                  fontSize: "clamp(15px, 1.7vw, 17px)",
+                  lineHeight: 1.6,
+                  fontWeight: 400,
+                  color: tokens.muted,
+                  textWrap: "pretty",
+                  maxWidth: "66ch"
+                }}>{rest}</div>
+              )}
+            </React.Fragment>
+          );
+        })()}
       </section>
 
       {/* At a glance — recruiter-friendly snapshot */}
