@@ -33,6 +33,32 @@ const macResponsiveCSS = `
   }
 `;
 
+// Dock magnification — icons grow on hover and gently lift their neighbors,
+// like the real macOS dock. Pure CSS (sibling selectors + transforms) so it
+// stays smooth and layout-stable; skipped entirely when the user prefers
+// reduced motion.
+const macDockMagnifyCSS = `
+  @media (prefers-reduced-motion: no-preference) {
+    [data-mac-dock] li > a {
+      transition: transform 240ms cubic-bezier(0.25, 1, 0.5, 1);
+      transform-origin: bottom center;
+    }
+    [data-mac-dock] li:hover > a {
+      transform: scale(1.4) translateY(-14px);
+      z-index: 3;
+    }
+    [data-mac-dock] li:has(+ li:hover) > a,
+    [data-mac-dock] li:hover + li > a {
+      transform: scale(1.18) translateY(-7px);
+      z-index: 2;
+    }
+    [data-mac-dock] li:has(+ li + li:hover) > a,
+    [data-mac-dock] li:hover + li + li > a {
+      transform: scale(1.06) translateY(-3px);
+    }
+  }
+`;
+
 function MacPortfolioShell({ children, route }) {
   const tokens = window.skinTokens.get("mac");
   const navItems = window.portfolioInfo.nav;
@@ -162,6 +188,7 @@ function MacDock({ route, tokens }) {
       borderRadius: "20px",
       boxShadow: "0 14px 40px rgba(15,23,42,0.15)"
     }}>
+      <style>{macDockMagnifyCSS}</style>
       <ul style={{ display: "flex", gap: "6px", padding: 0, margin: 0, listStyle: "none" }}>
         {items.map((it) => {
           const active =
