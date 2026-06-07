@@ -58,6 +58,9 @@ function CaseStudySections({ project, tokens }) {
         }}>{project.summary}</div>
       </section>
 
+      {/* At a glance — recruiter-friendly snapshot */}
+      <CaseStudyRecruiterInsight recruiterInsight={project.recruiterInsight} tokens={tokens} />
+
       {/* Challenge */}
       {project.challenge && (
         <section style={{ margin: "12px 0 8px" }}>
@@ -99,6 +102,75 @@ function CaseStudySections({ project, tokens }) {
         </section>
       )}
     </div>
+  );
+}
+
+// "At a glance" recruiter insight — uniform, scannable snapshot rendered near
+// the top of every case study. Data-driven via project.recruiterInsight; the
+// section quietly disappears if the field is absent so older/future entries
+// never crash. Styled like MetricsBlock/CaseStudyMeta so it inherits each
+// skin's tokens (surfaces, borders, radius, fonts) rather than one fixed look.
+function CaseStudyRecruiterInsight({ recruiterInsight, tokens }) {
+  if (!recruiterInsight) return null;
+  const { headline, problem, users, role, contribution, outcome } = recruiterInsight;
+  const rows = [
+    { k: "Problem", v: problem },
+    { k: "Who it's for", v: users },
+    { k: "My role", v: role },
+    { k: "What I did", v: contribution },
+    { k: "Outcome", v: outcome }
+  ].filter((r) => r.v);
+
+  if (!headline && rows.length === 0) return null;
+  const isWin95 = tokens.name === "Windows 95";
+
+  return (
+    <section aria-label="At a glance" style={{ margin: "8px 0 28px" }}>
+      <div style={{
+        fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.accent,
+        textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "10px"
+      }}>At a glance</div>
+
+      {headline && (
+        <div style={{
+          fontFamily: tokens.displayFont || tokens.font,
+          fontSize: "clamp(19px, 2.4vw, 23px)",
+          fontWeight: 600,
+          color: tokens.text,
+          lineHeight: 1.4,
+          marginBottom: rows.length > 0 ? "18px" : 0,
+          maxWidth: "62ch",
+          textWrap: "pretty"
+        }}>{headline}</div>
+      )}
+
+      {rows.length > 0 && (
+        <dl style={{
+          margin: 0,
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          gap: isWin95 ? "2px" : "10px",
+          ...(isWin95 ? { background: tokens.border, border: `1px solid ${tokens.border}` } : {})
+        }}>
+          {rows.map((r) => (
+            <div key={r.k} style={{
+              padding: "14px 16px",
+              background: tokens.surfaceAlt || tokens.surfaceSolid,
+              border: isWin95 ? "none" : `1px solid ${tokens.border}`,
+              borderRadius: tokens.radius
+            }}>
+              <dt style={{
+                fontFamily: tokens.monoFont, fontSize: "11px",
+                color: tokens.muted, textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: "6px"
+              }}>{r.k}</dt>
+              <dd style={{ margin: 0, fontFamily: tokens.font, fontSize: "14px", color: tokens.text, lineHeight: 1.5 }}>
+                {r.v}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
+    </section>
   );
 }
 
@@ -178,4 +250,4 @@ function RelatedProjects({ slug, tokens, onOpen }) {
   );
 }
 
-Object.assign(window, { CaseStudyPage, NotFound, CaseStudySections, CaseStudyMeta, RelatedProjects });
+Object.assign(window, { CaseStudyPage, NotFound, CaseStudySections, CaseStudyRecruiterInsight, CaseStudyMeta, RelatedProjects });

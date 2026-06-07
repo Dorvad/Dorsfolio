@@ -58,6 +58,14 @@ window.caseStudies = [
       { label: "User groups", value: "3", hint: "Managers · Volunteers · Patients" },
       { label: "Outcome", value: "Operational + strategic", hint: "Daily tool that also shows impact" }
     ],
+    recruiterInsight: {
+      headline: "A volunteer ride service that ran on phone calls — redesigned as a dashboard managers can actually see and trust.",
+      problem: "Ride coordination was almost entirely manual — phone calls and scattered notes, with no shared view of who was driving whom, or when.",
+      users: "Service managers coordinating rides day to day, the volunteer drivers carrying them out, and the patients who depend on them.",
+      role: "UX Designer & Product Manager during a 4-month internship.",
+      contribution: "Researched all three user groups, mapped the coordination workflow, defined the product structure, and designed the dashboard end to end.",
+      outcome: "A dashboard concept that gives managers one place to see rides, volunteers, and activity — clarifying a process that used to live in phone calls and notes."
+    },
     sections: [
       {
         type: "text",
@@ -182,6 +190,14 @@ window.caseStudies = [
       { label: "Use cases", value: "6+", hint: "Training · Onboarding · Simulations" },
       { label: "Status", value: "MVP", hint: "In development" }
     ],
+    recruiterInsight: {
+      headline: "A tool for building branching video stories — designed so a complex format stays easy to create, edit, and share.",
+      problem: "Branching video is powerful for training and simulations, but the format gets messy fast — a simple scenario quickly turns into a tangle of scenes, choices, and outcomes that's hard to track.",
+      users: "Teams creating training, onboarding, or simulation content who need to build, preview, and share branching scenarios without losing track of the structure.",
+      role: "Product strategy, UX design, and interaction design — solo.",
+      contribution: "Defined the product's core structure, designed the visual node-map editor and the immersive player experience, and planned the roadmap beyond the first version.",
+      outcome: "A clear product concept — structure, core flows, editor, and player — that turns a complicated format into something a team could realistically build and use."
+    },
     sections: [
       {
         type: "logoHero",
@@ -315,6 +331,14 @@ window.caseStudies = [
       { label: "Sections", value: "5", hint: "Home · Shifts · Reports · Projects · Settings" },
       { label: "Status", value: "Prototype", hint: "Functional end-to-end" }
     ],
+    recruiterInsight: {
+      headline: "A pocket-sized tool that tells hourly workers what they're owed — without waiting for payday to find out.",
+      problem: "Hourly workers track their time with memory, messages, and spreadsheets, so monthly pay stays unclear and small reimbursements are easy to forget.",
+      users: "Hourly workers who want a fast, personal way to clock in and out and understand what they've earned so far.",
+      role: "Product design, UX, UI, and front-end product thinking.",
+      contribution: "Designed the core flows around three everyday questions, then built a working prototype end-to-end with Next.js and Supabase to test it with real data.",
+      outcome: "A functional prototype that answers 'Am I working now? How much have I earned this month? What should I check before payday?' in a few taps."
+    },
     sections: [
       {
         type: "text",
@@ -461,6 +485,14 @@ window.caseStudies = [
       { label: "Scenes", value: "8", hint: "Airport → Market → Beach → Jaffa" },
       { label: "Constraint", value: "No dev team", hint: "Design around existing product" }
     ],
+    recruiterInsight: {
+      headline: "A donated VR demo, turned into a guided educational journey — without a development team or a rebuild.",
+      problem: "The Jewish Agency had a visually striking VR experience, but it was a loose demo — users could move through scenes without knowing where they were, why it mattered, or how it connected to the next moment.",
+      users: "Educators and emissaries who needed to present the experience to real audiences, and the participants moving through it.",
+      role: "Product design, UX, content design, and educational design.",
+      contribution: "Worked within the existing software to add narrative structure, scene-by-scene guidance, and clear instructions — connecting eight scenes into one continuous journey.",
+      outcome: "A structured, narrated educational experience delivered to stakeholders — the same VR product, now usable and meaningful for an audience."
+    },
     sections: [
       {
         type: "text",
