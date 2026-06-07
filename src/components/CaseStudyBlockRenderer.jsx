@@ -18,7 +18,7 @@ function CaseStudyBlockRenderer({ block, ctx }) {
     case "timeline":        return <window.TimelineBlock         block={block} ctx={ctx} />;
     case "logoHero":        return <window.LogoHeroBlock         block={block} ctx={ctx} />;
     case "branchlabPlayer": return <window.BranchlabPlayerBlock  block={block} ctx={ctx} />;
-    case "youtube":         return <window.YouTubeBlock          block={block} ctx={ctx} />;
+    case "video":           return <window.VideoBlock            block={block} ctx={ctx} />;
     default:
       return (
         <div style={{

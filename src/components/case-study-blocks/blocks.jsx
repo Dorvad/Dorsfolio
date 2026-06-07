@@ -716,11 +716,13 @@ function BranchlabPlayerBlock({ block, ctx }) {
   );
 }
 
-// ---- 14. YouTubeBlock -------------------------------------------------------
-function YouTubeBlock({ block, ctx }) {
+// ---- 14. VideoBlock ---------------------------------------------------------
+// Native muted <video> — plays inline without the YouTube embed's chrome,
+// branding, or "related videos" surface, and matches each skin's frame styling.
+function VideoBlock({ block, ctx }) {
   const { tokens } = ctx;
   const isWin95 = tokens.name === "Windows 95";
-  const { title, videoId, caption } = block;
+  const { title, src, poster, caption } = block;
   return (
     <section style={{ margin: "48px 0" }}>
       {title && <BlockTitle tokens={tokens}>{title}</BlockTitle>}
@@ -732,15 +734,20 @@ function YouTubeBlock({ block, ctx }) {
           : `1px solid ${tokens.border}`,
         boxShadow: isWin95 ? "none" : tokens.shadow,
         aspectRatio: "16/9",
-        position: "relative"
+        position: "relative",
+        background: "#000"
       }}>
-        <iframe
-          src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0`}
-          title={title || "Demo video"}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none", display: "block" }}
-        />
+        <video
+          src={src}
+          poster={poster}
+          controls
+          muted
+          playsInline
+          preload="metadata"
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: "none", display: "block", objectFit: "cover" }}
+        >
+          Your browser does not support the video tag.
+        </video>
       </div>
       {caption && (
         <div style={{
@@ -758,5 +765,5 @@ Object.assign(window, {
   ProcessBlock, BeforeAfterBlock, InsightBlock, LinksBlock,
   FeatureListBlock, TimelineBlock,
   BranchlabLogoAnim, LogoHeroBlock, BranchlabPlayerBlock,
-  YouTubeBlock
+  VideoBlock
 });
