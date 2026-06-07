@@ -28,7 +28,7 @@ const macResponsiveCSS = `
     [data-mac-dock] ul    { gap: 4px !important; }
     [data-mac-dock] a     { width: 40px !important; height: 40px !important; font-size: 17px !important; border-radius: 10px !important; }
   }
-  @media (max-width: 420px) {
+  @media (max-width: 470px) {
     [data-mac-nav]        { display: none !important; }
   }
 `;
