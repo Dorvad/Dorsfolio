@@ -133,6 +133,7 @@ function MaterialPortfolioShell({ children, route }) {
           .material-pill-nav { display: none !important; }
           .material-bottom-nav { display: grid !important; }
           .material-fab { bottom: 96px !important; }
+          [data-skin-scroll] { padding-bottom: 190px !important; }
         }
         @media (max-width: 400px) {
           .material-bottom-nav a > div:last-child { display: none !important; }
