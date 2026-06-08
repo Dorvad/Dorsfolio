@@ -67,6 +67,8 @@ window.caseStudies = [
       outcome: "A dashboard concept that gives managers one place to see rides, volunteers, and activity — clarifying a process that used to live in phone calls and notes."
     },
     sections: [
+
+      // ── Context ────────────────────────────────────────────────────────────
       {
         type: "text",
         title: "The situation",
@@ -75,16 +77,12 @@ window.caseStudies = [
       },
       {
         type: "image",
-        title: "The system at a glance",
-        image: "/projects/ezer-lachaim/cover.png",
-        caption: "A unified dashboard concept covering ride status, volunteer activity, and key metrics."
+        title: "Information architecture",
+        image: "/projects/ezer-lachaim/ia-diagram.jpg",
+        caption: "Five core sections mapped before any screen was drawn: Settings, Volunteers, Main Dashboard, Rides, and Performance — each serving a distinct operational need, all connected through a single login."
       },
-      {
-        type: "text",
-        title: "The design challenge",
-        body:
-          "Give managers a clear overview of the entire operation — see upcoming rides, track volunteer availability, understand the status of each ride, access important data quickly, reduce repeated phone coordination, and present the organization's activity in a clear and professional way. This was not only a design challenge. It was a service challenge: helping patients get to medical care with less stress and more certainty."
-      },
+
+      // ── Research ───────────────────────────────────────────────────────────
       {
         type: "featureList",
         title: "Three user groups, three different needs",
@@ -95,17 +93,51 @@ window.caseStudies = [
         ]
       },
       {
+        type: "gallery",
+        title: "Key user journeys",
+        images: [
+          { src: "/projects/ezer-lachaim/journey-volunteers.jpg", caption: "Journey A — Manager navigates to Volunteers, filters the table by day of service, and opens a volunteer profile to review details." },
+          { src: "/projects/ezer-lachaim/journey-rides.jpg", caption: "Journey B — Manager explores ride statistics by city and month, switches between chart types, then reviews performance data before logging out." }
+        ]
+      },
+
+      // ── Design Challenge & Role ────────────────────────────────────────────
+      {
+        type: "text",
+        title: "The design challenge",
+        body:
+          "Give managers a clear overview of the entire operation — see upcoming rides, track volunteer availability, understand the status of each ride, access important data quickly, reduce repeated phone coordination, and present the organization's activity in a clear and professional way. This was not only a design challenge. It was a service challenge: helping patients get to medical care with less stress and more certainty."
+      },
+      {
         type: "text",
         title: "My role",
         body:
           "I worked on this project as a UX Designer and Product Manager during a four-month internship. My work covered understanding the users and their needs, researching similar systems and dashboard patterns, organizing the product structure, defining key features, designing the dashboard experience, and thinking about how the system could support both daily operations and long-term organizational goals."
       },
+
+      // ── Process ────────────────────────────────────────────────────────────
       {
         type: "image",
-        title: "Overview — the manager's starting point",
-        image: "/projects/ezer-lachaim/dashboard-info.png",
-        caption: "Top-line numbers, rides by city, and trends — so managers can read the day in seconds."
+        title: "Feature prioritization",
+        image: "/projects/ezer-lachaim/process-moscow.webp",
+        caption: "MoSCoW prioritization separated must-have daily tools from enhancements and stretch goals — keeping the first version focused on what managers needed to run every shift."
       },
+      {
+        type: "image",
+        title: "Dashboard design principles",
+        image: "/projects/ezer-lachaim/process-dashboard-principles.webp",
+        caption: "Three principles guided every layout decision: consolidate all key metrics onto one screen, make everything readable at a glance, and apply F and Z reading patterns to the information hierarchy."
+      },
+      {
+        type: "gallery",
+        title: "Applying F & Z layout patterns",
+        images: [
+          { src: "/projects/ezer-lachaim/process-fz-scanning.webp", caption: "F-pattern research: users scan across the top row first, then down the left — so highest-priority data anchors to those positions." },
+          { src: "/projects/ezer-lachaim/process-fz-wireframe.webp", caption: "Applying the pattern to the grid: KPI tiles top-left, trending charts top-right, detailed data below — aligned with natural reading flow." }
+        ]
+      },
+
+      // ── Approach & Decisions ───────────────────────────────────────────────
       {
         type: "insight",
         title: "My approach",
@@ -122,11 +154,25 @@ window.caseStudies = [
           { title: "Design for trust", body: "Patients trust that someone will arrive. Volunteers trust that the information is clear. Managers trust that the system reflects what is really happening. Every screen was designed to reduce uncertainty." }
         ]
       },
+
+      // ── Solution Screens ───────────────────────────────────────────────────
       {
         type: "image",
-        title: "Volunteers — the operating list",
-        image: "/projects/ezer-lachaim/volunteers-detail.png",
-        caption: "Each row is one volunteer. Clear status pills make the queue scannable in a single pass."
+        title: "Overview — the manager's starting point",
+        image: "/projects/ezer-lachaim/main-info.jpg",
+        caption: "Top-line KPIs, rides by city, and trend data — managers can read the state of the service in seconds from a single screen."
+      },
+      {
+        type: "image",
+        title: "Volunteers — activity and availability",
+        image: "/projects/ezer-lachaim/volunteers-overview.jpg",
+        caption: "The volunteer hub: active count, new volunteers this week, average rides per volunteer, and a geographic distribution — the full picture before opening the table."
+      },
+      {
+        type: "image",
+        title: "Volunteer table — the operating list",
+        image: "/projects/ezer-lachaim/volunteers-table.jpg",
+        caption: "Full volunteer table with filters by time period and category. Each row is one volunteer; area, vehicle, ride count, and status make the list scannable in a single pass."
       },
       {
         type: "image",
@@ -136,18 +182,27 @@ window.caseStudies = [
       },
       {
         type: "gallery",
-        title: "Charts & analytics views",
+        title: "Charts and analytics views",
         images: [
-          { src: "/projects/ezer-lachaim/chart-vertical.jpg", caption: "New volunteers per month — vertical bars" },
-          { src: "/projects/ezer-lachaim/chart-horizontal.jpg", caption: "Same data, horizontal — picked by the team for at-a-glance reading" },
-          { src: "/projects/ezer-lachaim/satisfaction.jpg", caption: "Ride satisfaction & response time — performance view" }
+          { src: "/projects/ezer-lachaim/chart-line-yearly.jpg", caption: "New volunteers per year — trend line view (2016–2021)" },
+          { src: "/projects/ezer-lachaim/chart-vertical.jpg", caption: "New volunteers per month — vertical bar chart" },
+          { src: "/projects/ezer-lachaim/chart-horizontal.jpg", caption: "Same data, horizontal bars — selected by the team for at-a-glance reading" },
+          { src: "/projects/ezer-lachaim/satisfaction.jpg", caption: "Performance view — ride satisfaction, average response time, and average arrival time" }
         ]
       },
+      {
+        type: "image",
+        title: "The full system",
+        image: "/projects/ezer-lachaim/showcase.png",
+        caption: "Multiple views of the Ezer L'Chaim dashboard — a unified system for ride coordination, volunteer management, and organizational reporting."
+      },
+
+      // ── Reflection ─────────────────────────────────────────────────────────
       {
         type: "beforeAfter",
         title: "What changed",
         before: { label: "Before", body: "Phone-based coordination across drivers, patients, and managers. Information scattered across calls, messages, and notes — hard to scale, easy to miss." },
-        after:  { label: "After", body: "A single dashboard concept that brings rides, volunteers, and activity together. The same data also supports impact reporting and growth conversations." }
+        after:  { label: "After",  body: "A single dashboard concept that brings rides, volunteers, and activity together. The same data also supports impact reporting and growth conversations." }
       },
       {
         type: "text",
