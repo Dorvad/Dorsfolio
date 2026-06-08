@@ -44,6 +44,12 @@ window.galleryImages = [
   { src: "gallery/israel-at-war-facilitation-1.jpg", caption: "Live facilitation session — Israel at War", project: "AI Facilitation Tools" },
   { src: "gallery/israel-at-war-facilitation-2.jpg", caption: "Zoom facilitation — dual-host format", project: "AI Facilitation Tools" },
 
+  // ---- ElmTrackr ------------------------------------------------------------
+  { src: "projects/elmtrackr/dashboard-desktop.jpg", caption: "Desktop overview — clock widget, monthly summary, gross pay", project: "ElmTrackr" },
+  { src: "projects/elmtrackr/dashboard-home.jpg",    caption: "Home screen — shift status, April summary, recent shifts",  project: "ElmTrackr" },
+  { src: "projects/elmtrackr/reports-road-trip.jpg", caption: "Reports — pay breakdown and contextual insight card",        project: "ElmTrackr" },
+  { src: "projects/elmtrackr/settings-features.jpg", caption: "Manage Features — modular feature toggles",                 project: "ElmTrackr" },
+
   // ---- Other / General ------------------------------------------------------
   { src: "gallery/freud-ai-logo.gif",            caption: "Freud.AI — brand logo",             project: "Freud.AI" },
   { src: "gallery/talentlms-dashboard.jpg",      caption: "TalentLMS — admin dashboard",       project: "L&D Work" },
