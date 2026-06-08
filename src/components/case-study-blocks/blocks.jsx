@@ -553,7 +553,7 @@ function LogoHeroBlock({ block, ctx }) {
 
 const _BLAB_SCENARIOS = [
   { id: "wildwest", title: "Wild West" },
-  { id: "teenrom",  title: "Teen rom-com" }
+  { id: "promask",  title: "Teen rom-com" }
 ];
 
 // Mounts a <branchlab-player slug="..."> web component into a ref'd div.

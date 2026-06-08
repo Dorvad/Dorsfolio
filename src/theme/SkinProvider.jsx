@@ -213,23 +213,16 @@ function LightboxRoot() {
   const close = () => setLb(null);
   const go = (delta) => setLb(s => ({ ...s, index: s.index + delta }));
 
-  const navBtn = (visible, label, delta, symbol) => (
-    <button
-      onClick={visible ? (e) => { e.stopPropagation(); go(delta); } : undefined}
-      aria-label={label}
-      style={{
-        background: "rgba(255,255,255,0.12)",
-        border: "1px solid rgba(255,255,255,0.2)",
-        backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)",
-        color: "#fff", borderRadius: "50%",
-        width: 44, height: 44, flexShrink: 0,
-        display: "flex", alignItems: "center", justifyContent: "center",
-        cursor: visible ? "pointer" : "default",
-        fontSize: "22px", lineHeight: 1,
-        opacity: visible ? 1 : 0.2
-      }}
-    >{symbol}</button>
-  );
+  const overlayNavStyle = (side) => ({
+    position: "absolute", [side]: 8, top: "50%", transform: "translateY(-50%)",
+    background: "rgba(0,0,0,0.45)",
+    border: "1px solid rgba(255,255,255,0.2)",
+    backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)",
+    color: "#fff", borderRadius: "50%",
+    width: 44, height: 44,
+    display: "flex", alignItems: "center", justifyContent: "center",
+    cursor: "pointer", fontSize: "22px", lineHeight: 1
+  });
 
   return (
     <div
@@ -259,26 +252,32 @@ function LightboxRoot() {
         }}
       >✕</button>
 
-      {/* Image row */}
+      {/* Image + prev/next overlaid on image edges */}
       <div
         onClick={(e) => e.stopPropagation()}
-        style={{ display: "flex", alignItems: "center", gap: 12, maxWidth: "100%", cursor: "default" }}
+        style={{ position: "relative", maxWidth: "min(88vw, 1200px)", cursor: "default" }}
       >
-        {navBtn(hasPrev, "Previous", -1, "‹")}
         <img
           key={curr.src}
           src={curr.src}
           alt={curr.alt || ""}
           style={{
-            maxWidth: "min(88vw, 1200px)",
-            maxHeight: "calc(100vh - 160px)",
+            display: "block",
+            maxWidth: "100%",
+            maxHeight: "calc(100vh - 120px)",
             objectFit: "contain",
             borderRadius: 10,
-            boxShadow: "0 24px 80px rgba(0,0,0,0.5)",
-            display: "block"
+            boxShadow: "0 24px 80px rgba(0,0,0,0.5)"
           }}
         />
-        {navBtn(hasNext, "Next", 1, "›")}
+        {hasPrev && (
+          <button onClick={(e) => { e.stopPropagation(); go(-1); }} aria-label="Previous"
+            style={overlayNavStyle("left")}>‹</button>
+        )}
+        {hasNext && (
+          <button onClick={(e) => { e.stopPropagation(); go(1); }} aria-label="Next"
+            style={overlayNavStyle("right")}>›</button>
+        )}
       </div>
 
       {/* Caption + counter */}
