@@ -215,7 +215,8 @@ window.caseStudies = [
         title: "Reflection",
         body:
           "This project helped me understand how UX can support services that are deeply human. The challenge wasn't just to design screens — it was to design a system that helps people coordinate care, reduce stress, and make important work easier to manage. Good UX isn't only about making things look better. It's about making meaningful services work better."
-      }
+      },
+      { type: "caseStudyGallery" }
     ]
   },
 
@@ -356,7 +357,8 @@ window.caseStudies = [
         title: "Reflection",
         body:
           "Branchlab represents how I think as a product designer. The most interesting challenge was not designing a beautiful interface — it was designing a system that makes a complicated creative process feel understandable. Branching scenarios are naturally complex: every choice creates another path, and every path creates more decisions for the creator. The design challenge was to reduce that complexity without reducing the creative possibilities. It is not just a tool for making videos. It is a tool for designing decisions."
-      }
+      },
+      { type: "caseStudyGallery" }
     ]
   },
 
@@ -510,7 +512,8 @@ window.caseStudies = [
         title: "What I learned",
         body:
           "Small operational tools can still require deep product thinking. The hardest part was not designing a clock-in button — it was deciding what information should appear around it, what should wait for reports, and how much complexity the user should see at any moment. I also learned that 'simple' tools become valuable when they respect messy real-life behavior: forgetting, correcting, reviewing, and checking. A good shift tracker should not only record time. It should help the user feel calm and in control."
-      }
+      },
+      { type: "caseStudyGallery" }
     ]
   },
 
@@ -651,7 +654,8 @@ window.caseStudies = [
         title: "What I learned",
         body:
           "This project taught me that product work is not always about building new features. Sometimes the most important product decision is understanding what can realistically be changed — and then designing the best possible experience within those limits. The core VR product already existed. The real challenge was to make it usable, understandable, and meaningful. That required combining UX thinking, educational design, storytelling, and product strategy. It was a reminder that good experience design is not only about screens and interfaces. It is also about context, timing, emotion, and the way a user moves through an experience from beginning to end."
-      }
+      },
+      { type: "caseStudyGallery" }
     ]
   }
 ];
