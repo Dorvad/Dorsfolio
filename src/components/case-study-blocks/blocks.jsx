@@ -548,8 +548,8 @@ function LogoHeroBlock({ block, ctx }) {
 }
 
 // ---- 13. BranchlabPlayerBlock -------------------------------------------
-// Embeds the official Branchlab player via <branchlab-player> web component.
-// Scenarios: Wild West + Teen rom-com. Supports desktop/mobile toggle.
+// Interactive player: scenario chips, desktop/mobile toggle, iframe embed
+// (branchlab.online/play/:slug?embed=1) shown on click.
 
 const _BLAB_SCENARIOS = [
   { id: "wildwest", title: "Wild West" },
