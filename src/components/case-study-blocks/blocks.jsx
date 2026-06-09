@@ -556,17 +556,35 @@ const _BLAB_SCENARIOS = [
   { id: "teenrom",  title: "Teen rom-com" }
 ];
 
-// Embeds a Branchlab scenario via iframe — stable component so React doesn't
-// remount (and reset) the player on every parent state change.
+// Embeds a Branchlab scenario via iframe with a loading overlay while it fetches.
 function BranchlabEmbed({ slug }) {
+  const [loaded, setLoaded] = React.useState(false);
   return (
-    <iframe
-      key={slug}
-      src={`https://www.branchlab.online/play/${slug}?embed=1`}
-      allow="autoplay; fullscreen"
-      style={{ border: "none", width: "100%", height: "100%", display: "block" }}
-      title={`Branchlab – ${slug}`}
-    />
+    <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      {/* Loading overlay — disappears once iframe fires onLoad */}
+      {!loaded && (
+        <div style={{
+          position: "absolute", inset: 0, zIndex: 1,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          background: "#0c0c0c"
+        }}>
+          <div style={{
+            width: 28, height: 28,
+            border: "3px solid rgba(255,255,255,0.15)",
+            borderTopColor: "rgba(255,255,255,0.8)",
+            borderRadius: "50%",
+            animation: "spin 0.75s linear infinite"
+          }} />
+        </div>
+      )}
+      <iframe
+        src={`https://www.branchlab.online/play/${slug}?embed=1`}
+        allow="autoplay; fullscreen"
+        onLoad={() => setLoaded(true)}
+        style={{ border: "none", width: "100%", height: "100%", display: "block" }}
+        title={`Branchlab – ${slug}`}
+      />
+    </div>
   );
 }
 
@@ -701,6 +719,29 @@ function BranchlabPlayerBlock({ block, ctx }) {
             </div>
           )}
         </div>
+      </div>
+
+      {/* Fallback — always visible so the experience is reachable even if the embed errors */}
+      <div style={{
+        marginTop: "12px", display: "flex", alignItems: "center", gap: "8px",
+        justifyContent: "flex-end"
+      }}>
+        <a
+          href={`https://www.branchlab.online/play/${scenario.id}`}
+          target="_blank" rel="noopener noreferrer"
+          style={{
+            fontFamily: tokens.monoFont, fontSize: "11px",
+            color: tokens.muted, textDecoration: "none",
+            letterSpacing: "0.06em",
+            display: "inline-flex", alignItems: "center", gap: "4px",
+            opacity: 0.7,
+            transition: isWin95 ? "none" : "opacity 120ms"
+          }}
+          onMouseOver={e => { if (!isWin95) e.currentTarget.style.opacity = "1"; }}
+          onMouseOut={e => { if (!isWin95) e.currentTarget.style.opacity = "0.7"; }}
+        >
+          Having trouble? Open on Branchlab ↗
+        </a>
       </div>
     </section>
   );
@@ -840,7 +881,6 @@ function CaseStudyGalleryBlock({ block, ctx }) {
               onClick={() => openLightbox(i)}
               style={{
                 width: `${ITEM_W}px`,
-                aspectRatio: "3/4",
                 overflow: "hidden",
                 borderRadius: isWin95 ? 0 : tokens.radius,
                 border: isWin95
@@ -849,7 +889,6 @@ function CaseStudyGalleryBlock({ block, ctx }) {
                 boxShadow: isWin95 ? "none" : tokens.shadow,
                 background: tokens.surfaceAlt || tokens.surfaceSolid,
                 cursor: "pointer",
-                position: "relative",
                 transition: isWin95 ? "none" : "transform 150ms, box-shadow 150ms"
               }}
               onMouseOver={e => {
@@ -869,7 +908,7 @@ function CaseStudyGalleryBlock({ block, ctx }) {
                 label={img.caption || `image ${i + 1}`}
                 accent={accent}
                 alt={img.caption || ""}
-                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block" }}
               />
             </div>
             {img.caption && (
