@@ -106,7 +106,7 @@ function Win95PortfolioShell({ children, route }) {
             borderBottom: "1px solid #808080"
           }}>
             {["File","Edit","View","Help"].map((m) => (
-              <span key={m} style={{ padding: "1px 4px", cursor: "default", userSelect: "none" }}>{m}</span>
+              <span key={m} className="w95-menu-item" style={{ padding: "1px 4px", cursor: "default", userSelect: "none" }}>{m}</span>
             ))}
             <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "8px" }}>
               <window.SkinSwitcher inline />
@@ -128,8 +128,21 @@ function Win95PortfolioShell({ children, route }) {
           </div>
 
           {/* body */}
-          <div style={{ padding: "16px clamp(14px, 2.5vw, 22px) 24px", background: W95.surface }}>
+          <div style={{ padding: "16px clamp(14px, 2.5vw, 22px) 24px", background: "#ffffff" }}>
             {children}
+          </div>
+
+          {/* status bar */}
+          <div style={{
+            borderTop: "1px solid #808080",
+            padding: "2px 4px",
+            display: "flex", gap: "4px",
+            fontFamily: tokens.font, fontSize: "11px",
+            background: W95.surface
+          }}>
+            <div style={{ flex: 2, padding: "1px 6px", boxShadow: W95.bevelIn }}>Ready</div>
+            <div style={{ flex: 1, padding: "1px 6px", boxShadow: W95.bevelIn, textAlign: "center" }}>{w95TitleFor(route)}</div>
+            <div style={{ width: "70px", padding: "1px 6px", boxShadow: W95.bevelIn }} />
           </div>
         </div>
 
@@ -159,7 +172,12 @@ function Win95PortfolioShell({ children, route }) {
             boxShadow: startOpen ? W95.buttonPressed : W95.buttonRaised,
             border: "none", cursor: "pointer"
           }}>
-          <span aria-hidden="true" style={{ display: "inline-block", width: 14, height: 14, background: "conic-gradient(from 0deg, #ff0 0deg, #f00 90deg, #0f0 180deg, #00f 270deg, #ff0 360deg)" }} />
+          <span aria-hidden="true" style={{ display: "inline-grid", gridTemplateColumns: "1fr 1fr", gap: "1px", width: 14, height: 14, flexShrink: 0 }}>
+            <span style={{ background: "#ff0000" }} />
+            <span style={{ background: "#00b000" }} />
+            <span style={{ background: "#0055ff" }} />
+            <span style={{ background: "#ffd800" }} />
+          </span>
           Start
         </button>
 
@@ -235,6 +253,7 @@ function Win95PortfolioShell({ children, route }) {
 
       {/* Small screens: hide desktop icons, tighten window chrome */}
       <style>{`
+        .w95-menu-item:hover { background: #000080; color: #ffffff; }
         @media (max-width: 720px) {
           .w95-desktop-icons { display: none !important; }
         }
@@ -279,13 +298,16 @@ function formatTime() {
 
 // ---- ProjectCard ---------------------------------------------------------
 function Win95ProjectCard({ project, tokens }) {
+  const [hover, setHover] = React.useState(false);
   return (
-    <a href={`#/projects/${project.slug}`} style={{
-      display: "block", textDecoration: "none", color: tokens.text,
-      background: W95.surface, boxShadow: W95.bevelOut, padding: "2px"
-    }}>
+    <a href={`#/projects/${project.slug}`}
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      style={{
+        display: "block", textDecoration: "none", color: tokens.text,
+        background: W95.surface, boxShadow: W95.bevelOut, padding: "2px"
+      }}>
       <div style={{
-        background: W95.titleActive, color: "#fff",
+        background: hover ? W95.titleActive : W95.titleInactive, color: "#fff",
         padding: "3px 4px 3px 6px",
         display: "flex", alignItems: "center", gap: "6px",
         fontFamily: tokens.font, fontSize: "11px", fontWeight: 700
