@@ -553,23 +553,21 @@ function LogoHeroBlock({ block, ctx }) {
 
 const _BLAB_SCENARIOS = [
   { id: "wildwest", title: "Wild West" },
-  { id: "promask",  title: "Teen rom-com" }
+  { id: "teenrom",  title: "Teen rom-com" }
 ];
 
-// Mounts a <branchlab-player slug="..."> web component into a ref'd div.
-// Stable component (defined outside BranchlabPlayerBlock) so React doesn't
-// remount it on every parent render — only when slug changes.
+// Embeds a Branchlab scenario via iframe — stable component so React doesn't
+// remount (and reset) the player on every parent state change.
 function BranchlabEmbed({ slug }) {
-  const ref = React.useRef(null);
-  React.useEffect(() => {
-    if (!ref.current) return;
-    const el = document.createElement("branchlab-player");
-    el.setAttribute("slug", slug);
-    el.style.cssText = "width:100%;height:100%;display:block;";
-    ref.current.innerHTML = "";
-    ref.current.appendChild(el);
-  }, [slug]);
-  return <div ref={ref} style={{ width: "100%", height: "100%" }} />;
+  return (
+    <iframe
+      key={slug}
+      src={`https://www.branchlab.online/play/${slug}?embed=1`}
+      allow="autoplay; fullscreen"
+      style={{ border: "none", width: "100%", height: "100%", display: "block" }}
+      title={`Branchlab – ${slug}`}
+    />
+  );
 }
 
 function BranchlabPlayerBlock({ block, ctx }) {
@@ -587,14 +585,6 @@ function BranchlabPlayerBlock({ block, ctx }) {
 
   const switchScenario = (i) => { setScenarioIdx(i); setPlaying(false); };
 
-  // Lazy-inject the Branchlab embed script once per page load
-  React.useEffect(() => {
-    const EMBED_SRC = "https://www.branchlab.online/api/embed";
-    if (!document.querySelector(`script[src="${EMBED_SRC}"]`)) {
-      const s = Object.assign(document.createElement("script"), { src: EMBED_SRC, defer: true });
-      document.head.appendChild(s);
-    }
-  }, []);
 
   const chipStyle = (active) => ({
     padding: isWin95 ? "3px 10px" : (isMaterial ? "7px 16px" : "7px 14px"),
@@ -760,10 +750,149 @@ function VideoBlock({ block, ctx }) {
   );
 }
 
+// ---- 15. CaseStudyGalleryBlock ------------------------------------------
+// Auto-collects every image/gallery image from the project's sections and
+// renders them as a horizontally-scrollable Stories-style carousel.
+// Intended as the last block of every case study.
+function CaseStudyGalleryBlock({ block, ctx }) {
+  const { tokens, project } = ctx;
+  const accent  = project?.accent || tokens.accent;
+  const isWin95 = tokens.name === "Windows 95";
+
+  const scrollRef = React.useRef(null);
+
+  const images = React.useMemo(() => {
+    const imgs = [];
+    (project?.sections || []).forEach(s => {
+      if (s.type === "image" && s.image) {
+        imgs.push({ src: s.image, caption: s.caption || s.title || "" });
+      }
+      if (s.type === "gallery" && Array.isArray(s.images)) {
+        s.images.forEach(img => imgs.push({ src: img.src, caption: img.caption || "" }));
+      }
+    });
+    return imgs;
+  }, [project]);
+
+  if (images.length === 0) return null;
+
+  const ITEM_W = 200;
+  const GAP    = isWin95 ? 4 : 12;
+
+  const scroll = (dir) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollBy({ left: dir * (ITEM_W + GAP) * 2, behavior: "smooth" });
+  };
+
+  const openLightbox = (i) => {
+    if (!window.lightboxOpen) return;
+    const lbItems = images.map(img => ({
+      src: window.resolveAsset ? window.resolveAsset(img.src) : img.src,
+      alt: img.caption || ""
+    }));
+    window.lightboxOpen(lbItems, i);
+  };
+
+  const btnBase = {
+    width: isWin95 ? 24 : 32, height: isWin95 ? 24 : 32,
+    display: "flex", alignItems: "center", justifyContent: "center",
+    fontFamily: tokens.font, fontSize: "15px",
+    background: isWin95 ? tokens.surface : "transparent",
+    border: `1px solid ${tokens.border}`,
+    borderRadius: isWin95 ? 0 : tokens.radius,
+    color: tokens.text, cursor: "pointer",
+    boxShadow: isWin95
+      ? `inset 1px 1px 0 ${tokens.bevelLight}, inset -1px -1px 0 ${tokens.bevelDark}`
+      : "none",
+    transition: isWin95 ? "none" : "background 120ms"
+  };
+
+  return (
+    <section style={{ margin: "56px 0 16px" }}>
+      {/* Header row */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
+        <div style={{
+          fontFamily: tokens.monoFont, fontSize: "11px", color: accent,
+          textTransform: "uppercase", letterSpacing: "0.12em"
+        }}>
+          All images · {images.length} photos
+        </div>
+        <div style={{ display: "flex", gap: "6px" }}>
+          <button onClick={() => scroll(-1)} aria-label="Scroll left"  style={btnBase}>←</button>
+          <button onClick={() => scroll(1)}  aria-label="Scroll right" style={btnBase}>→</button>
+        </div>
+      </div>
+
+      {/* Horizontal scroll track */}
+      <div ref={scrollRef} style={{
+        display: "flex",
+        gap: `${GAP}px`,
+        overflowX: "auto",
+        scrollbarWidth: "none",   /* Firefox */
+        msOverflowStyle: "none",  /* IE / Edge */
+        WebkitOverflowScrolling: "touch",
+        paddingBottom: "6px"
+      }}>
+        {images.map((img, i) => (
+          <figure key={i} style={{ margin: 0, flexShrink: 0, width: `${ITEM_W}px` }}>
+            <div
+              onClick={() => openLightbox(i)}
+              style={{
+                width: `${ITEM_W}px`,
+                aspectRatio: "3/4",
+                overflow: "hidden",
+                borderRadius: isWin95 ? 0 : tokens.radius,
+                border: isWin95
+                  ? `2px solid ${tokens.bevelDark}`
+                  : `1px solid ${tokens.border}`,
+                boxShadow: isWin95 ? "none" : tokens.shadow,
+                background: tokens.surfaceAlt || tokens.surfaceSolid,
+                cursor: "pointer",
+                position: "relative",
+                transition: isWin95 ? "none" : "transform 150ms, box-shadow 150ms"
+              }}
+              onMouseOver={e => {
+                if (isWin95) return;
+                e.currentTarget.style.transform = "scale(1.02)";
+                e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
+              }}
+              onMouseOut={e => {
+                if (isWin95) return;
+                e.currentTarget.style.transform = "";
+                e.currentTarget.style.boxShadow = tokens.shadow || "";
+              }}
+            >
+              <window.ProjectImage
+                src={img.src}
+                slug={project?.slug}
+                label={img.caption || `image ${i + 1}`}
+                accent={accent}
+                alt={img.caption || ""}
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              />
+            </div>
+            {img.caption && (
+              <figcaption style={{
+                fontFamily: tokens.monoFont, fontSize: "11px",
+                color: tokens.muted, marginTop: "6px",
+                lineHeight: 1.3, letterSpacing: "0.02em",
+                textTransform: "uppercase",
+                overflow: "hidden", textOverflow: "ellipsis",
+                whiteSpace: "nowrap", maxWidth: `${ITEM_W}px`
+              }}>{img.caption}</figcaption>
+            )}
+          </figure>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 Object.assign(window, {
   TextBlock, ImageBlock, GalleryBlock, MetricsBlock, QuoteBlock,
   ProcessBlock, BeforeAfterBlock, InsightBlock, LinksBlock,
   FeatureListBlock, TimelineBlock,
   BranchlabLogoAnim, LogoHeroBlock, BranchlabPlayerBlock,
-  VideoBlock
+  VideoBlock, CaseStudyGalleryBlock
 });
