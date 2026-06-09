@@ -23,7 +23,7 @@ window.skinTokens = {
   },
   win95: {
     name: "Windows 95",
-    font: '"MS Sans Serif", "Microsoft Sans Serif", "Tahoma", "Geneva", sans-serif',
+    font: '"Tahoma", "MS Sans Serif", "Microsoft Sans Serif", "Geneva", sans-serif',
     monoFont: '"Courier New", "Courier", monospace',
     bg: "#008080",
     surface: "#c0c0c0",

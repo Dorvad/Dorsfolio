@@ -404,10 +404,12 @@ window.caseStudies = [
           "ElmTrackr started from a very practical need: shift work creates small but persistent moments of uncertainty. Did I clock in? How many hours did I work this month? What is my estimated gross pay? Did I remember to report travel refunds? Instead of building a heavy HR system, the goal was a lightweight personal tool that gives workers clarity in the moments they actually need it."
       },
       {
-        type: "image",
+        type: "gallery",
         title: "Home dashboard",
-        image: "/projects/elmtrackr/dashboard-idle.jpg",
-        caption: "The home screen — work status front and center, monthly summary below."
+        images: [
+          { src: "/projects/elmtrackr/dashboard-idle.jpg", caption: "The home screen — work status front and center, monthly summary below." },
+          { src: "/projects/elmtrackr/dashboard-clock-in.jpg", caption: "Clock In is the primary action — one tap to start tracking. The June summary updates in real time as shifts are logged." }
+        ]
       },
       {
         type: "text",
@@ -475,7 +477,8 @@ window.caseStudies = [
         images: [
           { src: "/projects/elmtrackr/reports-insights.jpg", caption: "Reports — overtime, weekend, gross pay, and insight cards" },
           { src: "/projects/elmtrackr/reports-road-trip.jpg", caption: "Monthly report — pay summary and contextual insight" },
-          { src: "/projects/elmtrackr/reports-basic.jpg", caption: "Reports view on a lighter month" }
+          { src: "/projects/elmtrackr/reports-basic.jpg", caption: "Reports view on a lighter month" },
+          { src: "/projects/elmtrackr/reports-travel-refunds.jpg", caption: "Travel refunds report — ₪475.10 reclaimed across 20 rides, broken down by provider (Lime and Dott)" }
         ]
       },
       {
