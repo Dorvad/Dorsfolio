@@ -674,13 +674,16 @@ function BranchlabPlayerBlock({ block, ctx }) {
         background: tokens.surfaceAlt || tokens.surfaceSolid,
         border: `1px solid ${tokens.border}`,
         borderRadius: tokens.radius,
-        padding: isWin95 ? "8px" : "28px 24px",
+        padding: isWin95 ? "8px" : "clamp(12px,3vw,28px) clamp(12px,3vw,24px)",
         display: "flex", justifyContent: "center",
+        overflow: "hidden",
         boxShadow: isCarbon || isWin95 ? "none" : tokens.shadow
       }}>
         <div style={{
           width: "100%",
           maxWidth: isDesktop ? "620px" : "560px",
+          margin: "0 auto",
+          minWidth: 0,
           transition: isWin95 ? "none" : "max-width 0.25s cubic-bezier(.4,0,.2,1)"
         }}>
           {isDesktop ? (
@@ -705,7 +708,8 @@ function BranchlabPlayerBlock({ block, ctx }) {
           ) : (
             <div style={{
               margin: "0 auto", background: "#1a1a1a", borderRadius: "32px",
-              padding: "10px 20px", display: "flex", alignItems: "center", gap: "10px",
+              padding: "10px clamp(8px,2vw,20px)", display: "flex", alignItems: "center", gap: "10px",
+              overflow: "hidden",
               boxShadow: "0 16px 48px rgba(0,0,0,0.42), 0 0 0 1px rgba(255,255,255,0.07)"
             }}>
               <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "5px", flexShrink: 0 }}>
