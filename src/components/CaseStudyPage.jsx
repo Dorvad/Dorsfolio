@@ -55,7 +55,7 @@ function NotFound({ slug }) {
 function CaseStudySections({ project, tokens }) {
   const ctx = { tokens, project, skin: window.useSkin().skin };
   return (
-    <div style={{ display: "grid", gap: "8px" }}>
+    <div style={{ display: "grid", gap: "8px", gridTemplateColumns: "minmax(0, 1fr)" }}>
       {/* Summary — a strong lede sentence followed by softer supporting context */}
       <section style={{ margin: "16px 0 24px" }}>
         {(() => {

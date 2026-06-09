@@ -79,7 +79,8 @@ function Win95PortfolioShell({ children, route }) {
         flex: 1, padding: "20px clamp(12px, 3vw, 28px) 60px",
         marginLeft: "0",
         zIndex: 2,
-        position: "relative"
+        position: "relative",
+        overflowX: "hidden"
       }}>
         <div style={{
           maxWidth: "1080px", margin: "0 auto",

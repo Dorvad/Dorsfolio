@@ -68,7 +68,8 @@ function MaterialPortfolioShell({ children, route }) {
 
       {/* Main content */}
       <div data-skin-scroll style={{
-        flex: 1, padding: "clamp(20px, 4vw, 48px) clamp(16px, 4vw, 32px) 120px"
+        flex: 1, padding: "clamp(20px, 4vw, 48px) clamp(16px, 4vw, 32px) 120px",
+        overflowX: "hidden"
       }}>
         <div style={{ maxWidth: "1080px", margin: "0 auto" }}>{children}</div>
 
