@@ -76,7 +76,7 @@ function MacPortfolioShell({ children, route }) {
         backdropFilter: tokens.blur, WebkitBackdropFilter: tokens.blur,
         border: `1px solid ${tokens.border}`, borderRadius: "12px",
         display: "flex", alignItems: "center", gap: "16px",
-        fontSize: "13px", flexWrap: "nowrap", minWidth: 0, overflow: "hidden"
+        fontSize: "13px", flexWrap: "nowrap", minWidth: 0
       }}>
         <a href="#/" style={{ display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none", color: tokens.text, flexShrink: 0 }}>
           <span aria-hidden="true" style={{
