@@ -932,10 +932,202 @@ function CaseStudyGalleryBlock({ block, ctx }) {
   );
 }
 
+// =============================================================================
+// ImageComparisonBlock — drag slider comparing two images (before / after)
+// Adapted from a shadcn/Tailwind component; uses vanilla inline styles +
+// skin tokens so it fits all four design systems.
+// =============================================================================
+function ImageComparisonBlock({ block, ctx }) {
+  const { tokens, project } = ctx;
+  const [inset, setInset] = React.useState(50);
+  const [dragging, setDragging] = React.useState(false);
+  const containerRef = React.useRef(null);
+  const isWin95 = tokens.name === "Windows 95";
+  const accent = project?.accent || tokens.accent;
+
+  // Global listeners while dragging — robust across pointer-leave and touch
+  React.useEffect(() => {
+    if (!dragging) return;
+    const getPercent = (clientX) => {
+      if (!containerRef.current) return null;
+      const rect = containerRef.current.getBoundingClientRect();
+      return Math.max(2, Math.min(98, ((clientX - rect.left) / rect.width) * 100));
+    };
+    const stop = () => setDragging(false);
+    const move = (e) => {
+      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      const pct = getPercent(clientX);
+      if (pct !== null) setInset(pct);
+    };
+    const touchMove = (e) => { e.preventDefault(); move(e); };
+    window.addEventListener("mousemove", move);
+    window.addEventListener("mouseup", stop);
+    window.addEventListener("touchmove", touchMove, { passive: false });
+    window.addEventListener("touchend", stop);
+    return () => {
+      window.removeEventListener("mousemove", move);
+      window.removeEventListener("mouseup", stop);
+      window.removeEventListener("touchmove", touchMove);
+      window.removeEventListener("touchend", stop);
+    };
+  }, [dragging]);
+
+  const { before = {}, after = {}, title, body, label } = block;
+
+  return (
+    <section style={{ margin: "32px 0" }}>
+      {/* Label badge */}
+      {label && (
+        <div style={{
+          display: "inline-flex", alignItems: "center",
+          padding: isWin95 ? "1px 8px" : "4px 12px",
+          borderRadius: isWin95 ? 0 : "999px",
+          background: `${accent}1a`,
+          color: accent,
+          fontSize: "11px", fontWeight: 600, letterSpacing: "0.06em",
+          textTransform: "uppercase",
+          marginBottom: "12px",
+          border: isWin95 ? `1px solid ${tokens.border}` : "none"
+        }}>{label}</div>
+      )}
+
+      {title && (
+        <div style={{
+          fontFamily: tokens.displayFont || tokens.font,
+          fontSize: "clamp(20px, 2.5vw, 26px)", fontWeight: 600,
+          color: tokens.text, lineHeight: 1.3,
+          marginBottom: body ? "8px" : "20px"
+        }}>{title}</div>
+      )}
+
+      {body && (
+        <div style={{
+          fontFamily: tokens.font,
+          fontSize: "clamp(14px, 1.6vw, 16px)", color: tokens.muted,
+          lineHeight: 1.6, maxWidth: "60ch", marginBottom: "24px", textWrap: "pretty"
+        }}>{body}</div>
+      )}
+
+      {/* Slider — portrait, phone-width, centered */}
+      <div style={{ maxWidth: "360px", margin: "0 auto" }}>
+        <div
+          ref={containerRef}
+          style={{
+            position: "relative", width: "100%",
+            aspectRatio: "9/18",
+            overflow: "hidden",
+            borderRadius: isWin95 ? 0 : tokens.radiusLg || tokens.radius,
+            border: isWin95 ? `2px solid ${tokens.bevelDark || "#808080"}` : `1px solid ${tokens.border}`,
+            boxShadow: isWin95 ? "none" : tokens.shadow,
+            userSelect: "none", cursor: "ew-resize"
+          }}
+        >
+          {/* Bottom layer: wireframe / before */}
+          <img
+            src={window.resolveAsset ? window.resolveAsset(before.src) : before.src}
+            alt={before.alt || "Before"}
+            draggable={false}
+            style={{
+              position: "absolute", inset: 0,
+              width: "100%", height: "100%",
+              objectFit: "cover", objectPosition: "top",
+              userSelect: "none", pointerEvents: "none"
+            }}
+          />
+
+          {/* Top layer: final design / after — clipped from the right */}
+          <img
+            src={window.resolveAsset ? window.resolveAsset(after.src) : after.src}
+            alt={after.alt || "After"}
+            draggable={false}
+            style={{
+              position: "absolute", inset: 0,
+              width: "100%", height: "100%",
+              objectFit: "cover", objectPosition: "top",
+              userSelect: "none", pointerEvents: "none",
+              clipPath: `inset(0 ${100 - inset}% 0 0)`
+            }}
+          />
+
+          {/* Divider line */}
+          <div style={{
+            position: "absolute", top: 0, bottom: 0,
+            left: `${inset}%`, transform: "translateX(-50%)",
+            width: "2px",
+            background: "#fff",
+            boxShadow: "0 0 8px rgba(0,0,0,0.35)",
+            zIndex: 10
+          }}>
+            {/* Drag handle */}
+            <button
+              type="button"
+              onMouseDown={() => setDragging(true)}
+              onTouchStart={(e) => { setDragging(true); }}
+              style={{
+                position: "absolute", top: "50%", left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 36, height: 36,
+                borderRadius: isWin95 ? "2px" : "50%",
+                background: "#fff",
+                border: "none",
+                boxShadow: isWin95
+                  ? "inset 1px 1px 0 #fff, inset -1px -1px 0 #808080, inset 2px 2px 0 #dfdfdf, inset -2px -2px 0 #000"
+                  : "0 2px 10px rgba(0,0,0,0.22)",
+                cursor: "ew-resize",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 11
+              }}
+            >
+              {/* Grip — two vertical bars */}
+              <svg width="14" height="18" viewBox="0 0 14 18" fill="#666" aria-hidden="true">
+                <rect x="2.5" y="2" width="2.5" height="14" rx="1.25" />
+                <rect x="9" y="2" width="2.5" height="14" rx="1.25" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Before label */}
+          <div style={{
+            position: "absolute", bottom: "12px", left: "12px", zIndex: 5,
+            padding: "4px 10px",
+            borderRadius: isWin95 ? 0 : "999px",
+            background: "rgba(0,0,0,0.5)",
+            backdropFilter: "blur(4px)",
+            color: "#fff", fontSize: "11px", fontWeight: 600, letterSpacing: "0.04em",
+            opacity: inset > 12 ? 1 : 0,
+            transition: "opacity 150ms",
+            pointerEvents: "none"
+          }}>{before.caption || "Before"}</div>
+
+          {/* After label */}
+          <div style={{
+            position: "absolute", bottom: "12px", right: "12px", zIndex: 5,
+            padding: "4px 10px",
+            borderRadius: isWin95 ? 0 : "999px",
+            background: `${accent}cc`,
+            backdropFilter: "blur(4px)",
+            color: "#fff", fontSize: "11px", fontWeight: 600, letterSpacing: "0.04em",
+            opacity: inset < 88 ? 1 : 0,
+            transition: "opacity 150ms",
+            pointerEvents: "none"
+          }}>{after.caption || "After"}</div>
+        </div>
+
+        {/* Hint */}
+        <div style={{
+          textAlign: "center", marginTop: "10px",
+          fontFamily: tokens.monoFont, fontSize: "11px",
+          color: tokens.muted, letterSpacing: "0.06em", textTransform: "uppercase"
+        }}>← drag to compare →</div>
+      </div>
+    </section>
+  );
+}
+
 Object.assign(window, {
   TextBlock, ImageBlock, GalleryBlock, MetricsBlock, QuoteBlock,
   ProcessBlock, BeforeAfterBlock, InsightBlock, LinksBlock,
   FeatureListBlock, TimelineBlock,
   BranchlabLogoAnim, LogoHeroBlock, BranchlabPlayerBlock,
-  VideoBlock, CaseStudyGalleryBlock
+  VideoBlock, CaseStudyGalleryBlock, ImageComparisonBlock
 });

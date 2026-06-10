@@ -461,6 +461,22 @@ window.caseStudies = [
         caption: "Early wireframes in Figma — four core screens laid out before building: Home Dashboard, Shifts List, Reports, and New Shift Form."
       },
       {
+        type: "imageComparison",
+        label: "Design evolution",
+        title: "From wireframe to shipped",
+        body: "The app started as simple grayscale wireframes focused on structure and information hierarchy, then evolved into a soft, gradient-accented visual language that feels personal rather than corporate.",
+        before: {
+          src: "/projects/elmtrackr/comparison-wireframe.png",
+          alt: "Early wireframe — grayscale home screen with basic clock widget",
+          caption: "Wireframe"
+        },
+        after: {
+          src: "/projects/elmtrackr/comparison-final.jpg",
+          alt: "Final design — polished home screen with gradient accents",
+          caption: "Final design"
+        }
+      },
+      {
         type: "featureList",
         title: "Key product decisions",
         items: [
