@@ -2,7 +2,7 @@
 // Writing / Blog section — newsletter front door + post list + native post view
 // =============================================================================
 
-const { useState, useEffect } = React;
+const { useState, useEffect, useRef } = React;
 
 function formatPostDate(dateStr) {
   if (!dateStr) return "";
@@ -15,8 +15,21 @@ function formatPostDate(dateStr) {
 // Newsletter signup card
 // ---------------------------------------------------------------------------
 function NewsletterSignup({ tokens }) {
+  const embedRef = useRef(null);
   const isCarbon = tokens && tokens.font && tokens.font.includes("IBM");
   const isWin95  = tokens && tokens.font && tokens.font.includes("px");
+
+  useEffect(() => {
+    const container = embedRef.current;
+    if (!container) return;
+    container.innerHTML = "";
+    const script = document.createElement("script");
+    script.async = true;
+    script.src = "https://subscribe-forms.beehiiv.com/v3/loader.js";
+    script.setAttribute("data-beehiiv-form", "69276f9b-7c4c-4545-81c3-fbcd9eeee4b8");
+    container.appendChild(script);
+    return () => { container.innerHTML = ""; };
+  }, []);
 
   const cardStyle = {
     borderRadius: isWin95 ? 0 : isCarbon ? 0 : "16px",
@@ -63,28 +76,7 @@ function NewsletterSignup({ tokens }) {
         Short, occasional dispatches on AI, learning design, product thinking,
         and things I'm building. No noise, no schedule pressure.
       </div>
-      {/* Beehiiv embed goes here */}
-      <div style={{
-        padding: "20px",
-        borderRadius: isWin95 ? 0 : isCarbon ? 0 : "10px",
-        border: isCarbon
-          ? "1px dashed #525252"
-          : isWin95
-            ? "1px dashed #808080"
-            : "1.5px dashed rgba(99,102,241,0.3)",
-        background: isCarbon
-          ? "rgba(255,255,255,0.04)"
-          : isWin95
-            ? "#ffffff"
-            : "rgba(255,255,255,0.7)",
-        textAlign: "center",
-        fontSize: "13px",
-        color: isCarbon ? "#8d8d8d" : "#94a3b8",
-        fontFamily: tokens ? tokens.monoFont || tokens.font : "inherit"
-      }}>
-        {/* Beehiiv embed goes here */}
-        Newsletter signup coming soon
-      </div>
+      <div ref={embedRef} />
     </div>
   );
 }
