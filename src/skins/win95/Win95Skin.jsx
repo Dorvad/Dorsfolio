@@ -50,6 +50,7 @@ function Win95PortfolioShell({ children, route }) {
       }} className="w95-desktop-icons">
         {[
           { label: "Projects", href: "#/projects", glyph: "▦" },
+          { label: "Writing",  href: "#/writing",  glyph: "✎" },
           { label: "Gallery",  href: "#/gallery",  glyph: "⊞" },
           { label: "About",    href: "#/about",    glyph: "★" },
           { label: "Contact",  href: "#/contact",  glyph: "✉" }
@@ -185,6 +186,7 @@ function Win95PortfolioShell({ children, route }) {
 
         <button type="button" onClick={() => {
           const dest = route.name === "case-study" ? "#/projects"
+            : route.name === "writing-post" ? "#/writing"
             : route.name === "home" ? "#/" : `#/${route.name}`;
           window.navigate(dest);
         }} style={{
@@ -217,6 +219,7 @@ function Win95PortfolioShell({ children, route }) {
               {[
                 { label: "Home",     href: "#/",         glyph: "🏠" },
                 { label: "Projects", href: "#/projects", glyph: "📁" },
+                { label: "Writing",  href: "#/writing",  glyph: "✏" },
                 { label: "Gallery",  href: "#/gallery",  glyph: "🖼" },
                 { label: "About",    href: "#/about",    glyph: "ℹ" },
                 { label: "Contact",  href: "#/contact",  glyph: "✉" }
@@ -272,6 +275,8 @@ function w95TitleFor(route) {
   if (route.name === "about") return "About.txt";
   if (route.name === "contact") return "Contact.txt";
   if (route.name === "gallery") return "Gallery";
+  if (route.name === "writing") return "Writing";
+  if (route.name === "writing-post") return route.slug ? route.slug + ".txt" : "Writing";
   return "Window";
 }
 

@@ -8,6 +8,7 @@ function CarbonPortfolioShell({ children, route }) {
   const navItems = [
     { id: "home",     href: "#/",         label: "Home" },
     { id: "projects", href: "#/projects", label: "Projects" },
+    { id: "writing",  href: "#/writing",  label: "Writing" },
     { id: "gallery",  href: "#/gallery",  label: "Gallery" },
     { id: "about",    href: "#/about",    label: "About" },
     { id: "contact",  href: "#/contact",  label: "Contact" }
@@ -15,6 +16,7 @@ function CarbonPortfolioShell({ children, route }) {
   const isActive = (id) =>
     (id === "home" && route.name === "home") ||
     (id === "projects" && (route.name === "projects" || route.name === "case-study")) ||
+    (id === "writing" && (route.name === "writing" || route.name === "writing-post")) ||
     (id === route.name);
 
   return (

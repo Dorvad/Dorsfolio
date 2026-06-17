@@ -7,6 +7,7 @@ function MaterialPortfolioShell({ children, route }) {
   const navItems = [
     { id: "home",     href: "#/",         label: "Home",     glyph: "⌂" },
     { id: "projects", href: "#/projects", label: "Projects", glyph: "▦" },
+    { id: "writing",  href: "#/writing",  label: "Writing",  glyph: "✎" },
     { id: "gallery",  href: "#/gallery",  label: "Gallery",  glyph: "⊞" },
     { id: "about",    href: "#/about",    label: "About",    glyph: "★" },
     { id: "contact",  href: "#/contact",  label: "Contact",  glyph: "✉" }
@@ -15,6 +16,7 @@ function MaterialPortfolioShell({ children, route }) {
   const isActive = (id) =>
     (id === "home" && route.name === "home") ||
     (id === "projects" && (route.name === "projects" || route.name === "case-study")) ||
+    (id === "writing" && (route.name === "writing" || route.name === "writing-post")) ||
     (id === route.name);
 
   return (

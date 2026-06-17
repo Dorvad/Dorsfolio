@@ -24,6 +24,8 @@ function PortfolioShell() {
   else if (route.name === "about")  content = <window.AboutSection />;
   else if (route.name === "contact") content = <window.ContactSection />;
   else if (route.name === "gallery") content = <window.GalleryPage />;
+  else if (route.name === "writing") content = <window.WritingPage />;
+  else if (route.name === "writing-post") content = <window.WritingPostPage slug={route.slug} />;
   else content = <window.HomeSection />;
 
   return (

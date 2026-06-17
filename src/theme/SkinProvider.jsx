@@ -59,6 +59,8 @@ function parseHash(hash) {
   if (segs[0] === "about")   return { name: "about",   path: "/about" };
   if (segs[0] === "contact") return { name: "contact", path: "/contact" };
   if (segs[0] === "gallery") return { name: "gallery", path: "/gallery" };
+  if (segs[0] === "writing" && segs.length === 1) return { name: "writing", path: "/writing" };
+  if (segs[0] === "writing" && segs.length >= 2)  return { name: "writing-post", slug: segs[1], path: clean };
   return { name: "home", path: "/" };
 }
 
