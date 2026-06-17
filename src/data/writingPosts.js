@@ -15,14 +15,14 @@
 
 window.writingPosts = [
   {
-    title: "What happens when AI becomes part of the workflow?",
+    title: "Why Do All Our Phones Look More or Less the Same?",
     slug: null,
-    excerpt: "A short reflection on the difference between using AI as a tool and actually changing the way teams think, decide, and create.",
-    date: "2026-06-01",
-    category: "AI & Work",
-    readingTime: "4 min",
+    excerpt: "Featured in UED Institute for User Empowerment. A question worth sitting with — how did the most personal device most of us own end up looking identical?",
+    date: "2026-06-17",
+    category: "Digital Culture",
+    readingTime: "5 min",
     source: "beehiiv",
-    externalUrl: "#",
+    externalUrl: "https://dorsnews.beehiiv.com/p/why-do-all-our-phones-look-more-or-less-the-same",
     featured: true
   },
   {
