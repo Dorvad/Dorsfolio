@@ -20,6 +20,7 @@ window.portfolioInfo = {
   nav: [
     { label: "Home",     href: "#/" },
     { label: "Projects", href: "#/projects" },
+    { label: "Writing",  href: "#/writing" },
     { label: "Gallery",  href: "#/gallery" },
     { label: "About",    href: "#/about" },
     { label: "Contact",  href: "#/contact" }
