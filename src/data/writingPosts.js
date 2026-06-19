@@ -2,15 +2,16 @@
 // Writing posts — edit this file to manage the blog/writing section.
 //
 // Fields:
-//   title       — post title
-//   slug        — URL slug for native posts (null for beehiiv posts)
-//   excerpt     — short summary shown in the list
-//   date        — ISO date string "YYYY-MM-DD"
-//   category    — label shown above the title
-//   readingTime — e.g. "4 min"
-//   source      — "native" | "beehiiv"
-//   externalUrl — for beehiiv posts: the full beehiiv URL
-//   featured    — true to mark as featured (reserved for future use)
+//   title         — post title
+//   slug          — URL slug for native posts (null for beehiiv posts)
+//   excerpt       — short summary shown in the list
+//   date          — ISO date string "YYYY-MM-DD"
+//   category      — label shown above the title
+//   readingTime   — e.g. "4 min"
+//   source        — "native" | "beehiiv"
+//   externalUrl   — for beehiiv posts: the full beehiiv URL
+//   newsletterUrl — optional beehiiv URL for native posts also published as a newsletter
+//   featured      — true to mark as featured (reserved for future use)
 // =============================================================================
 
 window.writingPosts = [
@@ -56,6 +57,7 @@ window.writingPosts = [
     readingTime: "5 min",
     source: "native",
     externalUrl: null,
+    newsletterUrl: "https://dorsnews.beehiiv.com/p/learning-systems-not-learning-content",
     featured: false
   },
   {
