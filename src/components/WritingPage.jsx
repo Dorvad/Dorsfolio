@@ -397,6 +397,40 @@ function WritingPostPage({ slug }) {
     fontFamily: tokens ? tokens.monoFont || tokens.font : "monospace"
   };
 
+  const textColor    = isCarbon ? "#c6c6c6" : tokens ? tokens.text    : "#374151";
+  const headingColor = isCarbon ? "#f4f4f4" : tokens ? tokens.text    : "#0f172a";
+  const mutedColor   = isCarbon ? "#a8a8a8" : tokens ? tokens.muted   : "#6b7280";
+  const accentColor  = tokens ? tokens.accent : "#6366f1";
+  const bodyFont     = tokens ? tokens.font : "inherit";
+  const displayFont  = tokens ? (tokens.displayFont || tokens.font) : "inherit";
+  const bodySize     = isCarbon ? "15px" : isWin95 ? "13px" : "16px";
+  const h2Size       = isCarbon ? "18px" : isWin95 ? "15px" : "21px";
+  const h3Size       = isCarbon ? "14px" : isWin95 ? "13px" : "17px";
+  const bqSize       = isCarbon ? "16px" : isWin95 ? "14px" : "18px";
+
+  useEffect(() => {
+    const styleId = "prose-content-styles";
+    let el = document.getElementById(styleId);
+    if (!el) {
+      el = document.createElement("style");
+      el.id = styleId;
+      document.head.appendChild(el);
+    }
+    el.textContent = [
+      `.prose-content { font-family: ${bodyFont}; font-size: ${bodySize}; line-height: 1.75; color: ${textColor}; }`,
+      `.prose-content p { margin: 0 0 20px; }`,
+      `.prose-content h2 { font-family: ${displayFont}; font-size: ${h2Size}; font-weight: 700; color: ${headingColor}; margin: 40px 0 12px; line-height: 1.25; letter-spacing: ${isCarbon ? "0.01em" : isWin95 ? "0" : "-0.02em"}; }`,
+      `.prose-content h3 { font-family: ${displayFont}; font-size: ${h3Size}; font-weight: 600; color: ${headingColor}; margin: 24px 0 8px; }`,
+      `.prose-content blockquote { border-left: 3px solid ${accentColor}; padding-left: 20px; font-style: italic; color: ${mutedColor}; margin: 0 0 28px; font-size: ${bqSize}; }`,
+      `.prose-content ol, .prose-content ul { padding-left: 24px; margin: 0 0 20px; }`,
+      `.prose-content li { margin-bottom: 8px; }`,
+      `.prose-content strong { font-weight: 700; color: ${headingColor}; }`,
+    ].join("\n");
+    return () => { const s = document.getElementById(styleId); if (s) s.remove(); };
+  }, [bodyFont, displayFont, bodySize, h2Size, h3Size, bqSize, textColor, headingColor, mutedColor, accentColor]);
+
+  const htmlContent = window.postContentHtml && window.postContentHtml[slug];
+
   return (
     <div style={pageStyle}>
       <a href="#/writing" style={backStyle}>← Writing</a>
@@ -412,9 +446,10 @@ function WritingPostPage({ slug }) {
 
       <p style={ledeStyle}>{post.excerpt}</p>
 
-      <div style={placeholderStyle}>
-        Full post content goes here.
-      </div>
+      {htmlContent
+        ? <div className="prose-content" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+        : <div style={placeholderStyle}>Full post content goes here.</div>
+      }
 
       <div style={{ marginTop: "64px", paddingTop: "32px", borderTop: isCarbon ? `1px solid #393939` : `1px solid ${tokens ? tokens.border : "#e5e7eb"}` }}>
         <a href="#/writing" style={backStyle}>← Back to Writing</a>
