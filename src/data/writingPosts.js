@@ -15,6 +15,28 @@
 
 window.writingPosts = [
   {
+    title: "Beyond the Headlines: Empowerment in News Consumption",
+    slug: "beyond-the-headlines-empowerment-in-news-consumption",
+    excerpt: "Published in UED Institute. On media bias, the gap between events and headlines, and how platforms like Ground News help us form genuinely independent opinions.",
+    date: "2025-11-20",
+    category: "Media & UX",
+    readingTime: "6 min",
+    source: "native",
+    externalUrl: null,
+    featured: false
+  },
+  {
+    title: "Can Technology Empower Users — and Be Profitable?",
+    slug: "can-technology-empower-users-and-be-profitable",
+    excerpt: "Published in UED Institute. Exploring the tension between user empowerment and profitability — and why companies like Waze, Moovit, and Duolingo prove they don't have to be at odds.",
+    date: "2025-10-15",
+    category: "UX Strategy",
+    readingTime: "10 min",
+    source: "native",
+    externalUrl: null,
+    featured: false
+  },
+  {
     title: "Why Do All Our Phones Look More or Less the Same?",
     slug: null,
     excerpt: "Featured in UED Institute for User Empowerment. A question worth sitting with — how did the most personal device most of us own end up looking identical?",
