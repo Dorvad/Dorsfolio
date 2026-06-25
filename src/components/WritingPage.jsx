@@ -387,14 +387,20 @@ function WritingPostPage({ slug }) {
     marginBottom: "32px"
   };
 
-  const placeholderStyle = {
-    padding: "40px 24px",
-    textAlign: "center",
-    borderRadius: isWin95 ? 0 : isCarbon ? 0 : "12px",
-    border: isCarbon ? "1px dashed #525252" : `1.5px dashed ${tokens ? tokens.border : "#e5e7eb"}`,
-    color: tokens ? tokens.muted : "#9ca3af",
-    fontSize: "14px",
-    fontFamily: tokens ? tokens.monoFont || tokens.font : "monospace"
+  const newsletterBannerStyle = {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "6px",
+    fontSize: "12px",
+    fontFamily: tokens ? tokens.monoFont || tokens.font : "monospace",
+    letterSpacing: "0.03em",
+    textDecoration: "none",
+    color: tokens ? tokens.accent : "#6366f1",
+    background: isCarbon ? "#1a3a2a" : isWin95 ? "#e0e8e0" : "rgba(99,102,241,0.07)",
+    border: isCarbon ? "1px solid #2d6a4f" : isWin95 ? "inset -1px -1px 0 #fff, inset 1px 1px 0 #808080" : "1px solid rgba(99,102,241,0.2)",
+    borderRadius: isWin95 ? 0 : isCarbon ? 0 : "6px",
+    padding: isWin95 ? "2px 8px" : "4px 12px",
+    marginBottom: "28px"
   };
 
   const textColor    = isCarbon ? "#c6c6c6" : tokens ? tokens.text    : "#374151";
@@ -446,10 +452,15 @@ function WritingPostPage({ slug }) {
 
       <p style={ledeStyle}>{post.excerpt}</p>
 
-      {htmlContent
-        ? <div className="prose-content" dangerouslySetInnerHTML={{ __html: htmlContent }} />
-        : <div style={placeholderStyle}>Full post content goes here.</div>
-      }
+      {post.newsletterUrl && (
+        <a href={post.newsletterUrl} target="_blank" rel="noopener noreferrer" style={newsletterBannerStyle}>
+          Also published in my newsletter ↗
+        </a>
+      )}
+
+      {htmlContent && (
+        <div className="prose-content" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+      )}
 
       <div style={{ marginTop: "64px", paddingTop: "32px", borderTop: isCarbon ? `1px solid #393939` : `1px solid ${tokens ? tokens.border : "#e5e7eb"}` }}>
         <a href="#/writing" style={backStyle}>← Back to Writing</a>
