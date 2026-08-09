@@ -757,7 +757,11 @@ function BranchlabPlayerBlock({ block, ctx }) {
 function VideoBlock({ block, ctx }) {
   const { tokens } = ctx;
   const isWin95 = tokens.name === "Windows 95";
-  const { title, src, poster, caption } = block;
+  const { title, src, poster, caption, aspect, maxWidth } = block;
+  const isPortrait = aspect ? (() => {
+    const [w, h] = String(aspect).split("/").map(Number);
+    return w && h && h > w;
+  })() : false;
   return (
     <section style={{ margin: "48px 0" }}>
       {title && <BlockTitle tokens={tokens}>{title}</BlockTitle>}
@@ -768,9 +772,11 @@ function VideoBlock({ block, ctx }) {
           ? `2px solid ${tokens.border}`
           : `1px solid ${tokens.border}`,
         boxShadow: isWin95 ? "none" : tokens.shadow,
-        aspectRatio: "16/9",
+        aspectRatio: aspect || "16/9",
         position: "relative",
-        background: "#000"
+        background: "#000",
+        maxWidth: maxWidth || (isPortrait ? "min(360px, 100%)" : undefined),
+        margin: isPortrait ? "0 auto" : undefined
       }}>
         <video
           src={src}

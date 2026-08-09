@@ -75,6 +75,18 @@ function SkinSelectionScreen() {
           What kind of person are you?
         </h1>
 
+        <p style={{
+          fontSize: "clamp(15px, 2vw, 17px)",
+          color: "#6c6c70",
+          maxWidth: "44ch",
+          lineHeight: 1.55,
+          margin: "16px 0 0",
+          textWrap: "balance",
+          animation: reduced ? "none" : "fadeUp 0.5s cubic-bezier(.2,.8,.2,1) 0.18s both"
+        }}>
+          Your answer picks the interface for Dor Vadai's portfolio — same work, four different worlds.
+        </p>
+
         <ul style={{
           listStyle: "none",
           padding: 0,
@@ -144,7 +156,7 @@ function ChoiceButton({ id, label, onPick, pressed, reduced, index }) {
         transition: reduced
           ? "none"
           : "transform 180ms cubic-bezier(.2,.8,.2,1), box-shadow 180ms ease, background 120ms ease",
-        opacity: 0,
+        opacity: reduced ? 1 : 0,
         animation: reduced ? "none" : `fadeUp 360ms cubic-bezier(.2,.8,.2,1) ${index * 60}ms both`
       }}
     >

@@ -3,8 +3,23 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Dorsfolio — one portfolio, four interface worlds</title>
-  <meta name="description" content="Dor's portfolio: learning technology, product design, brand. Explore it through Mac/iOS, Windows 95, Material You, or IBM Carbon interfaces." />
+  <title>Dor Vadai — Dorsfolio · Product & Learning Design</title>
+  <meta name="description" content="Dor Vadai's portfolio: product design, UX, and learning technology — including ElmTrackr, a shift-tracking app live on Google Play. Explore it through Mac/iOS, Windows 95, Material You, or IBM Carbon interfaces." />
+  <meta name="theme-color" content="#1c1c1e" />
+  <link rel="canonical" href="https://www.dorsfolio.online/" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%235b35d5'/%3E%3Cstop offset='1' stop-color='%230a84ff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-family='Inter,system-ui,sans-serif' font-size='34' font-weight='700' fill='white' text-anchor='middle'%3ED%3C/text%3E%3C/svg%3E" />
+
+  <!-- Social sharing -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Dorsfolio" />
+  <meta property="og:title" content="Dor Vadai — Product & Learning Design" />
+  <meta property="og:description" content="Product design, UX, and learning technology — including ElmTrackr, a shift-tracking app live on Google Play. One portfolio, four interface worlds." />
+  <meta property="og:url" content="https://www.dorsfolio.online/" />
+  <meta property="og:image" content="https://www.dorsfolio.online/projects/elmtrackr/dashboard-home.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Dor Vadai — Product & Learning Design" />
+  <meta name="twitter:description" content="Product design, UX, and learning technology — one portfolio, four interface worlds." />
+  <meta name="twitter:image" content="https://www.dorsfolio.online/projects/elmtrackr/dashboard-home.jpg" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -82,11 +97,19 @@
 </head>
 <body>
   <div id="root"></div>
+  <noscript>
+    <div style="max-width:560px;margin:20vh auto 0;padding:0 24px;color:#f4f3ef;font-family:system-ui,sans-serif;line-height:1.6">
+      <h1 style="font-size:22px">Dor Vadai — Dorsfolio</h1>
+      <p>This portfolio is an interactive app and needs JavaScript to run.</p>
+      <p>You can still reach me at <a href="mailto:dor1612@gmail.com" style="color:#9ec1ff">dor1612@gmail.com</a>
+      or on <a href="https://www.linkedin.com/in/dor-vadai-071102240/" style="color:#9ec1ff">LinkedIn</a>.</p>
+    </div>
+  </noscript>
 
-  <!-- React + Babel -->
-  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <!-- React + Babel — vendored locally: no third-party CDN dependency at runtime -->
+  <script src="vendor/react.production.min.js"></script>
+  <script src="vendor/react-dom.production.min.js"></script>
+  <script src="vendor/babel.min.js"></script>
 
   <!-- Data layer (plain JS) -->
   <script src="src/data/caseStudies.js"></script>

@@ -368,40 +368,47 @@ window.caseStudies = [
   {
     slug: "elmtrackr",
     title: "ElmTrackr",
-    subtitle: "A personal shift-tracking app for hourly workers.",
+    subtitle: "A shift-tracking and pay app for hourly workers — live on Google Play.",
     category: "UX / Product",
     categories: ["UX / Product", "Internal Tools"],
-    year: "2025",
-    role: "Product design, UX, UI, front-end product thinking",
-    status: "Functional prototype",
+    year: "2025–2026",
+    role: "Product design, UX, UI, product ownership — from prototype to shipped app",
+    status: "Live on Google Play",
     coverImage: "/projects/elmtrackr/dashboard-home.jpg",
     accent: "#5b35d5",
-    tags: ["UX", "Mobile", "Productivity", "Internal Tool", "Next.js"],
+    tags: ["UX", "Mobile", "Android", "Wear OS", "Productivity", "Shipped"],
     summary:
-      "ElmTrackr is a mobile-first shift-tracking app designed for hourly workers who need a simple way to clock in, clock out, review their shifts, and understand how much they are earning.",
+      "ElmTrackr is a shift-tracking and pay-estimation app for hourly workers: clock in, review the month, and know what those hours should be worth under your real pay rules. What began as a web prototype is now a native Android app with a Wear OS companion, published on Google Play in Hebrew and English.",
     challenge:
-      "Hourly workers rely on memory, messages, and spreadsheets to track their time. Monthly salary expectations stay unclear until payday, overtime and special rates are hard to calculate, and small reimbursements like travel refunds are easy to forget.",
+      "Hourly workers rely on memory, messages, and spreadsheets to track their time. Monthly pay stays unclear until payday, overtime and rest-day premiums are hard to calculate by hand, and small reimbursements like travel refunds are easy to forget. The deeper challenge: earning enough trust that someone keeps a personal work log in your app every single day.",
     outcome:
-      "A lightweight personal tool that answers three questions fast: Am I working right now? How much did I work this month? What should I review before payroll?",
+      "A shipped product. ElmTrackr tells a worker, at any moment and without a network connection, how many hours they have worked and what those hours should be worth — including the overtime and weekend-rest premiums their real payslip uses.",
     metrics: [
-      { label: "Platform", value: "Mobile-first", hint: "Next.js · React · Supabase" },
-      { label: "Sections", value: "5", hint: "Home · Shifts · Reports · Projects · Settings" },
-      { label: "Status", value: "Prototype", hint: "Functional end-to-end" }
+      { label: "Platform", value: "Android + Wear OS", hint: "Native app · widgets · watch tile" },
+      { label: "Pay rules", value: "5 regions", hint: "Israel · US · California · UK · EU" },
+      { label: "Status", value: "v1.2 live", hint: "Google Play · Hebrew + English" }
     ],
     recruiterInsight: {
-      headline: "A pocket-sized tool that tells hourly workers what they're owed — without waiting for payday to find out.",
-      problem: "Hourly workers track their time with memory, messages, and spreadsheets, so monthly pay stays unclear and small reimbursements are easy to forget.",
-      users: "Hourly workers who want a fast, personal way to clock in and out and understand what they've earned so far.",
-      role: "Product design, UX, UI, and front-end product thinking.",
-      contribution: "Designed the core flows around three everyday questions, then built a working prototype end-to-end with Next.js and Supabase to test it with real data.",
-      outcome: "A functional prototype that answers 'Am I working now? How much have I earned this month? What should I check before payday?' in a few taps."
+      headline: "A personal pay tracker for hourly workers — designed, built, and shipped to Google Play as a solo product.",
+      problem: "Hourly workers track their time with memory, messages, and spreadsheets, so monthly pay stays unclear, premium rates go unchecked, and small reimbursements are forgotten.",
+      users: "Hourly and shift workers — students, retail, security, healthcare — whose payslips involve overtime and rest-day premium ladders most people can't verify by hand.",
+      role: "Product design, UX, UI, and product ownership across the full journey from prototype to store release.",
+      contribution: "Designed the core flows around three everyday questions, validated them in a working web prototype, then drove the product to a native Android + Wear OS release — pay-rule engine, offline-first privacy posture, and a bilingual RTL interface included.",
+      outcome: "A live Google Play app, now on version 1.2 — with a watch app, home-screen widgets, travel-refund tracking, and pay estimates workers can check against their payslip."
     },
     sections: [
       {
         type: "text",
         title: "The situation",
         body:
-          "ElmTrackr started from a very practical need: shift work creates small but persistent moments of uncertainty. Did I clock in? How many hours did I work this month? What is my estimated gross pay? Did I remember to report travel refunds? Instead of building a heavy HR system, the goal was a lightweight personal tool that gives workers clarity in the moments they actually need it."
+          "ElmTrackr started from a very practical need: shift work creates small but persistent moments of uncertainty. Did I clock in? How many hours did I work this month? What is my estimated gross pay? Did I remember to report travel refunds? Instead of building a heavy HR system, the goal was a lightweight personal tool that gives workers clarity in the moments they actually need it. That idea has since traveled the full distance — from wireframes, to a working web prototype, to a native Android app published on Google Play."
+      },
+      {
+        type: "links",
+        title: "See it live",
+        items: [
+          { label: "ElmTrackr on Google Play", href: "https://play.google.com/store/apps/details?id=com.elmlaunch.myapp" }
+        ]
       },
       {
         type: "gallery",
@@ -451,7 +458,8 @@ window.caseStudies = [
           { title: "Discover", body: "Mapped the small moments of uncertainty around shift work: starting a shift, ending it, reconstructing the month, checking pay, realizing a mistake." },
           { title: "Define", body: "Organized the product around three layers — immediate action, monthly review, and payroll confidence — to keep every feature focused." },
           { title: "Design", body: "Chose a soft, mobile-first, card-based visual direction. The app should feel like a personal utility, not a corporate HR tool." },
-          { title: "Build", body: "Built as a Next.js web app with Supabase, which allowed testing real flows — active shifts, month switching, pay calculations, reminders — rather than only static prototypes." }
+          { title: "Prototype", body: "Built first as a Next.js web app with Supabase, which allowed testing real flows — active shifts, month switching, pay calculations, reminders — rather than only static prototypes." },
+          { title: "Ship", body: "Rebuilt the product natively for Android with a Wear OS companion, hardened the pay engine against real labor-law rules, localized it for Hebrew and English, and released it on Google Play." }
         ]
       },
       {
@@ -499,9 +507,9 @@ window.caseStudies = [
       },
       {
         type: "image",
-        title: "Desktop view",
+        title: "Desktop view (web prototype)",
         image: "/projects/elmtrackr/dashboard-desktop.jpg",
-        caption: "The same data model renders in a wider layout on desktop."
+        caption: "The prototype phase — the same data model rendered in a wider desktop layout before the product went native."
       },
       {
         type: "gallery",
@@ -512,25 +520,57 @@ window.caseStudies = [
         ]
       },
       {
+        type: "text",
+        title: "From prototype to shipped product",
+        body:
+          "The web prototype proved the flows, but a tool people are meant to open every working day belongs on the device in their pocket — working offline, on the lock screen, and on their wrist. So ElmTrackr was rebuilt as a native Android app (Kotlin + Jetpack Compose) with a Wear OS companion, home-screen widgets, and a notification clock-out action. The moment of clocking in had to be available wherever the user already is — not behind a browser tab."
+      },
+      {
+        type: "featureList",
+        title: "What shipping demanded",
+        items: [
+          { title: "A pay engine that matches real payslips", body: "The heart of the product is a region-aware pay engine: Israeli labor-law overtime ladders and weekly-rest premiums with correct stacking, plus presets for US federal, California, UK, and EU rules. An estimate a worker can't reconcile with a payslip is worse than no estimate." },
+          { title: "A trust posture worth keeping a work log in", body: "Offline-first, encrypted local storage, fully functional without an account, and in-app data export and deletion. A worker-side tool is valuable precisely because it belongs to the worker — not the employer." },
+          { title: "Clock-in surfaces everywhere", body: "Watch app with a tile and complication, five widget styles, a notification action, and app shortcuts. Habit is the retention engine for a daily utility, so the primary action lives on every surface." },
+          { title: "Two languages, one experience", body: "Full Hebrew and English localization with right-to-left layout throughout — screens, reports, exports, and the watch." },
+          { title: "The unglamorous ground game", body: "Cross-device sync that survives conflicts, receipt capture with on-device OCR for travel refunds, CSV and PDF exports, and an onboarding cut from eleven screens to four." }
+        ]
+      },
+      {
+        type: "video",
+        title: "Version 1.2 release film",
+        src: "/projects/elmtrackr/release-1-2-promo.mp4",
+        poster: "/projects/elmtrackr/release-1-2-poster.jpg",
+        aspect: "478/850",
+        caption: "The v1.2 release promo (Hebrew) — Paid Projects with a live effective hourly rate, and three new clock faces: Metro, Vinyl, and Luna."
+      },
+      {
+        type: "text",
+        title: "Still evolving",
+        body:
+          "Version 1.2 added Paid Projects — tracking freelance and fixed-fee work alongside shifts, with a live effective hourly rate — plus a growing gallery of native clock faces that make a utility feel like a personal object. Each release ships with the same discipline: every pay figure on a stated accounting basis, every screen reading from the same rates, and a plain-language change record."
+      },
+      {
         type: "beforeAfter",
         title: "What changed",
         before: { label: "Before", body: "Memory, WhatsApp threads, and spreadsheets. Monthly pay unclear until the employer sends it. Easy to forget overtime rates or travel refunds." },
-        after:  { label: "After",  body: "One app to clock in, review the month, see estimated pay, and check refunds — all before payday. A personal record the worker owns and controls." }
+        after:  { label: "After",  body: "A published app that clocks in from phone, watch, or widget, estimates pay under real labor-law rules, and keeps the record in the worker's own hands — all before payday." }
       },
       {
         type: "metrics",
-        title: "Prototype scope",
+        title: "Shipped scope",
         items: [
-          { label: "Core flow", value: "End-to-end", hint: "Clock in → review → report → export" },
-          { label: "Pay types", value: "4 tracked", hint: "Regular · Overtime · Weekend · Holiday" },
-          { label: "Export", value: "CSV + PDF", hint: "Monthly reports exportable" }
+          { label: "Release", value: "v1.2", hint: "Live on Google Play" },
+          { label: "Surfaces", value: "8+", hint: "Phone · watch · tile · widgets · notification" },
+          { label: "Pay rules", value: "5 regions", hint: "IL · US · CA · UK · EU + custom" },
+          { label: "Languages", value: "2", hint: "Hebrew (RTL) + English" }
         ]
       },
       {
         type: "insight",
         title: "What I learned",
         body:
-          "Small operational tools can still require deep product thinking. The hardest part was not designing a clock-in button — it was deciding what information should appear around it, what should wait for reports, and how much complexity the user should see at any moment. I also learned that 'simple' tools become valuable when they respect messy real-life behavior: forgetting, correcting, reviewing, and checking. A good shift tracker should not only record time. It should help the user feel calm and in control."
+          "Small operational tools can still require deep product thinking. The hardest part was never the clock-in button — it was deciding what information should appear around it, and how much complexity the user should see at any moment. Shipping taught a second lesson: a prototype earns interest, but a product earns trust. Getting to Google Play meant caring about things no mockup surfaces — pay figures that reconcile with a payslip, data that survives a lost phone, an interface that reads naturally in two directions. That distance, from a promising demo to something strangers rely on for their income, is where the real product work lives."
       },
       { type: "caseStudyGallery" }
     ]
