@@ -15,8 +15,13 @@
 //
 // SUPPORTED BLOCK TYPES (see components/case-study-blocks/):
 //   text         { type, title?, body }
-//   image        { type, title?, image, caption? }
-//   gallery      { type, title?, images: [{src, caption?}] }
+//   image        { type, title?, image, caption?, fit?, bg? }
+//   gallery      { type, title?, images: [{src, caption?, fit?, bg?}] }
+//     fit — objectFit for the tile. Defaults to "cover", which crops to the
+//           block's frame. Use "contain" for tall, square or very wide art
+//           (sprite sheets, frame strips, portrait cards) so nothing is cut off.
+//     bg  — CSS colour behind the image. Use it for transparent art that would
+//           otherwise wash out against a light skin, e.g. bg: "#17171b"
 //   metrics      { type, title?, items: [{label, value, hint?}] }
 //   quote        { type, body, attribution? }
 //   process      { type, title?, steps: [string | {title, body}] }
@@ -26,9 +31,9 @@
 //   featureList  { type, title?, items: [{title, body}] }
 //   timeline     { type, title?, items: [{date, title, body}] }
 //
-// CATEGORIES used for filters:
-//   "UX / Product", "UI & Branding", "Learning & Development",
-//   "Product Management", "Internal Tools"
+// CATEGORIES used for filters (must also exist in data/portfolioInfo.js `filters`):
+//   "UX / Product", "UI & Branding", "Interaction Design",
+//   "Learning & Development", "Product Management", "Internal Tools"
 // =============================================================================
 
 window.caseStudies = [
@@ -713,6 +718,340 @@ window.caseStudies = [
         title: "What I learned",
         body:
           "This project taught me that product work is not always about building new features. Sometimes the most important product decision is understanding what can realistically be changed — and then designing the best possible experience within those limits. The core VR product already existed. The real challenge was to make it usable, understandable, and meaningful. That required combining UX thinking, educational design, storytelling, and product strategy. It was a reminder that good experience design is not only about screens and interfaces. It is also about context, timing, emotion, and the way a user moves through an experience from beginning to end."
+      },
+      { type: "caseStudyGallery" }
+    ]
+  },
+
+  // ---------------------------------------------------------------------------
+  // 5. Mortal Shontal — mobile-first 2D arcade fighting game
+  // ---------------------------------------------------------------------------
+  {
+    slug: "mortal-shontal",
+    title: "Mortal Shontal",
+    subtitle: "Designing a fighting game that actually feels playable on a phone.",
+    category: "UX / Product",
+    categories: ["UX / Product", "UI & Branding", "Interaction Design"],
+    year: "2026",
+    role: "UX design · Interaction design · Game design · Prototyping",
+    status: "Playable prototype",
+    coverImage: "/projects/mortal-shontal/card-shontal.jpg",
+    accent: "#C2871B",
+    tags: ["Mobile UX", "Game UX", "Interaction Design", "Touch Controls", "Phaser", "Prototyping"],
+    summary:
+      "Mortal Shontal is a mobile-first 2D arcade fighting game built around a deceptively difficult UX problem: fighting games depend on fast, precise and often simultaneous input, while smartphones replace physical controls with a completely flat touchscreen. The goal was not simply to put virtual buttons on top of a fighting game. It was to rethink the experience around thumbs, limited screen space and the absence of tactile feedback, while preserving the immediacy and personality of an arcade fighter.",
+    challenge:
+      "On a controller, players never look at their hands — they feel where the buttons are, hold a direction while attacking, and build muscle memory around physical controls. A touchscreen removes almost all of that. There is no tactile separation between buttons, fingers cover part of the screen, and every control competes with the game for space. A missed input becomes indistinguishable from bad timing — and in a fighting game, that distinction decides matches.",
+    outcome:
+      "A touch-first combat system built around clear thumb zones, true multi-touch input, immediate visual feedback and a HUD that communicates what matters without pulling attention away from the fight.",
+    metrics: [
+      { label: "Combat actions", value: "6", hint: "Two thumb zones · no menus mid-fight" },
+      { label: "Input model", value: "Multi-touch", hint: "Every finger tracked independently" },
+      { label: "Status", value: "Playable prototype", hint: "Phaser · landscape phone and tablet" }
+    ],
+    recruiterInsight: {
+      headline: "An arcade fighting game rebuilt around thumbs — where input design, not art direction, was the core UX problem.",
+      problem: "Fighting games need fast, precise, simultaneous input; a touchscreen offers no tactile separation, covers the screen with fingers, and makes a missed tap feel identical to bad timing.",
+      users: "Mobile players used to console-style fighters, playing in landscape on a phone with two thumbs and no physical buttons.",
+      role: "UX design, interaction design, game design, and prototyping.",
+      contribution: "Reduced the control surface to six actions across two spatial thumb zones, specified true multi-touch handling with edge detection so fast taps are never dropped, and designed a HUD that pushes status to the periphery so the centre of the screen stays gameplay.",
+      outcome: "A playable prototype where the interface disappears once the fight starts — and when players lose, they understand it as a consequence of timing rather than a dropped input."
+    },
+    sections: [
+
+      // ── Opening ────────────────────────────────────────────────────────────
+      {
+        type: "image",
+        title: "Mortal Shontal",
+        image: "/projects/mortal-shontal/logo.png",
+        fit: "contain",
+        caption: "The game logo — arcade-fighter vocabulary, built in Hebrew type."
+      },
+      {
+        type: "text",
+        title: "The situation",
+        body:
+          "Mortal Shontal is a mobile-first 2D arcade fighting game. The premise sounds like an art problem and turns out to be an input problem. Fighting games depend on fast, precise and often simultaneous input, while smartphones replace physical controls with a completely flat touchscreen. The goal was never to put virtual buttons on top of a fighting game — it was to rethink the experience around thumbs, limited screen space and the absence of tactile feedback, while preserving the immediacy and personality of an arcade fighter."
+      },
+
+      // ── The problem ────────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "The challenge",
+        body:
+          "On a controller, players do not need to look at their hands. They can feel where the buttons are, hold a direction while attacking, react quickly and build muscle memory around physical controls. A touchscreen removes almost all of that. There is no tactile separation between buttons. Fingers cover part of the screen. Every control competes with the game for space. And a missed input can feel indistinguishable from bad timing. If a productivity app misses a tap, it feels annoying. If a fighting game misses a tap, the player may lose."
+      },
+      {
+        type: "quote",
+        body:
+          "How can a touchscreen interface stay simple enough for a phone while still supporting the speed and simultaneous actions that make a fighting game feel responsive?",
+        attribution: "The central UX question of the project"
+      },
+
+      // ── The principle ──────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "The design principle",
+        body:
+          "The interface should disappear once the fight starts. I did not want players consciously operating a virtual controller. The goal was a layout that could quickly become muscle memory: movement lives under one thumb, combat under the other, and the game itself remains visually dominant. Instead of recreating a traditional gamepad button by button, the controls were reduced to the actions the game actually needs — six actions, two clear zones, no menus during combat."
+      },
+      {
+        type: "featureList",
+        title: "Six actions, two zones",
+        items: [
+          { title: "Left thumb — movement", body: "Move left · Move right · Jump. Everything that changes where the fighter is sits under one hand." },
+          { title: "Right thumb — combat", body: "Light attack · Heavy attack · Block. Everything that changes what the fighter does sits under the other." }
+        ]
+      },
+      {
+        type: "video",
+        title: "The prototype in motion",
+        src: "/projects/mortal-shontal/demo.mp4",
+        poster: "/projects/mortal-shontal/demo-poster.jpg",
+        aspect: "1280/684",
+        caption: "Fighter select through to a finished round — the two thumb zones, the health bars on the top edges, and the combo counter all working in a real match."
+      },
+
+      // ── 1. Thumbs ──────────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "Designing around thumbs, not pixels",
+        body:
+          "The controls are deliberately split across the bottom corners of the display. Movement sits on the left, combat on the right, and secondary actions such as jump and heavy attack are positioned above the primary row rather than beside it. This creates two distinct interaction zones that can be learned spatially — the player does not need to read labels or search for a button during a fight. After a few interactions, location itself becomes the cue. The buttons are also intentionally large: on mobile, precision should come from the game, not from requiring the player to hit a tiny touch target."
+      },
+      {
+        type: "image",
+        title: "The two zones in play",
+        image: "/projects/mortal-shontal/ui-in-fight.jpg",
+        caption: "Movement bottom-left, combat bottom-right, each cluster inside its own thumb's reach. The direction control is lit here because it is being held — the control confirms the input before the fighter has finished moving."
+      },
+      {
+        type: "insight",
+        title: "Design decision — reachability over screen efficiency",
+        body:
+          "A slightly larger control occupies more visual space, but a missed input has a much higher cost than a few additional pixels of interface."
+      },
+
+      // ── 2. Simultaneous input ──────────────────────────────────────────────
+      {
+        type: "text",
+        title: "Design for simultaneous input, not individual taps",
+        body:
+          "A fighting game is rarely controlled one action at a time. A player may need to move forward while attacking, jump while changing direction, or keep holding block while another finger reaches for an action. That makes standard tap-based mobile interaction insufficient. Mortal Shontal treats each finger as an independent active input, tracking multiple touch points simultaneously so that combinations like move-and-attack or direction-and-jump work the way the game naturally needs to be played. A mobile fighting game should not force the player to adapt their strategy to limitations in the interface."
+      },
+
+      // ── 3. Edge detection ──────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "Fast taps should never disappear",
+        body:
+          "Touchscreens introduce another problem: a quick tap can begin and end between two game frames. For actions such as attacking or jumping, missing that input would make the game feel inconsistent even if the underlying combat system was working correctly. To prevent this, one-shot actions use edge detection — a fast touch is remembered until the game consumes it, while actions that naturally require holding stay active for as long as the finger stays down."
+      },
+      {
+        type: "featureList",
+        title: "Two interaction behaviours",
+        items: [
+          { title: "Tap actions", body: "Jump · Light attack · Heavy attack. Registered on the edge of the touch and held until the game consumes them, so a fast tap between frames is never lost." },
+          { title: "Hold actions", body: "Move · Block. Active for exactly as long as the finger stays down, matching what the player already expects the action to do." }
+        ]
+      },
+      {
+        type: "insight",
+        title: "UX takeaway — consistency is not sameness",
+        body:
+          "Consistency does not always mean identical behaviour. Good interaction design makes controls behave consistently with what the user expects each action to do."
+      },
+
+      // ── 4. Feedback ────────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "Every input needs an immediate response",
+        body:
+          "Physical buttons provide feedback automatically — you feel the button move. Glass does not, so the interface has to replace tactile feedback with visual feedback. Touch controls change appearance the moment they are pressed, confirming the game received the input before the resulting animation has even finished playing. Combat then adds another layer: successful attacks create brief hitstop, stronger attacks create more visual impact, health bars respond to damage, combos appear as they build, and critical health changes the atmosphere at the edges of the screen. These effects are not decoration — they continuously answer whether the touch registered, whether the attack connected, whether the hit was significant, and whether the player is in danger. The faster the game moves, the less time the player has to consciously look for those answers. Good game UX makes them felt."
+      },
+      {
+        type: "gallery",
+        title: "Hit feedback",
+        images: [
+          { src: "/projects/mortal-shontal/fx-impact-star.png", caption: "Impact VFX — the flash that confirms a connected attack, building and decaying across five frames", bg: "#17171b", fit: "contain" },
+          { src: "/projects/mortal-shontal/fx-impact-ring.png", caption: "A heavier burst for stronger attacks — more impact reads as more damage without a number on screen", bg: "#17171b", fit: "contain" }
+        ]
+      },
+      {
+        type: "gallery",
+        title: "Attack readability — Nahorai's chair",
+        images: [
+          { src: "/projects/mortal-shontal/nahorai-chair-pickup.png", caption: "Idle and pick-up — the tell that an attack is coming", fit: "contain" },
+          { src: "/projects/mortal-shontal/nahorai-chair-guard.png", caption: "Guard — the chair held ready", fit: "contain" },
+          { src: "/projects/mortal-shontal/nahorai-chair-overhead.png", caption: "Wind-up — the overhead raise gives the opponent a window to react", fit: "contain" },
+          { src: "/projects/mortal-shontal/nahorai-chair-swing.png", caption: "Swing — motion trails carry the speed of the attack", fit: "contain" },
+          { src: "/projects/mortal-shontal/nahorai-chair-impact.png", caption: "Impact — debris sells the weight of a heavy attack landing", fit: "contain" },
+        ]
+      },
+      {
+        type: "image",
+        title: "Silhouette at speed",
+        image: "/projects/mortal-shontal/nahorai-flying-kick.png",
+        fit: "contain",
+        caption: "The flying kick — poses are drawn to stay readable as a silhouette, because in a fight the player reads shape before detail."
+      },
+      {
+        type: "gallery",
+        title: "Neutral and committed — Arava",
+        images: [
+          { src: "/projects/mortal-shontal/pose-arava-stance.png", caption: "Stance — compact, guarded, weight centred. The pose a player returns to between exchanges.", fit: "contain" },
+          { src: "/projects/mortal-shontal/pose-arava-action.png", caption: "Attack — open and extended. The two silhouettes have to be distinguishable at a glance, mid-fight.", fit: "contain" },
+        ]
+      },
+
+      // ── 5. HUD ─────────────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "Put important information in peripheral vision",
+        body:
+          "The player's attention should stay on the fighters, and that decided where combat information appears. Health bars sit along the top edges of the screen, mirroring the two fighters. The timer stays centred. Combo feedback appears briefly rather than occupying permanent space. When the timer reaches its final seconds it changes colour, and when the player's health becomes critical the warning moves beyond a number or a bar — a red vignette appears around the edges of the screen. That is deliberate. Instead of asking players to move their eyes away from the action and inspect a value, the interface communicates urgency through peripheral vision."
+      },
+      {
+        type: "insight",
+        title: "Design decision — where information lives",
+        body:
+          "Use location for status. Use the edges for urgency. Keep the centre for gameplay."
+      },
+      {
+        type: "image",
+        title: "The HUD at the end of a round",
+        image: "/projects/mortal-shontal/ui-round-win.jpg",
+        caption: "Health bars track the two fighters along the top edges, the combo counter appears in the corner as it builds rather than holding permanent space, and the round result takes the centre only once the fight is over."
+      },
+
+      // ── 6. Character select ────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "Make choices visual before the fight begins",
+        body:
+          "The UX challenge does not start when combat starts. Before a match, players choose a fighter and a stage. Rather than turning this into a series of menus, Mortal Shontal keeps the decisions visible on one screen. Four fighter cards form the main selection area, and selecting one immediately updates a larger preview with the character's artwork, name and identity. The active fighter receives a strong gold highlight and subtle animation, making selection state obvious without relying on explanatory text. Stages use visual thumbnails rather than a dropdown or a text list. Once both decisions are made, one high-salience action remains: Fight."
+      },
+      {
+        type: "image",
+        title: "One screen, every decision",
+        image: "/projects/mortal-shontal/ui-character-select.jpg",
+        caption: "Fighter select — the four cards sit in a single row with the gold highlight carrying selection state, the P1 preview on the left updates the moment a card is chosen, and the stages run as visual thumbnails along the bottom. No menu tree, no confirmation step."
+      },
+      {
+        type: "gallery",
+        title: "The fighter cards",
+        images: [
+          { src: "/projects/mortal-shontal/card-nahorai.jpg", caption: "Nahorai — every card places the fighter in the world they come from", fit: "contain" },
+          { src: "/projects/mortal-shontal/card-arava.jpg", caption: "Arava", fit: "contain" },
+          { src: "/projects/mortal-shontal/card-tomer.jpg", caption: "Tomer", fit: "contain" },
+          { src: "/projects/mortal-shontal/card-shontal.jpg", caption: "Shontal", fit: "contain" },
+        ]
+      },
+      {
+        type: "gallery",
+        title: "Selection preview portraits",
+        images: [
+          { src: "/projects/mortal-shontal/portrait-nahorai.png", caption: "Nahorai — the larger preview that updates the moment a card is selected", fit: "contain" },
+          { src: "/projects/mortal-shontal/portrait-arava.png", caption: "Arava", fit: "contain" },
+          { src: "/projects/mortal-shontal/portrait-tomer.png", caption: "Tomer", fit: "contain" },
+          { src: "/projects/mortal-shontal/portrait-shontal.png", caption: "Shontal", fit: "contain" },
+        ]
+      },
+      {
+        type: "process",
+        title: "The pre-fight flow",
+        steps: [
+          { title: "Explore", body: "All four fighters and the available stages are visible at once — no menu tree to descend." },
+          { title: "Select", body: "Choosing a card updates the large preview immediately, with a gold highlight carrying the selection state." },
+          { title: "Confirm", body: "The stage is chosen from visual thumbnails rather than a text list." },
+          { title: "Fight", body: "One high-salience action closes the screen. No confirmation step, no hidden settings, no ambiguity about what happens next." }
+        ]
+      },
+
+      // ── 7-9. Menu, pause, settings ─────────────────────────────────────────
+      {
+        type: "text",
+        title: "Show unavailable features without creating dead ends",
+        body:
+          "The main menu establishes a clear hierarchy between actions. Single Player is the primary action. Settings is available but visually secondary. Multiplayer is visible as a future feature, but explicitly marked as coming soon and styled as disabled. This may seem like a small detail, but disabled states matter: a feature that looks interactive and does nothing feels broken, while a feature that visibly communicates its status becomes information about the product. The interface sets the correct expectation before the user attempts an action."
+      },
+      {
+        type: "text",
+        title: "Pausing should preserve the player's context",
+        body:
+          "Settings can be opened directly during combat. Instead of ending the match or navigating away from it, opening settings pauses the fight and places the controls over the existing experience. Players can adjust music volume, sound effects, timer behaviour or enemy AI and return to exactly where they were. There is also a deliberate escape route back to character selection. The principle is simple: temporary actions should not destroy permanent context. Changing a setting should feel like an interruption, not a navigation event."
+      },
+      {
+        type: "text",
+        title: "Give players control over the intensity of the experience",
+        body:
+          "Game settings are not treated as a generic preferences screen — they directly change how the game behaves. Players can choose a timed or unlimited match, enable or disable enemy AI, and independently control music and sound-effect volume. This also makes the prototype useful in different contexts: a player learning the controls can remove the timer, someone exploring movement can disable the opponent, and someone testing combat feedback can isolate sound effects. Settings therefore support both preference and mastery."
+      },
+
+      // ── Validation ─────────────────────────────────────────────────────────
+      {
+        type: "featureList",
+        title: "Mobile-first validation",
+        items: [
+          { title: "Real device layouts", body: "Phone and tablet in landscape orientation, with responsive scaling across screen sizes rather than a scaled-down desktop build." },
+          { title: "Touch targets and reach", body: "Large, reachable controls that stay clear of the fighters and the HUD." },
+          { title: "Input fidelity", body: "Simultaneous multi-touch and very fast taps both had to survive on real hardware, not just in a desktop browser." },
+          { title: "Browser behaviour", body: "Scrolling, bounce, zoom and text selection all suppressed during play, with full-screen behaviour handled." },
+          { title: "iOS specifics", body: "iPhone safe areas and the bottom home indicator accounted for, so no control sits under a system gesture." }
+        ]
+      },
+
+      // ── Visual language ────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "The visual language",
+        body:
+          "Mortal Shontal deliberately borrows the visual vocabulary of classic arcade fighting games without recreating a specific title. Dark backgrounds keep the characters prominent. Gold and orange establish primary actions and selections. Heavy type, dramatic transitions, scanlines and arcade-style labels give the menus personality, and character artwork dominates the selection experience. The result is an interface where usability and theme reinforce each other — the UX communicates hierarchy, while the visual design makes every interaction feel like part of the game world."
+      },
+      {
+        type: "gallery",
+        title: "Idle loops",
+        images: [
+          { src: "/projects/mortal-shontal/idle-sheet-nahorai.png", caption: "Nahorai — idle loop, six frames. Even standing still, a fighter has to look ready.", fit: "contain" },
+          { src: "/projects/mortal-shontal/idle-sheet-shontal.png", caption: "Shontal — idle loop sheet, eight frames", fit: "contain" },
+          { src: "/projects/mortal-shontal/idle-sheet-tomer.png", caption: "Tomer — idle loop, eight frames", fit: "contain" },
+          { src: "/projects/mortal-shontal/idle-sheet-arava-9.png", caption: "Arava — idle loop, revised pass with additional frames for a softer cycle", fit: "contain" },
+        ]
+      },
+      {
+        type: "gallery",
+        title: "Roster sprites",
+        images: [
+          { src: "/projects/mortal-shontal/sprite-nahorai.png", caption: "Nahorai", fit: "contain" },
+          { src: "/projects/mortal-shontal/sprite-arava.png", caption: "Arava", fit: "contain" },
+          { src: "/projects/mortal-shontal/sprite-tomer.png", caption: "Tomer", fit: "contain" },
+          { src: "/projects/mortal-shontal/sprite-shontal.png", caption: "Shontal — each fighter has to be identifiable at roster size, not just at full resolution", fit: "contain" },
+        ]
+      },
+      {
+        type: "image",
+        title: "Beyond the current roster",
+        image: "/projects/mortal-shontal/card-ido-fullstack.jpg",
+        fit: "contain",
+        caption: "Ido Fullstack — a character designed past the four playable fighters. The card format is built to extend, so adding a fighter is an art task rather than a layout problem."
+      },
+
+      // ── Reflection ─────────────────────────────────────────────────────────
+      {
+        type: "insight",
+        title: "What this project taught me",
+        body:
+          "In most digital products, friction makes a task slower. In a game, friction can change the perceived rules. If a player presses a button and nothing happens, they do not think 'the interface missed my input' — they think 'the game didn't let me do that.' That makes responsiveness, feedback and input clarity part of perceived fairness. The most important design goal became making sure that when players lose, they understand why: it should feel like the consequence of a decision, a mistimed attack or a better opponent, never the interface. That is what good UX in a fighting game ultimately means to me — the controls stop being something the player uses, and become something the player trusts."
+      },
+      {
+        type: "metrics",
+        title: "At a glance",
+        items: [
+          { label: "Combat actions", value: "6", hint: "Three per thumb" },
+          { label: "Interaction zones", value: "2", hint: "Movement left · combat right" },
+          { label: "Input model", value: "Multi-touch", hint: "Every finger tracked independently" },
+          { label: "Status", value: "Playable prototype", hint: "Phaser · landscape phone and tablet" }
+        ]
       },
       { type: "caseStudyGallery" }
     ]

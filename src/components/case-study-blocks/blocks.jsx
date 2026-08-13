@@ -65,8 +65,11 @@ function ImageBlock({ block, ctx }) {
   return (
     <section style={{ margin: "40px 0" }}>
       {block.title && <BlockTitle tokens={tokens}>{block.title}</BlockTitle>}
+      {/* `bg` and `fit` are optional: `fit: "contain"` shows tall or square art whole
+          rather than cropping it to the 16/10 frame, and `bg` supplies a backdrop for
+          transparent art. Omitted, the block crops to 16/10 exactly as before. */}
       <div style={{
-        background: tokens.surfaceAlt || tokens.surfaceSolid,
+        background: block.bg || tokens.surfaceAlt || tokens.surfaceSolid,
         border: `1px solid ${tokens.border}`,
         borderRadius: tokens.radius,
         overflow: "hidden",
@@ -79,7 +82,7 @@ function ImageBlock({ block, ctx }) {
           accent={project?.accent}
           alt={block.caption || block.title || ""}
           onClick={openLightbox}
-          style={{ width: "100%", height: "auto", display: "block", aspectRatio: "16/10", objectFit: "cover" }}
+          style={{ width: "100%", height: "auto", display: "block", aspectRatio: "16/10", objectFit: block.fit || "cover" }}
         />
       </div>
       {block.caption && <Caption tokens={tokens}>{block.caption}</Caption>}
@@ -102,8 +105,11 @@ function GalleryBlock({ block, ctx }) {
       }}>
         {block.images.map((img, i) => (
           <figure key={i} style={{ margin: 0 }}>
+            {/* `bg` gives transparent art (VFX sheets, cut-out sprites) a backdrop of
+                its own; `fit: "contain"` letterboxes wide frame strips instead of
+                cropping them. Both are optional — omitted, the tile behaves as before. */}
             <div style={{
-              background: tokens.surfaceAlt || tokens.surfaceSolid,
+              background: img.bg || tokens.surfaceAlt || tokens.surfaceSolid,
               border: `1px solid ${tokens.border}`,
               borderRadius: tokens.radius,
               overflow: "hidden",
@@ -116,7 +122,7 @@ function GalleryBlock({ block, ctx }) {
                 accent={project?.accent}
                 alt={img.caption || ""}
                 onClick={() => window.lightboxOpen && window.lightboxOpen(lbItems, i)}
-                style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", display: "block" }}
+                style={{ width: "100%", aspectRatio: "4/3", objectFit: img.fit || "cover", display: "block" }}
               />
             </div>
             {img.caption && <Caption tokens={tokens}>{img.caption}</Caption>}
