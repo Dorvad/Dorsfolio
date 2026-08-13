@@ -30,6 +30,7 @@ window.portfolioInfo = {
     "All",
     "UX / Product",
     "UI & Branding",
+    "Interaction Design",
     "Learning & Development",
     "Product Management",
     "Internal Tools"
