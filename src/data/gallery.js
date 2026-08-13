@@ -82,7 +82,8 @@ window.galleryImages = [
 
   // ---- Mortal Shontal (מורטל שונטל) — mobile fighting game -------------------
   // Key art
-  { src: "projects/mortal-shontal/logo.png",                  caption: "Mortal Shontal — game logo",                              project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/cover.png",                 caption: "Mortal Shontal — title key art",                          project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/logo.png",                  caption: "Mortal Shontal — logo, earlier flat version",             project: "Mortal Shontal" },
 
   // In-game screens
   { src: "projects/mortal-shontal/ui-character-select.jpg",   caption: "Fighter select — four cards, live preview, stage thumbnails", project: "Mortal Shontal" },
