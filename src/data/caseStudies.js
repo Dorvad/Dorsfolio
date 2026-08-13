@@ -803,6 +803,14 @@ window.caseStudies = [
           { title: "Right thumb — combat", body: "Light attack · Heavy attack · Block. Everything that changes what the fighter does sits under the other." }
         ]
       },
+      {
+        type: "video",
+        title: "The prototype in motion",
+        src: "/projects/mortal-shontal/demo.mp4",
+        poster: "/projects/mortal-shontal/demo-poster.jpg",
+        aspect: "1280/684",
+        caption: "Fighter select through to a finished round — the two thumb zones, the health bars on the top edges, and the combo counter all working in a real match."
+      },
 
       // ── 1. Thumbs ──────────────────────────────────────────────────────────
       {
@@ -810,6 +818,12 @@ window.caseStudies = [
         title: "Designing around thumbs, not pixels",
         body:
           "The controls are deliberately split across the bottom corners of the display. Movement sits on the left, combat on the right, and secondary actions such as jump and heavy attack are positioned above the primary row rather than beside it. This creates two distinct interaction zones that can be learned spatially — the player does not need to read labels or search for a button during a fight. After a few interactions, location itself becomes the cue. The buttons are also intentionally large: on mobile, precision should come from the game, not from requiring the player to hit a tiny touch target."
+      },
+      {
+        type: "image",
+        title: "The two zones in play",
+        image: "/projects/mortal-shontal/ui-in-fight.jpg",
+        caption: "Movement bottom-left, combat bottom-right, each cluster inside its own thumb's reach. The direction control is lit here because it is being held — the control confirms the input before the fighter has finished moving."
       },
       {
         type: "insight",
@@ -865,19 +879,19 @@ window.caseStudies = [
       },
       {
         type: "gallery",
-        title: "Attack readability — Nehorai's chair",
+        title: "Attack readability — Nahorai's chair",
         images: [
-          { src: "/projects/mortal-shontal/nehorai-chair-pickup.png", caption: "Idle and pick-up — the tell that an attack is coming", fit: "contain" },
-          { src: "/projects/mortal-shontal/nehorai-chair-guard.png", caption: "Guard — the chair held ready", fit: "contain" },
-          { src: "/projects/mortal-shontal/nehorai-chair-overhead.png", caption: "Wind-up — the overhead raise gives the opponent a window to react", fit: "contain" },
-          { src: "/projects/mortal-shontal/nehorai-chair-swing.png", caption: "Swing — motion trails carry the speed of the attack", fit: "contain" },
-          { src: "/projects/mortal-shontal/nehorai-chair-impact.png", caption: "Impact — debris sells the weight of a heavy attack landing", fit: "contain" },
+          { src: "/projects/mortal-shontal/nahorai-chair-pickup.png", caption: "Idle and pick-up — the tell that an attack is coming", fit: "contain" },
+          { src: "/projects/mortal-shontal/nahorai-chair-guard.png", caption: "Guard — the chair held ready", fit: "contain" },
+          { src: "/projects/mortal-shontal/nahorai-chair-overhead.png", caption: "Wind-up — the overhead raise gives the opponent a window to react", fit: "contain" },
+          { src: "/projects/mortal-shontal/nahorai-chair-swing.png", caption: "Swing — motion trails carry the speed of the attack", fit: "contain" },
+          { src: "/projects/mortal-shontal/nahorai-chair-impact.png", caption: "Impact — debris sells the weight of a heavy attack landing", fit: "contain" },
         ]
       },
       {
         type: "image",
         title: "Silhouette at speed",
-        image: "/projects/mortal-shontal/nehorai-flying-kick.png",
+        image: "/projects/mortal-shontal/nahorai-flying-kick.png",
         fit: "contain",
         caption: "The flying kick — poses are drawn to stay readable as a silhouette, because in a fight the player reads shape before detail."
       },
@@ -903,6 +917,12 @@ window.caseStudies = [
         body:
           "Use location for status. Use the edges for urgency. Keep the centre for gameplay."
       },
+      {
+        type: "image",
+        title: "The HUD at the end of a round",
+        image: "/projects/mortal-shontal/ui-round-win.jpg",
+        caption: "Health bars track the two fighters along the top edges, the combo counter appears in the corner as it builds rather than holding permanent space, and the round result takes the centre only once the fight is over."
+      },
 
       // ── 6. Character select ────────────────────────────────────────────────
       {
@@ -912,10 +932,16 @@ window.caseStudies = [
           "The UX challenge does not start when combat starts. Before a match, players choose a fighter and a stage. Rather than turning this into a series of menus, Mortal Shontal keeps the decisions visible on one screen. Four fighter cards form the main selection area, and selecting one immediately updates a larger preview with the character's artwork, name and identity. The active fighter receives a strong gold highlight and subtle animation, making selection state obvious without relying on explanatory text. Stages use visual thumbnails rather than a dropdown or a text list. Once both decisions are made, one high-salience action remains: Fight."
       },
       {
+        type: "image",
+        title: "One screen, every decision",
+        image: "/projects/mortal-shontal/ui-character-select.jpg",
+        caption: "Fighter select — the four cards sit in a single row with the gold highlight carrying selection state, the P1 preview on the left updates the moment a card is chosen, and the stages run as visual thumbnails along the bottom. No menu tree, no confirmation step."
+      },
+      {
         type: "gallery",
         title: "The fighter cards",
         images: [
-          { src: "/projects/mortal-shontal/card-nehorai.jpg", caption: "Nehorai — every card places the fighter in the world they come from", fit: "contain" },
+          { src: "/projects/mortal-shontal/card-nahorai.jpg", caption: "Nahorai — every card places the fighter in the world they come from", fit: "contain" },
           { src: "/projects/mortal-shontal/card-arava.jpg", caption: "Arava", fit: "contain" },
           { src: "/projects/mortal-shontal/card-tomer.jpg", caption: "Tomer", fit: "contain" },
           { src: "/projects/mortal-shontal/card-shontal.jpg", caption: "Shontal", fit: "contain" },
@@ -925,7 +951,7 @@ window.caseStudies = [
         type: "gallery",
         title: "Selection preview portraits",
         images: [
-          { src: "/projects/mortal-shontal/portrait-nehorai.png", caption: "Nehorai — the larger preview that updates the moment a card is selected", fit: "contain" },
+          { src: "/projects/mortal-shontal/portrait-nahorai.png", caption: "Nahorai — the larger preview that updates the moment a card is selected", fit: "contain" },
           { src: "/projects/mortal-shontal/portrait-arava.png", caption: "Arava", fit: "contain" },
           { src: "/projects/mortal-shontal/portrait-tomer.png", caption: "Tomer", fit: "contain" },
           { src: "/projects/mortal-shontal/portrait-shontal.png", caption: "Shontal", fit: "contain" },
@@ -986,7 +1012,7 @@ window.caseStudies = [
         type: "gallery",
         title: "Idle loops",
         images: [
-          { src: "/projects/mortal-shontal/idle-sheet-nehorai.png", caption: "Nehorai — idle loop, six frames. Even standing still, a fighter has to look ready.", fit: "contain" },
+          { src: "/projects/mortal-shontal/idle-sheet-nahorai.png", caption: "Nahorai — idle loop, six frames. Even standing still, a fighter has to look ready.", fit: "contain" },
           { src: "/projects/mortal-shontal/idle-sheet-shontal.png", caption: "Shontal — idle loop sheet, eight frames", fit: "contain" },
           { src: "/projects/mortal-shontal/idle-sheet-tomer.png", caption: "Tomer — idle loop, eight frames", fit: "contain" },
           { src: "/projects/mortal-shontal/idle-sheet-arava-9.png", caption: "Arava — idle loop, revised pass with additional frames for a softer cycle", fit: "contain" },
@@ -996,7 +1022,7 @@ window.caseStudies = [
         type: "gallery",
         title: "Roster sprites",
         images: [
-          { src: "/projects/mortal-shontal/sprite-nehorai.png", caption: "Nehorai", fit: "contain" },
+          { src: "/projects/mortal-shontal/sprite-nahorai.png", caption: "Nahorai", fit: "contain" },
           { src: "/projects/mortal-shontal/sprite-arava.png", caption: "Arava", fit: "contain" },
           { src: "/projects/mortal-shontal/sprite-tomer.png", caption: "Tomer", fit: "contain" },
           { src: "/projects/mortal-shontal/sprite-shontal.png", caption: "Shontal — each fighter has to be identifiable at roster size, not just at full resolution", fit: "contain" },
