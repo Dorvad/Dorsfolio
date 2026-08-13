@@ -12,6 +12,9 @@
 //   src      (required) — path relative to the repo root, e.g. "gallery/hero.png"
 //   caption  (optional) — short description shown under the image in the lightbox
 //   project  (optional) — project label shown as a pill (e.g. "ElmTrackr")
+//   bg       (optional) — CSS colour painted behind the thumbnail. Use it for
+//                         transparent PNGs that would otherwise wash out against
+//                         a light skin, e.g. pale VFX sheets: bg: "#17171b"
 // =============================================================================
 
 window.galleryImages = [
@@ -76,6 +79,56 @@ window.galleryImages = [
   { src: "projects/elmtrackr/promo-every-hour-square-he.png", caption: "Hebrew campaign — “Every hour”, phone and Wear OS", project: "ElmTrackr" },
   { src: "projects/elmtrackr/promo-home-screen-he.png",     caption: "Hebrew campaign — “From the home screen”, phone and watch", project: "ElmTrackr" },
   { src: "projects/elmtrackr/promo-at-a-glance-he.png",     caption: "Hebrew campaign — “At a glance”, monthly hours and gross pay", project: "ElmTrackr" },
+
+  // ---- Mortal Shontal (מורטל שונטל) — mobile fighting game -------------------
+  // Key art
+  { src: "projects/mortal-shontal/logo.png",                  caption: "Mortal Shontal — game logo",                              project: "Mortal Shontal" },
+
+  // Character reveal cards
+  { src: "projects/mortal-shontal/card-nehorai.jpg",          caption: "Nehorai — character reveal card",                         project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/card-arava.jpg",            caption: "Arava — character reveal card",                           project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/card-tomer.jpg",            caption: "Tomer — character reveal card",                           project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/card-shontal.jpg",          caption: "Shontal — character reveal card",                         project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/card-ido-fullstack.jpg",    caption: "Ido Fullstack — character reveal card",                   project: "Mortal Shontal" },
+
+  // Portraits
+  { src: "projects/mortal-shontal/portrait-nehorai.png",      caption: "Nehorai — versus-screen portrait",                        project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/portrait-arava.png",        caption: "Arava — versus-screen portrait",                          project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/portrait-tomer.png",        caption: "Tomer — versus-screen portrait",                          project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/portrait-shontal.png",      caption: "Shontal — versus-screen portrait",                        project: "Mortal Shontal" },
+
+  // Roster sprites
+  { src: "projects/mortal-shontal/sprite-nehorai.png",        caption: "Nehorai — roster sprite",                                 project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/sprite-arava.png",          caption: "Arava — roster sprite",                                   project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/sprite-tomer.png",          caption: "Tomer — roster sprite",                                   project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/sprite-shontal.png",        caption: "Shontal — roster sprite",                                 project: "Mortal Shontal" },
+
+  // Idle animation sheets
+  { src: "projects/mortal-shontal/idle-sheet-nehorai.png",    caption: "Nehorai — idle loop, 6 frames",                           project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/idle-sheet-shontal.png",    caption: "Shontal — idle loop sheet, 8 frames",                     project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/idle-sheet-tomer.png",      caption: "Tomer — idle loop, 8 frames",                             project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/idle-strip-tomer.png",      caption: "Tomer — idle strip, 4 frames",                            project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/idle-sheet-arava-6.png",    caption: "Arava — idle loop, 6 frames",                             project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/idle-sheet-arava-9.png",    caption: "Arava — idle loop sheet, revised pass",                   project: "Mortal Shontal" },
+
+  // Key poses
+  { src: "projects/mortal-shontal/pose-arava-stance.png",     caption: "Arava — fighting stance",                                 project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/pose-arava-action.png",     caption: "Arava — attack pose",                                     project: "Mortal Shontal" },
+
+  // Nehorai chair attack sequence
+  { src: "projects/mortal-shontal/nehorai-chair-pickup.png",  caption: "Nehorai — chair attack, idle and pick-up",                project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/nehorai-chair-guard.png",   caption: "Nehorai — chair attack, guard",                           project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/nehorai-chair-overhead.png",caption: "Nehorai — chair attack, overhead raise",                  project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/nehorai-chair-swing.png",   caption: "Nehorai — chair attack, swing",                           project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/nehorai-chair-impact.png",  caption: "Nehorai — chair attack, impact",                          project: "Mortal Shontal" },
+
+  // Nehorai flying kick
+  { src: "projects/mortal-shontal/nehorai-flying-kick.png",   caption: "Nehorai — flying kick",                                   project: "Mortal Shontal" },
+  { src: "projects/mortal-shontal/nehorai-flying-kick-icon.png", caption: "Nehorai — flying kick, icon size",                     project: "Mortal Shontal" },
+
+  // Hit VFX
+  { src: "projects/mortal-shontal/fx-impact-ring.png",        caption: "Impact VFX — ringed burst, 6 frames",                     project: "Mortal Shontal", bg: "#17171b" },
+  { src: "projects/mortal-shontal/fx-impact-star.png",        caption: "Impact VFX — star burst, 5 frames",                       project: "Mortal Shontal", bg: "#17171b" },
 
   // ---- Other / General ------------------------------------------------------
   { src: "gallery/freud-ai-logo.gif",            caption: "Freud.AI — brand logo",             project: "Freud.AI" },

@@ -148,6 +148,9 @@ function GalleryThumb({ img, tokens, onClick }) {
         borderRadius: tokens.radius,
         overflow: "hidden",
         border: `1px solid ${tokens.border}`,
+        // Transparent PNGs (VFX sheets, cut-out sprites) can wash out against a
+        // light skin — `bg` gives those entries a fixed backdrop of their own.
+        background: img.bg || "transparent",
         cursor: "zoom-in",
         position: "relative",
         transform: hover && !reduced ? "scale(1.015)" : "scale(1)",
