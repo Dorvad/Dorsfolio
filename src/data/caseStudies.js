@@ -735,7 +735,7 @@ window.caseStudies = [
     year: "2026",
     role: "UX design · Interaction design · Game design · Prototyping",
     status: "Playable prototype",
-    coverImage: "/projects/mortal-shontal/card-shontal.jpg",
+    coverImage: "/projects/mortal-shontal/cover.png",
     accent: "#C2871B",
     tags: ["Mobile UX", "Game UX", "Interaction Design", "Touch Controls", "Phaser", "Prototyping"],
     summary:
@@ -763,9 +763,10 @@ window.caseStudies = [
       {
         type: "image",
         title: "Mortal Shontal",
-        image: "/projects/mortal-shontal/logo.png",
+        image: "/projects/mortal-shontal/cover.png",
         fit: "contain",
-        caption: "The game logo — arcade-fighter vocabulary, built in Hebrew type."
+        bg: "#000",
+        caption: "Title key art — arcade-fighter vocabulary built in Hebrew type, with the plastic chair, the falafel stand and the INSERT COIN cabinet placing the game somewhere specific."
       },
       {
         type: "text",
