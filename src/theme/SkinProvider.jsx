@@ -12,6 +12,29 @@ const SkinContext = createContext(null);
 const SKIN_STORAGE_KEY = "dorsfolio.skin";
 const VALID_SKINS = ["mac", "win95", "material", "carbon"];
 
+// Page-level colour per world: paints the overscroll area and the mobile
+// browser chrome so the world extends past the edges of the document.
+const SKIN_PAGE_BG = {
+  mac: "#eceef2", win95: "#008080", material: "#fef7ff", carbon: "#161616", select: "#f4f3ef"
+};
+
+function prefersReducedMotion() {
+  try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+  catch (e) { return false; }
+}
+
+// Swapping worlds is the one moment this site owns outright. Where the
+// browser supports it, the DOM swap runs inside a view transition so the old
+// world dissolves into the new one instead of flashing; the per-skin arrival
+// choreography (see skinStyles.jsx) then draws the new world in.
+function withWorldTransition(update) {
+  if (document.startViewTransition && !prefersReducedMotion()) {
+    document.startViewTransition(() => { ReactDOM.flushSync(update); });
+  } else {
+    update();
+  }
+}
+
 function SkinProvider({ children }) {
   const [skin, setSkinState] = useState(() => {
     try {
@@ -24,18 +47,34 @@ function SkinProvider({ children }) {
 
   const setSkin = useCallback((next) => {
     if (!VALID_SKINS.includes(next)) return;
-    setSkinState(next);
+    withWorldTransition(() => setSkinState(next));
     try { localStorage.setItem(SKIN_STORAGE_KEY, next); } catch (e) {}
   }, []);
 
   const clearSkin = useCallback(() => {
-    setSkinState(null);
+    withWorldTransition(() => setSkinState(null));
     try { localStorage.removeItem(SKIN_STORAGE_KEY); } catch (e) {}
   }, []);
+
+  // Expose the active world to CSS (hover/focus/scrollbar/selection rules)
+  // and to the browser chrome (theme-color, overscroll background).
+  useEffect(() => {
+    const id = skin || "select";
+    document.documentElement.setAttribute("data-skin", id);
+    document.body.style.background = SKIN_PAGE_BG[id] || SKIN_PAGE_BG.select;
+    let meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", "theme-color");
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", SKIN_PAGE_BG[id] || SKIN_PAGE_BG.select);
+  }, [skin]);
 
   const value = useMemo(() => ({ skin, setSkin, clearSkin }), [skin, setSkin, clearSkin]);
   return (
     <SkinContext.Provider value={value}>
+      {window.SkinGlobalStyles && <window.SkinGlobalStyles />}
       {children}
       <LightboxRoot />
     </SkinContext.Provider>
@@ -157,27 +196,56 @@ function resolveAsset(src) {
   return src.replace(/^\/+/, "");
 }
 
-// Wraps a real-but-likely-missing image with the placeholder
+// Wraps a real-but-likely-missing image with the placeholder.
+// Images fade in once decoded (no pop-in), and when `onClick` is supplied the
+// image is wrapped in a real button so the zoom is reachable from the keyboard.
 function ProjectImage({ src, alt, slug, label, accent, style, className, onClick }) {
   const [errored, setErrored] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const ref = React.useRef(null);
   const fallback = getPlaceholderImage(slug || "project", label || alt || "image", accent || "#8b8b8b");
   const resolved = resolveAsset(src);
-  return (
+  const current = errored ? fallback : (resolved || fallback);
+
+  // Cached images may already be complete before onLoad can fire.
+  useEffect(() => {
+    const el = ref.current;
+    if (el && el.complete && el.naturalWidth > 0) setLoaded(true);
+  }, [current]);
+
+  const baseOpacity = style && style.opacity !== undefined ? style.opacity : 1;
+  const img = (
     <img
-      src={errored ? fallback : (resolved || fallback)}
+      ref={ref}
+      src={current}
       alt={alt || label || ""}
       loading="lazy"
-      onError={() => setErrored(true)}
-      onClick={onClick}
-      style={{ ...style, cursor: onClick ? "zoom-in" : style?.cursor }}
-      className={className}
+      decoding="async"
+      onError={() => { setErrored(true); setLoaded(false); }}
+      onLoad={() => setLoaded(true)}
+      style={{ ...style, opacity: loaded ? baseOpacity : 0 }}
+      className={["ds-img", className].filter(Boolean).join(" ")}
     />
+  );
+  if (!onClick) return img;
+  return (
+    <button
+      type="button"
+      className="ds-zoom"
+      onClick={onClick}
+      aria-label={`View larger: ${alt || label || "image"}`}
+    >
+      {img}
+    </button>
   );
 }
 
 // Global image lightbox — renders at root, driven by window.lightboxOpen(items, index)
 function LightboxRoot() {
   const [lb, setLb] = useState(null); // { items:[{src,alt}], index }
+  const dialogRef = React.useRef(null);
+  const closeBtnRef = React.useRef(null);
+  const returnFocusRef = React.useRef(null);
 
   useEffect(() => {
     window.lightboxOpen = (items, index = 0) => {
@@ -195,17 +263,35 @@ function LightboxRoot() {
     return () => { document.body.style.overflow = prev; };
   }, [!!lb]);
 
-  // Keyboard navigation
+  // Keyboard navigation + a light focus trap (Tab cycles the dialog's controls)
   useEffect(() => {
     if (!lb) return;
     const onKey = (e) => {
-      if (e.key === "Escape") setLb(null);
+      if (e.key === "Escape") { e.preventDefault(); setLb(null); }
       if (e.key === "ArrowLeft"  && lb.index > 0)                setLb(s => ({ ...s, index: s.index - 1 }));
       if (e.key === "ArrowRight" && lb.index < lb.items.length - 1) setLb(s => ({ ...s, index: s.index + 1 }));
+      if (e.key === "Tab" && dialogRef.current) {
+        const focusables = Array.from(dialogRef.current.querySelectorAll("button"));
+        if (focusables.length === 0) return;
+        const first = focusables[0], last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [lb]);
+
+  // Move focus into the dialog on open, give it back on close.
+  useEffect(() => {
+    if (lb) {
+      returnFocusRef.current = document.activeElement;
+      requestAnimationFrame(() => closeBtnRef.current && closeBtnRef.current.focus());
+    } else if (returnFocusRef.current && returnFocusRef.current.focus) {
+      returnFocusRef.current.focus();
+      returnFocusRef.current = null;
+    }
+  }, [!!lb]);
 
   if (!lb) return null;
   const { items, index } = lb;
@@ -223,11 +309,16 @@ function LightboxRoot() {
     color: "#fff", borderRadius: "50%",
     width: 44, height: 44,
     display: "flex", alignItems: "center", justifyContent: "center",
-    cursor: "pointer", fontSize: "22px", lineHeight: 1
+    cursor: "pointer", padding: 0
   });
 
   return (
     <div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={curr.alt ? `Image: ${curr.alt}` : "Image viewer"}
+      className="ds-lb"
       onClick={close}
       style={{
         position: "fixed", inset: 0, zIndex: 9999,
@@ -240,19 +331,21 @@ function LightboxRoot() {
     >
       {/* Close button */}
       <button
+        ref={closeBtnRef}
+        className="ds-lb-btn"
         onClick={(e) => { e.stopPropagation(); close(); }}
-        aria-label="Close"
+        aria-label="Close image viewer"
         style={{
           position: "fixed", top: 16, right: 16,
           background: "rgba(255,255,255,0.12)",
           border: "1px solid rgba(255,255,255,0.2)",
           backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)",
           color: "#fff", borderRadius: "50%",
-          width: 40, height: 40, fontSize: "18px",
+          width: 40, height: 40, padding: 0,
           display: "flex", alignItems: "center", justifyContent: "center",
           cursor: "pointer"
         }}
-      >✕</button>
+      ><window.Icon name="close" size={18} skin="mac" /></button>
 
       {/* Image + prev/next overlaid on image edges */}
       <div
@@ -263,6 +356,7 @@ function LightboxRoot() {
           key={curr.src}
           src={curr.src}
           alt={curr.alt || ""}
+          className="ds-lb-img"
           style={{
             display: "block",
             maxWidth: "100%",
@@ -273,12 +367,12 @@ function LightboxRoot() {
           }}
         />
         {hasPrev && (
-          <button onClick={(e) => { e.stopPropagation(); go(-1); }} aria-label="Previous"
-            style={overlayNavStyle("left")}>‹</button>
+          <button className="ds-lb-btn" onClick={(e) => { e.stopPropagation(); go(-1); }} aria-label="Previous image"
+            style={overlayNavStyle("left")}><window.Icon name="chevronLeft" size={22} skin="mac" /></button>
         )}
         {hasNext && (
-          <button onClick={(e) => { e.stopPropagation(); go(1); }} aria-label="Next"
-            style={overlayNavStyle("right")}>›</button>
+          <button className="ds-lb-btn" onClick={(e) => { e.stopPropagation(); go(1); }} aria-label="Next image"
+            style={overlayNavStyle("right")}><window.Icon name="chevronRight" size={22} skin="mac" /></button>
         )}
       </div>
 

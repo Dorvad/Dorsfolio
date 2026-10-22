@@ -26,11 +26,14 @@ const macResponsiveCSS = `
   }
   @media (max-width: 480px) {
     [data-mac-dock] ul    { gap: 4px !important; }
-    [data-mac-dock] a     { width: 40px !important; height: 40px !important; font-size: 17px !important; border-radius: 10px !important; }
+    [data-mac-dock] a     { width: 40px !important; height: 40px !important; border-radius: 10px !important; }
+    [data-mac-dock] a svg { width: 20px !important; height: 20px !important; }
   }
   @media (max-width: 470px) {
     [data-mac-nav]        { display: none !important; }
   }
+  [data-mac-dock] a:active { filter: brightness(0.85); }
+  [data-mac-dock] li > a:focus-visible { outline-offset: 3px; }
 `;
 
 // Dock magnification — icons grow on hover and gently lift their neighbors,
@@ -40,10 +43,10 @@ const macResponsiveCSS = `
 const macDockMagnifyCSS = `
   @media (prefers-reduced-motion: no-preference) {
     [data-mac-dock] li > a {
-      transition: transform 240ms cubic-bezier(0.25, 1, 0.5, 1);
+      transition: transform 240ms cubic-bezier(0.25, 1, 0.5, 1), filter 120ms ease;
       transform-origin: bottom center;
     }
-    [data-mac-dock] li:hover > a {
+    [data-mac-dock] li:hover > a, [data-mac-dock] li:focus-within > a {
       transform: scale(1.4) translateY(-14px);
       z-index: 3;
     }
@@ -57,6 +60,14 @@ const macDockMagnifyCSS = `
       transform: scale(1.06) translateY(-3px);
     }
   }
+  [data-mac-dock] .mac-dock-tip {
+    position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translate(-50%, 4px);
+    padding: 4px 9px; border-radius: 7px; white-space: nowrap;
+    background: rgba(28,28,30,0.88); color: #fff; font-size: 11px; font-weight: 500;
+    opacity: 0; pointer-events: none;
+    transition: opacity 140ms ease 60ms, transform 180ms cubic-bezier(.2,.8,.2,1) 60ms;
+  }
+  [data-mac-dock] li:hover .mac-dock-tip, [data-mac-dock] li:focus-within .mac-dock-tip { opacity: 1; transform: translate(-50%, 0); }
 `;
 
 function MacPortfolioShell({ children, route }) {
@@ -69,32 +80,34 @@ function MacPortfolioShell({ children, route }) {
       <style>{macResponsiveCSS}</style>
 
       {/* Top menu bar */}
-      <div style={{
+      <div className="mac-arrive-bar" style={{
         position: "sticky", top: 0, zIndex: 50,
         margin: "10px", padding: "6px 14px",
         background: "rgba(255,255,255,0.55)",
         backdropFilter: tokens.blur, WebkitBackdropFilter: tokens.blur,
         border: `1px solid ${tokens.border}`, borderRadius: "12px",
         display: "flex", alignItems: "center", gap: "16px",
-        fontSize: "13px", flexWrap: "nowrap", minWidth: 0
+        fontSize: "13px", flexWrap: "nowrap", minWidth: 0,
+        boxShadow: "0 1px 2px rgba(15,23,42,0.04)"
       }}>
-        <a href="#/" style={{ display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none", color: tokens.text, flexShrink: 0 }}>
+        <a href="#/" className="mac-nav-link" style={{ display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none", color: tokens.text, flexShrink: 0, padding: "3px 8px", margin: "0 0 0 -8px", borderRadius: "6px" }}>
           <span aria-hidden="true" style={{
             width: 14, height: 14, borderRadius: "3px",
             background: "conic-gradient(from 220deg, #0a84ff, #bf5af2, #28c840, #ff9f0a, #0a84ff)"
           }} />
           <span style={{ fontWeight: 600 }}>Dorsfolio</span>
         </a>
-        <nav data-mac-nav style={{ display: "flex", gap: "4px", marginLeft: "4px", flexShrink: 0 }}>
+        <nav data-mac-nav aria-label="Primary" style={{ display: "flex", gap: "2px", marginLeft: "4px", flexShrink: 0 }}>
           {navItems.slice(1).map((n) => {
             const active =
               (n.href === "#/projects" && (route.name === "projects" || route.name === "case-study")) ||
+              (n.href === "#/writing" && (route.name === "writing" || route.name === "writing-post")) ||
               (n.href === "#/" + route.name);
             return (
-              <a key={n.href} href={n.href} style={{
+              <a key={n.href} href={n.href} className="mac-nav-link" aria-current={active ? "page" : undefined} style={{
                 padding: "4px 10px", borderRadius: "6px",
                 textDecoration: "none", color: tokens.text,
-                background: active ? "rgba(15,23,42,0.07)" : "transparent",
+                background: active ? "rgba(15,23,42,0.08)" : "transparent",
                 fontWeight: active ? 600 : 400
               }}>{n.label}</a>
             );
@@ -108,7 +121,7 @@ function MacPortfolioShell({ children, route }) {
 
       {/* Main content area — windowed */}
       <div data-skin-scroll style={{ flex: 1, padding: "12px clamp(10px, 2vw, 24px) 110px", overflowX: "hidden" }}>
-        <div style={{
+        <div className="mac-arrive-window" style={{
           maxWidth: isHome ? "1100px" : "1080px",
           margin: "0 auto",
           background: "rgba(255,255,255,0.62)",
@@ -130,7 +143,7 @@ function MacPortfolioShell({ children, route }) {
         }}><window.SkinFooter /></footer>
       </div>
 
-      {/* Bottom dock — hidden on narrow viewports */}
+      {/* Bottom dock */}
       <div data-mac-dock>
         <MacDock route={route} tokens={tokens} />
       </div>
@@ -145,10 +158,16 @@ function macTitleFor(route) {
   if (route.name === "about") return "Dorsfolio — About";
   if (route.name === "contact") return "Dorsfolio — Contact";
   if (route.name === "gallery") return "Dorsfolio — Gallery";
+  if (route.name === "writing") return "Dorsfolio — Writing";
+  if (route.name === "writing-post") return `Dorsfolio — ${route.slug}`;
   return "Dorsfolio";
 }
 
 function MacWindowChrome({ title }) {
+  const light = (bg) => ({
+    width: 12, height: 12, borderRadius: "999px", background: bg,
+    boxShadow: "inset 0 0 0 0.5px rgba(0,0,0,0.18), inset 0 1px 1px rgba(255,255,255,0.35)"
+  });
   return (
     <div style={{
       display: "flex", alignItems: "center", gap: "8px",
@@ -156,12 +175,12 @@ function MacWindowChrome({ title }) {
       borderBottom: "1px solid rgba(15,23,42,0.06)",
       background: "linear-gradient(180deg, rgba(255,255,255,0.5), rgba(255,255,255,0.15))"
     }}>
-      <span style={{ display: "inline-flex", gap: "6px" }}>
-        <span style={{ width: 12, height: 12, borderRadius: "999px", background: "#ff5f57", boxShadow: "inset 0 0 0 0.5px rgba(0,0,0,0.15)" }} />
-        <span style={{ width: 12, height: 12, borderRadius: "999px", background: "#febc2e", boxShadow: "inset 0 0 0 0.5px rgba(0,0,0,0.15)" }} />
-        <span style={{ width: 12, height: 12, borderRadius: "999px", background: "#28c840", boxShadow: "inset 0 0 0 0.5px rgba(0,0,0,0.15)" }} />
+      <span aria-hidden="true" style={{ display: "inline-flex", gap: "6px" }}>
+        <span style={light("#ff5f57")} />
+        <span style={light("#febc2e")} />
+        <span style={light("#28c840")} />
       </span>
-      <div style={{ flex: 1, textAlign: "center", fontSize: "12px", color: "#48484a", fontWeight: 500 }}>{title}</div>
+      <div style={{ flex: 1, textAlign: "center", fontSize: "12px", color: "#48484a", fontWeight: 500, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{title}</div>
       <span style={{ width: 50 }} aria-hidden="true" />
     </div>
   );
@@ -169,14 +188,15 @@ function MacWindowChrome({ title }) {
 
 function MacDock({ route, tokens }) {
   const items = [
-    { id: "home",     href: "#/",          label: "Home",    color: "#0a84ff", glyph: "◉" },
-    { id: "projects", href: "#/projects",  label: "Projects",color: "#bf5af2", glyph: "▦" },
-    { id: "gallery",  href: "#/gallery",   label: "Gallery", color: "#ff6b6b", glyph: "⊞" },
-    { id: "about",    href: "#/about",     label: "About",   color: "#34c759", glyph: "✦" },
-    { id: "contact",  href: "#/contact",   label: "Contact", color: "#ff9f0a", glyph: "✉" }
+    { id: "home",     href: "#/",          label: "Home",     color: "#0a84ff" },
+    { id: "projects", href: "#/projects",  label: "Projects", color: "#bf5af2" },
+    { id: "writing",  href: "#/writing",   label: "Writing",  color: "#5e5ce6" },
+    { id: "gallery",  href: "#/gallery",   label: "Gallery",  color: "#ff6b6b" },
+    { id: "about",    href: "#/about",     label: "About",    color: "#34c759" },
+    { id: "contact",  href: "#/contact",   label: "Contact",  color: "#ff9f0a" }
   ];
   return (
-    <div style={{
+    <nav aria-label="Dock" className="mac-arrive-dock" style={{
       position: "fixed", left: "50%", bottom: "16px",
       transform: "translateX(-50%)",
       maxWidth: "calc(100vw - 32px)",
@@ -194,57 +214,53 @@ function MacDock({ route, tokens }) {
           const active =
             (it.id === "home" && route.name === "home") ||
             (it.id === "projects" && (route.name === "projects" || route.name === "case-study")) ||
+            (it.id === "writing" && (route.name === "writing" || route.name === "writing-post")) ||
             (it.id === route.name);
           return (
-            <li key={it.id}>
-              <a href={it.href} aria-label={it.label} title={it.label} style={{
+            <li key={it.id} style={{ position: "relative" }}>
+              <a href={it.href} aria-label={it.label} aria-current={active ? "page" : undefined} style={{
                 position: "relative",
                 width: 48, height: 48,
                 display: "flex", alignItems: "center", justifyContent: "center",
-                background: `linear-gradient(135deg, ${it.color} 0%, ${it.color}cc 100%)`,
+                background: `linear-gradient(160deg, ${it.color} 0%, ${it.color}b8 100%)`,
                 color: "#fff",
                 borderRadius: "12px",
                 textDecoration: "none",
-                fontSize: "20px",
-                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.4), 0 6px 14px rgba(15,23,42,0.18)"
-              }}>{it.glyph}
-              {active && (
-                <span aria-hidden="true" style={{
-                  position: "absolute", bottom: "-6px", left: "50%", transform: "translateX(-50%)",
-                  width: 4, height: 4, borderRadius: "999px", background: "#1c1c1e"
-                }} />
-              )}
+                boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.4), inset 0 -8px 12px rgba(0,0,0,0.08), 0 6px 14px rgba(15,23,42,0.18)"
+              }}>
+                <window.Icon name={window.NAV_ICONS[it.id]} size={24} filled skin="mac"
+                  style={{ filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.18))" }} />
+                {active && (
+                  <span aria-hidden="true" style={{
+                    position: "absolute", bottom: "-7px", left: "50%", transform: "translateX(-50%)",
+                    width: 4, height: 4, borderRadius: "999px", background: "#1c1c1e"
+                  }} />
+                )}
               </a>
+              <span className="mac-dock-tip" aria-hidden="true">{it.label}</span>
             </li>
           );
         })}
       </ul>
-    </div>
+    </nav>
   );
 }
 
 // ---- Project card --------------------------------------------------------
 function MacProjectCard({ project, tokens }) {
-  const [hover, setHover] = React.useState(false);
-  const reduced = window.useReducedMotion();
   return (
     <a
       href={`#/projects/${project.slug}`}
-      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      className="ds-card"
       style={{
         display: "block",
         textDecoration: "none",
-        background: "rgba(255,255,255,0.7)",
-        backdropFilter: tokens.blur, WebkitBackdropFilter: tokens.blur,
+        background: "rgba(255,255,255,0.78)",
         border: `1px solid ${tokens.border}`,
         borderRadius: "16px",
         overflow: "hidden",
         color: tokens.text,
-        boxShadow: hover
-          ? "0 18px 38px rgba(15,23,42,0.16), 0 4px 10px rgba(15,23,42,0.06)"
-          : "0 6px 18px rgba(15,23,42,0.08)",
-        transform: hover && !reduced ? "translateY(-3px)" : "none",
-        transition: reduced ? "none" : "transform 220ms cubic-bezier(.2,.8,.2,1), box-shadow 220ms ease"
+        boxShadow: "0 6px 18px rgba(15,23,42,0.08)"
       }}
     >
       {/* mini window header */}
@@ -268,11 +284,8 @@ function MacProjectCard({ project, tokens }) {
           label={project.title}
           accent={project.accent}
           alt={project.title}
-          style={{
-            width: "100%", height: "100%", objectFit: "cover", display: "block",
-            transform: hover && !reduced ? "scale(1.04)" : "scale(1)",
-            transition: reduced ? "none" : "transform 350ms cubic-bezier(.2,.8,.2,1)"
-          }}
+          className="ds-card-img"
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
       </div>
       <div style={{ padding: "16px 18px 18px" }}>
@@ -298,20 +311,14 @@ function MacCaseStudyLayout({ project }) {
   const tokens = window.skinTokens.get("mac");
   return (
     <article>
-      <div style={{
-        marginBottom: "24px"
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
-          <a href="#/projects" style={{ fontSize: "13px", color: tokens.accent, textDecoration: "none" }}>← Projects</a>
+      <div style={{ marginBottom: "24px" }}>
+        <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "18px" }}>
+          <a href="#/projects" className="ds-link" style={{ fontSize: "13px", color: tokens.accent, display: "inline-flex", alignItems: "center", gap: "4px" }}>
+            <window.Icon name="arrowLeft" size={14} skin="mac" /> Projects
+          </a>
           <span style={{ color: tokens.muted, fontSize: "13px" }}>/</span>
           <span style={{ fontFamily: tokens.monoFont, fontSize: "12px", color: tokens.muted }}>{project.slug}</span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "12px" }}>
-          <span style={{ width: 8, height: 8, borderRadius: "999px", background: project.accent || tokens.accent }} />
-          <span style={{ fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted, textTransform: "uppercase", letterSpacing: "0.12em" }}>
-            {project.category} · {project.year} · {project.status}
-          </span>
-        </div>
+        </nav>
         <h1 style={{
           fontFamily: tokens.displayFont || tokens.font,
           fontSize: "clamp(34px, 5vw, 52px)",
@@ -325,6 +332,12 @@ function MacCaseStudyLayout({ project }) {
         <div style={{ fontFamily: tokens.font, fontSize: "clamp(17px, 2vw, 19px)", color: tokens.muted, lineHeight: 1.5, maxWidth: "60ch", textWrap: "pretty" }}>
           {project.subtitle}
         </div>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "14px" }}>
+          <span style={{ width: 8, height: 8, borderRadius: "999px", background: project.accent || tokens.accent }} />
+          <span style={{ fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted, textTransform: "uppercase", letterSpacing: "0.12em" }}>
+            {project.category} · {project.year} · {project.status}
+          </span>
+        </div>
 
         {/* hero image — glass window */}
         <div style={{
@@ -332,7 +345,8 @@ function MacCaseStudyLayout({ project }) {
           borderRadius: "16px",
           overflow: "hidden",
           border: `1px solid ${tokens.border}`,
-          boxShadow: "0 24px 60px rgba(15,23,42,0.15)"
+          boxShadow: "0 24px 60px rgba(15,23,42,0.15)",
+          background: tokens.surfaceSolid
         }}>
           <window.ProjectImage
             src={project.coverImage}
@@ -340,7 +354,7 @@ function MacCaseStudyLayout({ project }) {
             label={project.title}
             accent={project.accent}
             alt={project.title}
-            onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: project.coverImage, alt: project.title }], 0)}
+            onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: window.resolveAsset(project.coverImage), alt: project.title }], 0)}
             style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }}
           />
         </div>
@@ -361,7 +375,6 @@ function MacCaseStudyLayout({ project }) {
       <div style={{
         padding: "16px 18px",
         background: "rgba(255,255,255,0.55)",
-        backdropFilter: tokens.blur, WebkitBackdropFilter: tokens.blur,
         border: `1px solid ${tokens.border}`,
         borderRadius: "12px",
         marginBottom: "8px"

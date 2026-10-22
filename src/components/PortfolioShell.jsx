@@ -28,12 +28,11 @@ function PortfolioShell() {
   else if (route.name === "writing-post") content = <window.WritingPostPage slug={route.slug} />;
   else content = <window.HomeSection />;
 
+  // Route changes animate in the vocabulary of the active world
+  // (see --ds-route-anim in skinStyles.jsx); Win95 cuts, the others arrive.
   return (
     <Shell route={route}>
-      <div
-        key={route.path}
-        style={{ animation: reduced ? "none" : "routeFadeIn 0.28s cubic-bezier(.2,.8,.2,1) both" }}
-      >
+      <div key={route.path} className={reduced ? undefined : "ds-route"}>
         {content}
       </div>
     </Shell>

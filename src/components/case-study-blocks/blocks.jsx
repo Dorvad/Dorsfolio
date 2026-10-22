@@ -4,16 +4,20 @@
 // =============================================================================
 
 // ---- Small shared bits ---------------------------------------------------
-function BlockTitle({ children, tokens, level = 3 }) {
+// Level 2 names a section of the case study; level 3 (default) names a block
+// inside the narrative. Both share one size so the story reads evenly.
+function BlockTitle({ children, tokens, level = 3, id }) {
   const H = `h${level}`;
   return (
-    <H style={{
+    <H id={id} style={{
       fontFamily: tokens.displayFont || tokens.font,
-      fontSize: level === 2 ? "clamp(24px, 3vw, 32px)" : "clamp(18px, 2.4vw, 22px)",
+      fontSize: "clamp(18px, 2.4vw, 22px)",
       fontWeight: 600,
       color: tokens.text,
-      margin: "0 0 16px",
-      letterSpacing: tokens.name === "Windows 95" ? 0 : "-0.01em"
+      margin: "0 0 14px",
+      lineHeight: 1.25,
+      letterSpacing: tokens.name === "Windows 95" ? 0 : "-0.01em",
+      textWrap: "balance"
     }}>{children}</H>
   );
 }
@@ -190,12 +194,17 @@ function QuoteBlock({ block, ctx }) {
     <section style={{ margin: "48px 0" }}>
       <blockquote style={{
         margin: 0,
-        padding: tokens.name === "Windows 95" ? "20px" : "28px 32px",
+        padding: tokens.name === "Windows 95" ? "20px 20px 20px 48px" : "28px 32px 28px 64px",
         background: tokens.name === "Windows 95" ? tokens.surfaceAlt : `${accent}10`,
-        borderLeft: `4px solid ${accent}`,
         borderRadius: tokens.radius,
-        border: tokens.name === "Windows 95" ? `1px solid ${tokens.border}` : `1px solid ${accent}25`
+        border: tokens.name === "Windows 95" ? `1px solid ${tokens.border}` : `1px solid ${accent}25`,
+        position: "relative"
       }}>
+        <span aria-hidden="true" style={{
+          position: "absolute", left: tokens.name === "Windows 95" ? 14 : 24, top: tokens.name === "Windows 95" ? 6 : 10,
+          fontFamily: tokens.displayFont || tokens.font,
+          fontSize: "56px", lineHeight: 1, color: accent, opacity: 0.55, fontWeight: 700
+        }}>“</span>
         <div style={{
           fontFamily: tokens.displayFont || tokens.font,
           fontSize: "clamp(20px, 2.6vw, 26px)",
@@ -203,7 +212,7 @@ function QuoteBlock({ block, ctx }) {
           color: tokens.text,
           fontWeight: 500,
           textWrap: "pretty"
-        }}>"{block.body}"</div>
+        }}>{block.body}</div>
         {block.attribution && (
           <div style={{
             fontFamily: tokens.monoFont,
@@ -323,22 +332,30 @@ function InsightBlock({ block, ctx }) {
         position: "relative"
       }}>
         <div style={{
-          fontFamily: tokens.monoFont,
-          fontSize: "11px",
-          color: accent,
-          textTransform: "uppercase",
-          letterSpacing: "0.12em",
-          marginBottom: "12px"
-        }}>★ Insight</div>
-        {block.title && (
-          <div style={{
-            fontFamily: tokens.displayFont || tokens.font,
-            fontSize: "20px",
-            fontWeight: 600,
-            color: tokens.text,
-            marginBottom: "10px"
-          }}>{block.title}</div>
-        )}
+          display: "flex", alignItems: "center", gap: "10px",
+          marginBottom: block.title ? "10px" : "12px"
+        }}>
+          <span aria-hidden="true" style={{
+            display: "inline-flex", alignItems: "center", justifyContent: "center",
+            width: 28, height: 28, borderRadius: tokens.radius === "0px" ? 0 : "8px",
+            background: `${accent}1f`, color: accent, flexShrink: 0
+          }}><window.Icon name="bulb" size={16} /></span>
+          {block.title ? (
+            <h3 style={{
+              fontFamily: tokens.displayFont || tokens.font,
+              fontSize: "20px",
+              fontWeight: 600,
+              color: tokens.text,
+              margin: 0,
+              lineHeight: 1.3
+            }}>{block.title}</h3>
+          ) : (
+            <span style={{
+              fontFamily: tokens.monoFont, fontSize: "11px", color: accent,
+              textTransform: "uppercase", letterSpacing: "0.12em"
+            }}>Insight</span>
+          )}
+        </div>
         <div style={{
           fontFamily: tokens.font,
           fontSize: "16px",
@@ -358,25 +375,33 @@ function LinksBlock({ block, ctx }) {
     <section style={{ margin: "40px 0" }}>
       {block.title && <BlockTitle tokens={tokens}>{block.title}</BlockTitle>}
       <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-        {block.items.map((l, i) => (
-          <a key={i} href={l.href} style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "8px",
-            padding: tokens.name === "Windows 95" ? "6px 12px" : "10px 16px",
-            background: tokens.surfaceAlt || tokens.surfaceSolid,
-            color: tokens.accent,
-            border: `1px solid ${tokens.border}`,
-            borderRadius: tokens.radius,
-            textDecoration: "none",
-            fontFamily: tokens.font,
-            fontSize: "14px",
-            fontWeight: 500
-          }}>
-            <span>{l.label}</span>
-            <span aria-hidden="true">→</span>
-          </a>
-        ))}
+        {block.items.map((l, i) => {
+          const external = /^https?:/i.test(l.href || "");
+          return (
+            <a key={i} href={l.href}
+              target={external ? "_blank" : undefined}
+              rel={external ? "noopener noreferrer" : undefined}
+              className={"ds-tile" + (tokens.name === "Material You" ? " m3-state" : "")}
+              onPointerDown={tokens.name === "Material You" ? window.m3Ripple : undefined}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: tokens.name === "Windows 95" ? "6px 12px" : "10px 14px 10px 16px",
+                background: tokens.surfaceAlt || tokens.surfaceSolid,
+                color: tokens.accent,
+                border: `1px solid ${tokens.border}`,
+                borderRadius: tokens.radius,
+                textDecoration: "none",
+                fontFamily: tokens.font,
+                fontSize: "14px",
+                fontWeight: 500
+              }}>
+              <span className="ds-tile-title">{l.label}</span>
+              <window.Icon name={external ? "external" : "arrowRight"} size={15} />
+            </a>
+          );
+        })}
       </div>
     </section>
   );
@@ -400,16 +425,13 @@ function FeatureListBlock({ block, ctx }) {
             border: `1px solid ${tokens.border}`,
             borderRadius: tokens.radius
           }}>
-            <div style={{
+            <div aria-hidden="true" style={{
               width: "32px", height: "32px",
               borderRadius: tokens.radius === "0px" ? "0px" : "8px",
               background: `${accent}20`,
               color: accent,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              fontFamily: tokens.monoFont,
-              fontSize: "13px",
-              fontWeight: 600
-            }}>{String(i + 1).padStart(2, "0")}</div>
+              display: "flex", alignItems: "center", justifyContent: "center"
+            }}><window.Icon name="check" size={16} /></div>
             <div>
               <div style={{
                 fontFamily: tokens.font, fontSize: "15px", fontWeight: 600, color: tokens.text, marginBottom: "4px"
@@ -474,8 +496,11 @@ function BranchlabLogoAnim({ accent }) {
       <style>{`
         @keyframes bl-line { from { stroke-dashoffset: var(--l); } to { stroke-dashoffset: 0; } }
         @keyframes bl-dot  { from { opacity: 0; } to   { opacity: 1; } }
+        @media (prefers-reduced-motion: reduce) {
+          .bl-logo * { animation: none !important; stroke-dashoffset: 0 !important; opacity: 1; }
+        }
       `}</style>
-      <svg viewBox="0 0 200 110" width="200" aria-hidden="true"
+      <svg viewBox="0 0 200 110" width="200" aria-hidden="true" className="bl-logo"
         style={{ maxWidth: "100%", display: "block", margin: "0 auto", overflow: "visible" }}>
         {/* lines drawn first */}
         <line x1="100" y1="22" x2="46" y2="76" stroke={accent} strokeWidth="2" strokeLinecap="round" strokeDasharray="74" style={{ "--l": "74", animation: "bl-line 0.5s ease both 0.2s" }} />
@@ -531,6 +556,8 @@ function LogoHeroBlock({ block, ctx }) {
         {block.websiteUrl && (
           <a href={block.websiteUrl} target="_blank" rel="noopener noreferrer"
             aria-label="View Branchlab marketing website (opens in new tab)"
+            className={isWin95 ? "w95-btn" : "ds-btn ds-btn-primary" + (tokens.name === "Material You" ? " m3-state" : "")}
+            onPointerDown={tokens.name === "Material You" ? window.m3Ripple : undefined}
             style={{
               display: "inline-flex", alignItems: "center", gap: "8px",
               padding: isWin95 ? "4px 14px" : "11px 20px",
@@ -545,7 +572,7 @@ function LogoHeroBlock({ block, ctx }) {
                 : "none"
             }}>
             <span>{block.websiteLabel || "View website"}</span>
-            <span aria-hidden="true">↗</span>
+            <window.Icon name="external" size={15} />
           </a>
         )}
       </div>
@@ -633,27 +660,37 @@ function BranchlabPlayerBlock({ block, ctx }) {
   const frameContent = playing
     ? <BranchlabEmbed slug={scenario.id} />
     : (
-      <div onClick={() => setPlaying(true)} style={{
-        width: "100%", height: "100%", background: "#0c0c0c",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        cursor: "pointer"
-      }}>
-        <div style={{
-          width: 56, height: 56, borderRadius: "50%",
-          background: "rgba(255,255,255,0.9)",
+      <button type="button" onClick={() => setPlaying(true)} className="bl-play"
+        aria-label={`Play the ${scenario.title} scenario`}
+        style={{
+          width: "100%", height: "100%", background: "#0c0c0c",
           display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: "20px", paddingLeft: "4px",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.4)"
-        }}>▶</div>
-      </div>
+          cursor: "pointer", border: "none", padding: 0
+        }}>
+        <span className="bl-play-btn" style={{
+          width: 56, height: 56, borderRadius: "50%",
+          background: "rgba(255,255,255,0.92)", color: "#0c0c0c",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          paddingLeft: "3px",
+          boxShadow: "0 4px 20px rgba(0,0,0,0.4)",
+          transition: isWin95 ? "none" : "transform 200ms cubic-bezier(.2,.8,.2,1), background 160ms ease"
+        }}><window.Icon name="play" size={22} filled skin="mac" /></span>
+        <style>{`
+          .bl-play:hover .bl-play-btn, .bl-play:focus-visible .bl-play-btn { transform: scale(1.08); background: #fff; }
+          .bl-play:active .bl-play-btn { transform: scale(0.96); }
+          @media (prefers-reduced-motion: reduce) { .bl-play-btn { transform: none !important; } }
+        `}</style>
+      </button>
     );
 
   return (
     <section style={{ margin: "48px 0" }}>
-      <div style={{
-        fontFamily: tokens.monoFont, fontSize: "11px", color: accent,
-        textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "14px"
-      }}>▶ Try it yourself</div>
+      <h3 style={{
+        display: "flex", alignItems: "center", gap: "8px",
+        fontFamily: tokens.displayFont || tokens.font, fontSize: "clamp(18px, 2.4vw, 22px)",
+        fontWeight: 600, color: tokens.text, margin: "0 0 14px", lineHeight: 1.25,
+        letterSpacing: isWin95 ? 0 : "-0.01em"
+      }}><span style={{ color: accent, display: "inline-flex" }}><window.Icon name="play" size={18} filled /></span> Try it yourself</h3>
 
       <div style={{
         display: "flex", flexWrap: "wrap", gap: "10px", alignItems: "center",
@@ -662,15 +699,18 @@ function BranchlabPlayerBlock({ block, ctx }) {
         <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
           {_BLAB_SCENARIOS.map((s, i) => (
             <button key={s.id} type="button" onClick={() => switchScenario(i)}
+              aria-pressed={scenarioIdx === i}
+              className={isWin95 ? "w95-btn" : "ds-chip"}
               style={chipStyle(scenarioIdx === i)}>{s.title}</button>
           ))}
         </div>
         <div style={{ display: "flex", gap: "4px" }}>
-          {[["desktop","🖥","Desktop"],["mobile","📱","Mobile"]].map(([mode,icon,label]) => (
+          {[["desktop","monitor","Desktop"],["mobile","phone","Mobile"]].map(([mode,icon,label]) => (
             <button key={mode} type="button" onClick={() => setDevice(mode)}
               aria-label={`${label} preview`} aria-pressed={device === mode}
-              style={{ ...chipStyle(device === mode), padding: isWin95 ? "2px 8px" : "6px 10px", fontSize: "14px" }}>
-              {icon}
+              className={isWin95 ? "w95-btn" : "ds-chip"}
+              style={{ ...chipStyle(device === mode), padding: isWin95 ? "2px 8px" : "6px 10px", display: "inline-flex", alignItems: "center" }}>
+              <window.Icon name={icon} size={18} />
             </button>
           ))}
         </div>
@@ -750,7 +790,7 @@ function BranchlabPlayerBlock({ block, ctx }) {
           onMouseOver={e => { if (!isWin95) e.currentTarget.style.opacity = "1"; }}
           onMouseOut={e => { if (!isWin95) e.currentTarget.style.opacity = "0.7"; }}
         >
-          Having trouble? Open on Branchlab ↗
+          Having trouble? Open on Branchlab <window.Icon name="external" size={13} />
         </a>
       </div>
     </section>
@@ -854,30 +894,24 @@ function CaseStudyGalleryBlock({ block, ctx }) {
   const btnBase = {
     width: isWin95 ? 24 : 32, height: isWin95 ? 24 : 32,
     display: "flex", alignItems: "center", justifyContent: "center",
-    fontFamily: tokens.font, fontSize: "15px",
+    padding: 0,
     background: isWin95 ? tokens.surface : "transparent",
-    border: `1px solid ${tokens.border}`,
+    border: isWin95 ? "none" : `1px solid ${tokens.border}`,
     borderRadius: isWin95 ? 0 : tokens.radius,
     color: tokens.text, cursor: "pointer",
     boxShadow: isWin95
-      ? `inset 1px 1px 0 ${tokens.bevelLight}, inset -1px -1px 0 ${tokens.bevelDark}`
-      : "none",
-    transition: isWin95 ? "none" : "background 120ms"
+      ? `inset 1px 1px 0 ${tokens.bevelLight}, inset -1px -1px 0 ${tokens.bevelDark}, inset 2px 2px 0 #dfdfdf, inset -2px -2px 0 #000`
+      : "none"
   };
 
   return (
     <section style={{ margin: "56px 0 16px" }}>
       {/* Header row */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
-        <div style={{
-          fontFamily: tokens.monoFont, fontSize: "11px", color: accent,
-          textTransform: "uppercase", letterSpacing: "0.12em"
-        }}>
-          All images · {images.length} photos
-        </div>
-        <div style={{ display: "flex", gap: "6px" }}>
-          <button onClick={() => scroll(-1)} aria-label="Scroll left"  style={btnBase}>←</button>
-          <button onClick={() => scroll(1)}  aria-label="Scroll right" style={btnBase}>→</button>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", marginBottom: "16px" }}>
+        <BlockTitle tokens={tokens}>All images <span style={{ fontFamily: tokens.monoFont, fontSize: "12px", fontWeight: 400, color: tokens.muted, marginLeft: "6px", letterSpacing: "0.04em" }}>{images.length}</span></BlockTitle>
+        <div style={{ display: "flex", gap: "6px", marginBottom: "14px" }}>
+          <button type="button" onClick={() => scroll(-1)} aria-label="Scroll images left"  className={isWin95 ? "w95-btn" : "ds-btn ds-btn-ghost"} style={btnBase}><window.Icon name="chevronLeft" size={18} /></button>
+          <button type="button" onClick={() => scroll(1)}  aria-label="Scroll images right" className={isWin95 ? "w95-btn" : "ds-btn ds-btn-ghost"} style={btnBase}><window.Icon name="chevronRight" size={18} /></button>
         </div>
       </div>
 
@@ -889,14 +923,19 @@ function CaseStudyGalleryBlock({ block, ctx }) {
         scrollbarWidth: "none",   /* Firefox */
         msOverflowStyle: "none",  /* IE / Edge */
         WebkitOverflowScrolling: "touch",
-        paddingBottom: "6px"
+        scrollSnapType: "x proximity",
+        padding: "4px 2px 8px"
       }}>
         {images.map((img, i) => (
-          <figure key={i} style={{ margin: 0, flexShrink: 0, width: `${ITEM_W}px` }}>
-            <div
+          <figure key={i} style={{ margin: 0, flexShrink: 0, width: `${ITEM_W}px`, scrollSnapAlign: "start" }}>
+            <button
+              type="button"
               onClick={() => openLightbox(i)}
+              className="ds-thumb"
+              aria-label={`View larger: ${img.caption || `image ${i + 1}`}`}
               style={{
                 width: `${ITEM_W}px`,
+                padding: 0,
                 overflow: "hidden",
                 borderRadius: isWin95 ? 0 : tokens.radius,
                 border: isWin95
@@ -904,18 +943,9 @@ function CaseStudyGalleryBlock({ block, ctx }) {
                   : `1px solid ${tokens.border}`,
                 boxShadow: isWin95 ? "none" : tokens.shadow,
                 background: tokens.surfaceAlt || tokens.surfaceSolid,
-                cursor: "pointer",
-                transition: isWin95 ? "none" : "transform 150ms, box-shadow 150ms"
-              }}
-              onMouseOver={e => {
-                if (isWin95) return;
-                e.currentTarget.style.transform = "scale(1.02)";
-                e.currentTarget.style.boxShadow = "0 8px 24px rgba(0,0,0,0.18)";
-              }}
-              onMouseOut={e => {
-                if (isWin95) return;
-                e.currentTarget.style.transform = "";
-                e.currentTarget.style.boxShadow = tokens.shadow || "";
+                cursor: "zoom-in",
+                display: "block",
+                lineHeight: 0
               }}
             >
               <window.ProjectImage
@@ -923,10 +953,10 @@ function CaseStudyGalleryBlock({ block, ctx }) {
                 slug={project?.slug}
                 label={img.caption || `image ${i + 1}`}
                 accent={accent}
-                alt={img.caption || ""}
+                alt=""
                 style={{ width: "100%", aspectRatio: "3/4", objectFit: "cover", display: "block" }}
               />
-            </div>
+            </button>
             {img.caption && (
               <figcaption style={{
                 fontFamily: tokens.monoFont, fontSize: "11px",
@@ -1137,6 +1167,7 @@ function ImageComparisonBlock({ block, ctx }) {
 }
 
 Object.assign(window, {
+  BlockTitle, BlockBody, Caption,
   TextBlock, ImageBlock, GalleryBlock, MetricsBlock, QuoteBlock,
   ProcessBlock, BeforeAfterBlock, InsightBlock, LinksBlock,
   FeatureListBlock, TimelineBlock,

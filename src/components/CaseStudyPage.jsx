@@ -42,7 +42,7 @@ function NotFound({ slug }) {
       <div style={{ fontFamily: tokens.monoFont, fontSize: "12px", color: tokens.muted, marginBottom: "8px" }}>404</div>
       <h2 style={{ fontFamily: tokens.displayFont || tokens.font, fontSize: "28px", margin: "0 0 12px" }}>Project not found</h2>
       <p style={{ color: tokens.muted, marginBottom: "24px" }}>No case study with the slug "{slug}".</p>
-      <a href="#/projects" style={{ color: tokens.accent, textDecoration: "underline" }}>← Back to projects</a>
+      <a href="#/projects" className="ds-link" style={{ color: tokens.accent, textDecoration: "underline", display: "inline-flex", alignItems: "center", gap: "6px" }}><window.Icon name="arrowLeft" size={14} /> Back to projects</a>
     </div>
   );
 }
@@ -95,13 +95,8 @@ function CaseStudySections({ project, tokens }) {
       {/* Challenge */}
       {project.challenge && (
         <section style={{ margin: "12px 0 8px" }}>
-          <div style={{
-            fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted,
-            textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "8px"
-          }}>Challenge</div>
-          <div style={{ fontFamily: tokens.font, fontSize: "16px", color: tokens.text, lineHeight: 1.6, maxWidth: "70ch", textWrap: "pretty" }}>
-            {project.challenge}
-          </div>
+          <window.BlockTitle tokens={tokens} level={2}>The challenge</window.BlockTitle>
+          <window.BlockBody tokens={tokens}>{project.challenge}</window.BlockBody>
         </section>
       )}
 
@@ -118,16 +113,13 @@ function CaseStudySections({ project, tokens }) {
       {/* Outcome */}
       {project.outcome && (
         <section style={{ margin: "32px 0 8px" }}>
-          <div style={{
-            fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.accent,
-            textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "8px"
-          }}>Outcome</div>
+          <window.BlockTitle tokens={tokens} level={2}>Outcome</window.BlockTitle>
           <div style={{
             fontFamily: tokens.displayFont || tokens.font,
             fontSize: "clamp(18px, 2.2vw, 22px)",
             color: tokens.text,
             lineHeight: 1.5,
-            maxWidth: "70ch",
+            maxWidth: "66ch",
             textWrap: "pretty"
           }}>{project.outcome}</div>
         </section>
@@ -156,23 +148,20 @@ function CaseStudyRecruiterInsight({ recruiterInsight, tokens }) {
   const isWin95 = tokens.name === "Windows 95";
 
   return (
-    <section aria-label="At a glance" style={{ margin: "8px 0 28px" }}>
-      <div style={{
-        fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.accent,
-        textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "10px"
-      }}>At a glance</div>
+    <section aria-labelledby="cs-at-a-glance" style={{ margin: "8px 0 28px" }}>
+      <window.BlockTitle tokens={tokens} level={2} id="cs-at-a-glance">At a glance</window.BlockTitle>
 
       {headline && (
-        <div style={{
+        <p style={{
           fontFamily: tokens.displayFont || tokens.font,
-          fontSize: "clamp(19px, 2.4vw, 23px)",
-          fontWeight: 600,
+          fontSize: "clamp(18px, 2.2vw, 22px)",
+          fontWeight: 500,
           color: tokens.text,
-          lineHeight: 1.4,
-          marginBottom: rows.length > 0 ? "18px" : 0,
+          lineHeight: 1.45,
+          margin: `0 0 ${rows.length > 0 ? "18px" : 0}`,
           maxWidth: "62ch",
           textWrap: "pretty"
-        }}>{headline}</div>
+        }}>{headline}</p>
       )}
 
       {rows.length > 0 && (
@@ -238,15 +227,13 @@ function CaseStudyMeta({ project, tokens, variant = "default" }) {
 }
 
 // Related projects strip
-function RelatedProjects({ slug, tokens, onOpen }) {
+function RelatedProjects({ slug, tokens }) {
   const related = window.getRelatedProjects(slug, 3);
+  const isMaterial = tokens.name === "Material You";
   if (related.length === 0) return null;
   return (
-    <section style={{ marginTop: "60px", paddingTop: "32px", borderTop: `1px solid ${tokens.border}` }}>
-      <div style={{
-        fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted,
-        textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: "16px"
-      }}>Related projects</div>
+    <section aria-labelledby="cs-related" style={{ marginTop: "60px", paddingTop: "32px", borderTop: `1px solid ${tokens.border}` }}>
+      <window.BlockTitle tokens={tokens} level={2} id="cs-related">Related projects</window.BlockTitle>
       <div style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
@@ -256,6 +243,8 @@ function RelatedProjects({ slug, tokens, onOpen }) {
           <a
             key={p.slug}
             href={`#/projects/${p.slug}`}
+            className={"ds-tile" + (isMaterial ? " m3-state" : "")}
+            onPointerDown={isMaterial ? window.m3Ripple : undefined}
             style={{
               display: "block",
               textDecoration: "none",
@@ -265,10 +254,11 @@ function RelatedProjects({ slug, tokens, onOpen }) {
               background: tokens.surfaceAlt || tokens.surfaceSolid
             }}
           >
-            <div style={{ fontFamily: tokens.monoFont, fontSize: "11px", color: p.accent || tokens.accent, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: tokens.monoFont, fontSize: "11px", color: p.accent || tokens.accent, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+              <span aria-hidden="true" style={{ width: 6, height: 6, borderRadius: tokens.radius === "0px" ? 0 : 99, background: p.accent || tokens.accent }} />
               {p.category}
             </div>
-            <div style={{ fontFamily: tokens.font, fontSize: "16px", fontWeight: 600, color: tokens.text, marginBottom: "4px" }}>
+            <div className="ds-tile-title" style={{ fontFamily: tokens.font, fontSize: "16px", fontWeight: 600, color: tokens.text, marginBottom: "4px" }}>
               {p.title}
             </div>
             <div style={{ fontFamily: tokens.font, fontSize: "13px", color: tokens.muted, lineHeight: 1.4 }}>

@@ -1,5 +1,7 @@
 // =============================================================================
 // WINDOWS 95 skin — gray bevels, title bars, taskbar, Start menu
+// Motion here is deliberately stepped and instant: the one authored moment is
+// the classic zoom-rectangle a window drew when it opened (see .w95-zoom).
 // =============================================================================
 
 const W95 = {
@@ -8,11 +10,21 @@ const W95 = {
   textOnTitle: "#ffffff",
   titleActive: "linear-gradient(90deg, #000080 0%, #1084d0 100%)",
   titleInactive: "linear-gradient(90deg, #808080 0%, #b5b5b5 100%)",
+  dither: "repeating-conic-gradient(#ffffff 0 25%, #c0c0c0 0 50%) 0 0 / 2px 2px",
   bevelOut: "inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080, inset 2px 2px 0 #dfdfdf, inset -2px -2px 0 #000000",
   bevelIn:  "inset 1px 1px 0 #808080, inset -1px -1px 0 #ffffff, inset 2px 2px 0 #000000, inset -2px -2px 0 #dfdfdf",
   buttonRaised: "inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080, inset 2px 2px 0 #dfdfdf, inset -2px -2px 0 #000000",
   buttonPressed: "inset 1px 1px 0 #000000, inset -1px -1px 0 #dfdfdf, inset 2px 2px 0 #808080, inset -2px -2px 0 #ffffff"
 };
+
+const W95_NAV = [
+  { id: "home",     label: "Home",     href: "#/" },
+  { id: "projects", label: "Projects", href: "#/projects" },
+  { id: "writing",  label: "Writing",  href: "#/writing" },
+  { id: "gallery",  label: "Gallery",  href: "#/gallery" },
+  { id: "about",    label: "About",    href: "#/about" },
+  { id: "contact",  label: "Contact",  href: "#/contact" }
+];
 
 function Win95PortfolioShell({ children, route }) {
   const tokens = window.skinTokens.get("win95");
@@ -30,9 +42,18 @@ function Win95PortfolioShell({ children, route }) {
     const onClick = (e) => {
       if (!e.target.closest?.("[data-start-menu], [data-start-button]")) setStartOpen(false);
     };
+    const onKey = (e) => { if (e.key === "Escape") setStartOpen(false); };
     window.addEventListener("click", onClick);
-    return () => window.removeEventListener("click", onClick);
+    window.addEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("click", onClick);
+      window.removeEventListener("keydown", onKey);
+    };
   }, [startOpen]);
+
+  const addressPath = (!route.path || route.path === "/")
+    ? "\\Home"
+    : route.path.replace(/\//g, "\\");
 
   return (
     <div style={{
@@ -42,38 +63,29 @@ function Win95PortfolioShell({ children, route }) {
       paddingBottom: "32px"
     }}>
       {/* Desktop icons (hidden on small screens) */}
-      <div style={{
+      <nav aria-label="Desktop" className="w95-desktop-icons w95-arrive-icons" style={{
         position: "absolute", top: "12px", left: "12px",
-        display: "grid", gap: "16px",
+        display: "grid", gap: "14px",
         gridTemplateColumns: "auto",
         zIndex: 3
-      }} className="w95-desktop-icons">
-        {[
-          { label: "Projects", href: "#/projects", glyph: "▦" },
-          { label: "Writing",  href: "#/writing",  glyph: "✎" },
-          { label: "Gallery",  href: "#/gallery",  glyph: "⊞" },
-          { label: "About",    href: "#/about",    glyph: "★" },
-          { label: "Contact",  href: "#/contact",  glyph: "✉" }
-        ].map((d) => (
-          <a key={d.href} href={d.href} style={{
+      }}>
+        {W95_NAV.filter((d) => d.id !== "home").map((d) => (
+          <a key={d.href} href={d.href} className="w95-desktop-icon" style={{
             display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
             width: "72px", textDecoration: "none", color: "#fff"
           }}>
-            <div style={{
-              width: 36, height: 36, background: W95.surface,
-              boxShadow: W95.bevelOut,
-              display: "flex", alignItems: "center", justifyContent: "center",
-              color: "#000080", fontSize: "20px"
-            }}>{d.glyph}</div>
-            <div style={{
+            <span className="w95-icon-img" style={{ display: "inline-flex", lineHeight: 0 }}>
+              <window.PixelIcon name={window.NAV_PIXEL_ICONS[d.id]} size={32} />
+            </span>
+            <span className="w95-icon-label" style={{
               fontFamily: tokens.font, fontSize: "11px", textAlign: "center",
               padding: "1px 3px",
               textShadow: "1px 1px 0 #000",
               fontWeight: 700
-            }}>{d.label}</div>
+            }}>{d.label}</span>
           </a>
         ))}
-      </div>
+      </nav>
 
       {/* Main content window */}
       <div data-skin-scroll style={{
@@ -83,10 +95,11 @@ function Win95PortfolioShell({ children, route }) {
         position: "relative",
         overflowX: "hidden"
       }}>
-        <div style={{
+        <div className="w95-arrive-window" style={{
           maxWidth: "1080px", margin: "0 auto",
           background: W95.surface, boxShadow: W95.bevelOut, padding: "2px"
         }}>
+          <div className="w95-zoom" aria-hidden="true" />
           {/* title bar */}
           <div style={{
             background: W95.titleActive, color: "#fff",
@@ -102,12 +115,12 @@ function Win95PortfolioShell({ children, route }) {
           {/* menu bar */}
           <div style={{
             padding: "2px 6px",
-            display: "flex", gap: "12px",
+            display: "flex", gap: "12px", alignItems: "center",
             fontFamily: tokens.font, fontSize: "12px",
             borderBottom: "1px solid #808080"
           }}>
             {["File","Edit","View","Help"].map((m) => (
-              <span key={m} className="w95-menu-item" style={{ padding: "1px 4px", cursor: "default", userSelect: "none" }}>{m}</span>
+              <span key={m} className="w95-menu-item" style={{ padding: "1px 4px", cursor: "default", userSelect: "none" }}><u>{m[0]}</u>{m.slice(1)}</span>
             ))}
             <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: "8px" }}>
               <window.SkinSwitcher inline />
@@ -121,10 +134,10 @@ function Win95PortfolioShell({ children, route }) {
             borderBottom: "1px solid #808080",
             fontFamily: tokens.font, fontSize: "12px"
           }}>
-            <span style={{ color: tokens.muted }}>Address</span>
-            <div style={{ flex: 1, background: "#fff", boxShadow: W95.bevelIn, padding: "2px 6px", fontFamily: tokens.monoFont, fontSize: "11px" }}>
-              C:\Dorsfolio{(!route.path || route.path === "/") ? "\\Home" : "\\" + route.path.replace(/\//g, "\\")}
-              <span style={{ animation: "blink 1.1s step-start infinite" }}>_</span>
+            <span style={{ color: tokens.muted }}>A<u>d</u>dress</span>
+            <div style={{ flex: 1, background: "#fff", boxShadow: W95.bevelIn, padding: "2px 6px", fontFamily: tokens.monoFont, fontSize: "11px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+              C:\Dorsfolio{addressPath}
+              <span aria-hidden="true" style={{ animation: "blink 1.1s step-start infinite" }}>_</span>
             </div>
           </div>
 
@@ -153,11 +166,11 @@ function Win95PortfolioShell({ children, route }) {
       </div>
 
       {/* Taskbar */}
-      <div style={{
+      <div className="w95-arrive-taskbar" style={{
         position: "fixed", left: 0, right: 0, bottom: 0,
         height: "32px",
         background: W95.surface,
-        boxShadow: "inset 0 1px 0 #ffffff",
+        boxShadow: "inset 0 1px 0 #ffffff, 0 -1px 0 #c0c0c0",
         display: "flex", alignItems: "center", gap: "4px",
         padding: "2px 4px",
         zIndex: 100
@@ -165,89 +178,89 @@ function Win95PortfolioShell({ children, route }) {
         <button
           data-start-button
           type="button"
+          className="w95-btn"
+          aria-haspopup="menu"
+          aria-expanded={startOpen}
           onClick={() => setStartOpen((v) => !v)}
           style={{
-            display: "inline-flex", alignItems: "center", gap: "6px",
-            padding: "2px 8px", fontFamily: tokens.font, fontSize: "12px", fontWeight: 700,
-            background: W95.surface,
+            display: "inline-flex", alignItems: "center", gap: "5px",
+            padding: "2px 7px 2px 5px", fontFamily: tokens.font, fontSize: "12px", fontWeight: 700,
+            background: W95.surface, color: "#000",
             boxShadow: startOpen ? W95.buttonPressed : W95.buttonRaised,
-            border: "none", cursor: "pointer"
+            border: "none", cursor: "pointer", height: "24px"
           }}>
-          <span aria-hidden="true" style={{ display: "inline-grid", gridTemplateColumns: "1fr 1fr", gap: "1px", width: 14, height: 14, flexShrink: 0 }}>
-            <span style={{ background: "#ff0000" }} />
-            <span style={{ background: "#00b000" }} />
-            <span style={{ background: "#0055ff" }} />
-            <span style={{ background: "#ffd800" }} />
-          </span>
-          Start
+          <window.PixelIcon name="flag" size={16} />
+          <span>Start</span>
         </button>
 
         <div style={{ width: 2, height: "70%", background: "#808080", boxShadow: "1px 0 0 #fff", margin: "0 4px" }} />
 
-        <button type="button" onClick={() => {
+        {/* The open window's task button — pressed, dithered, like the active task in Win95 */}
+        <button type="button" className="w95-btn" aria-pressed="true" onClick={() => {
           const dest = route.name === "case-study" ? "#/projects"
             : route.name === "writing-post" ? "#/writing"
             : route.name === "home" ? "#/" : `#/${route.name}`;
           window.navigate(dest);
         }} style={{
-          padding: "2px 8px", background: W95.surface, fontFamily: tokens.font, fontSize: "12px",
-          boxShadow: W95.buttonRaised, border: "none", cursor: "pointer"
-        }}>📁 {w95TitleFor(route)}</button>
+          display: "inline-flex", alignItems: "center", gap: "6px",
+          padding: "2px 10px 2px 6px", fontFamily: tokens.font, fontSize: "12px", fontWeight: 700,
+          background: W95.dither, color: "#000",
+          boxShadow: W95.buttonPressed, border: "none", cursor: "pointer", height: "24px",
+          maxWidth: "min(220px, 40vw)"
+        }}>
+          <window.PixelIcon name={route.name === "home" ? "home" : (window.NAV_PIXEL_ICONS[route.name === "case-study" ? "projects" : route.name === "writing-post" ? "writing" : route.name] || "folder")} size={16} />
+          <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{w95TitleFor(route)}</span>
+        </button>
 
-        <div style={{ marginLeft: "auto", padding: "2px 8px", background: W95.surface, boxShadow: W95.bevelIn, fontFamily: tokens.font, fontSize: "11px", display: "flex", alignItems: "center", gap: "4px" }}>
-          <span aria-hidden="true">🔊</span>
+        <div style={{ marginLeft: "auto", padding: "2px 8px", background: W95.surface, boxShadow: W95.bevelIn, fontFamily: tokens.font, fontSize: "11px", display: "flex", alignItems: "center", gap: "6px", height: "24px" }}>
+          <window.PixelIcon name="speaker" size={16} />
           <span>{time}</span>
         </div>
       </div>
 
       {/* Start menu */}
       {startOpen && (
-        <div data-start-menu style={{
+        <div data-start-menu role="menu" aria-label="Start menu" style={{
           position: "fixed", left: 4, bottom: 36, zIndex: 200,
           width: "240px",
           background: W95.surface, boxShadow: W95.bevelOut, padding: "2px",
           fontFamily: tokens.font, fontSize: "12px"
         }}>
           <div style={{ display: "flex" }}>
-            <div style={{
+            <div aria-hidden="true" style={{
               writingMode: "vertical-rl", transform: "rotate(180deg)",
               background: W95.titleActive, color: "#fff",
               padding: "10px 4px", fontWeight: 700,
               fontSize: "16px", letterSpacing: "0.05em"
             }}>Dorsfolio<span style={{ color: "#fff" }}>95</span></div>
             <div style={{ flex: 1, padding: "4px 0" }}>
-              {[
-                { label: "Home",     href: "#/",         glyph: "🏠" },
-                { label: "Projects", href: "#/projects", glyph: "📁" },
-                { label: "Writing",  href: "#/writing",  glyph: "✏" },
-                { label: "Gallery",  href: "#/gallery",  glyph: "🖼" },
-                { label: "About",    href: "#/about",    glyph: "ℹ" },
-                { label: "Contact",  href: "#/contact",  glyph: "✉" }
-              ].map((it) => (
-                <a key={it.href} href={it.href} onClick={() => setStartOpen(false)} style={{
+              {W95_NAV.map((it) => (
+                <a key={it.href} href={it.href} role="menuitem" className="w95-start-item" onClick={() => setStartOpen(false)} style={{
                   display: "flex", alignItems: "center", gap: "10px",
-                  padding: "6px 12px",
+                  padding: "5px 12px",
                   textDecoration: "none", color: tokens.text,
                   fontSize: "12px"
                 }}>
-                  <span style={{ width: 20, textAlign: "center" }}>{it.glyph}</span>
+                  <window.PixelIcon name={window.NAV_PIXEL_ICONS[it.id]} size={20} />
                   <span><u>{it.label[0]}</u>{it.label.slice(1)}</span>
                 </a>
               ))}
               <div style={{ height: 1, background: "#808080", boxShadow: "0 1px 0 #fff", margin: "4px 8px" }} />
               <button
                 type="button"
+                role="menuitem"
+                className="w95-start-item"
                 onClick={() => { setStartOpen(false); clearSkin(); }}
                 style={{
                   display: "flex", alignItems: "center", gap: "10px",
-                  width: "100%", padding: "6px 12px",
+                  width: "100%", padding: "5px 12px",
                   background: "transparent", border: "none",
-                  fontFamily: tokens.font, fontSize: "11px",
-                  color: tokens.muted, cursor: "pointer", textAlign: "left"
+                  fontFamily: tokens.font, fontSize: "12px",
+                  color: tokens.text, cursor: "pointer", textAlign: "left"
                 }}
               >
-                <span style={{ width: 20, textAlign: "center" }}>🎨</span>
-                <span>Change interface…</span>
+                <window.PixelIcon name="palette" size={20} />
+                <span>C<u>h</u>ange interface…</span>
               </button>
             </div>
           </div>
@@ -256,7 +269,6 @@ function Win95PortfolioShell({ children, route }) {
 
       {/* Small screens: hide desktop icons, tighten window chrome */}
       <style>{`
-        .w95-menu-item:hover { background: #000080; color: #ffffff; }
         @media (max-width: 720px) {
           .w95-desktop-icons { display: none !important; }
         }
@@ -269,7 +281,7 @@ function Win95PortfolioShell({ children, route }) {
 }
 
 function w95TitleFor(route) {
-  if (route.name === "home") return "Dorsfolio";
+  if (route.name === "home") return "Home";
   if (route.name === "projects") return "Projects";
   if (route.name === "case-study") return route.slug + ".prj";
   if (route.name === "about") return "About.txt";
@@ -285,13 +297,19 @@ function Win95TitleButtons() {
     width: 16, height: 14, background: W95.surface,
     boxShadow: W95.bevelOut,
     display: "inline-flex", alignItems: "center", justifyContent: "center",
-    color: "#000", fontSize: "10px", fontFamily: 'Arial, sans-serif', fontWeight: 700
+    color: "#000"
   };
+  // Minimise / maximise / close glyphs drawn as crisp 8×7 pixel shapes
+  const glyph = (d) => (
+    <svg width="8" height="7" viewBox="0 0 8 7" shapeRendering="crispEdges" aria-hidden="true">
+      <path d={d} fill="#000" />
+    </svg>
+  );
   return (
-    <span style={{ display: "inline-flex", gap: "2px" }}>
-      <span style={btn} aria-hidden="true">_</span>
-      <span style={btn} aria-hidden="true">□</span>
-      <span style={btn} aria-hidden="true">×</span>
+    <span style={{ display: "inline-flex", gap: "2px" }} aria-hidden="true">
+      <span style={btn}>{glyph("M1 5h6v2H1z")}</span>
+      <span style={btn}>{glyph("M0 0h8v2H0zM0 2h1v5H0zM7 2h1v5H7zM0 6h8v1H0z")}</span>
+      <span style={btn}>{glyph("M0 0h2v1H0zM6 0h2v1H6zM1 1h2v1H1zM5 1h2v1H5zM2 2h4v1H2zM3 3h2v1H3zM2 4h4v1H2zM1 5h2v1H1zM5 5h2v1H5zM0 6h2v1H0zM6 6h2v1H6z")}</span>
     </span>
   );
 }
@@ -303,16 +321,15 @@ function formatTime() {
 
 // ---- ProjectCard ---------------------------------------------------------
 function Win95ProjectCard({ project, tokens }) {
-  const [hover, setHover] = React.useState(false);
   return (
     <a href={`#/projects/${project.slug}`}
-      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      className="w95-card"
       style={{
         display: "block", textDecoration: "none", color: tokens.text,
         background: W95.surface, boxShadow: W95.bevelOut, padding: "2px"
       }}>
-      <div style={{
-        background: hover ? W95.titleActive : W95.titleInactive, color: "#fff",
+      <div className="w95-card-title" style={{
+        background: W95.titleInactive, color: "#fff",
         padding: "3px 4px 3px 6px",
         display: "flex", alignItems: "center", gap: "6px",
         fontFamily: tokens.font, fontSize: "11px", fontWeight: 700
@@ -349,11 +366,11 @@ function Win95CaseStudyLayout({ project }) {
   const tokens = window.skinTokens.get("win95");
   return (
     <article>
-      <div style={{ marginBottom: "16px", display: "flex", gap: "8px", alignItems: "center", fontFamily: tokens.monoFont, fontSize: "11px" }}>
-        <a href="#/projects" style={{ color: tokens.accent, textDecoration: "underline" }}>Projects</a>
-        <span>›</span>
+      <nav aria-label="Breadcrumb" style={{ marginBottom: "16px", display: "flex", gap: "8px", alignItems: "center", fontFamily: tokens.monoFont, fontSize: "11px" }}>
+        <a href="#/projects" className="w95-link" style={{ color: tokens.accent, textDecoration: "underline" }}>Projects</a>
+        <span aria-hidden="true">›</span>
         <span>{project.slug}.prj</span>
-      </div>
+      </nav>
 
       {/* "window" panel for hero */}
       <div style={{ background: W95.surface, boxShadow: W95.bevelOut, padding: "2px", marginBottom: "16px" }}>
@@ -369,7 +386,7 @@ function Win95CaseStudyLayout({ project }) {
         </div>
         <div style={{ padding: "10px" }}>
           <div style={{ background: "#fff", boxShadow: W95.bevelIn, padding: "4px" }}>
-            <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: project.coverImage, alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }} />
+            <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: window.resolveAsset(project.coverImage), alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }} />
           </div>
         </div>
       </div>
@@ -400,4 +417,4 @@ function Win95CaseStudyLayout({ project }) {
   );
 }
 
-Object.assign(window, { Win95PortfolioShell, Win95ProjectCard, Win95CaseStudyLayout });
+Object.assign(window, { Win95PortfolioShell, Win95ProjectCard, Win95CaseStudyLayout, W95 });
