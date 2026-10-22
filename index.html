@@ -40,7 +40,7 @@
     img { max-width: 100%; }
     button { font-family: inherit; }
     a { color: inherit; }
-    :focus-visible { outline: 2px solid #0a84ff; outline-offset: 2px; border-radius: 4px; }
+    /* Focus, selection, scrollbars and caret are themed per skin in src/theme/skinStyles.jsx */
 
     /* ---- Animation keyframes ---- */
     @keyframes fadeUp {
@@ -59,32 +59,22 @@
       0%, 100% { transform: translateY(0px); }
       50%      { transform: translateY(-8px); }
     }
-    @keyframes routeFadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulseRing {
-      0%   { transform: scale(1);    opacity: 0.55; }
-      100% { transform: scale(1.6);  opacity: 0; }
-    }
     @keyframes blink {
       0%, 100% { opacity: 1; }
       50%      { opacity: 0; }
-    }
-    @keyframes slideInLeft {
-      from { opacity: 0; transform: translateX(-14px); }
-      to   { opacity: 1; transform: translateX(0); }
     }
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
 
-    /* Reduce motion respect */
+    /* Reduce motion: entrances and loops snap to their end state. Transitions
+       are left alone — colour, opacity and state feedback still carry meaning;
+       the per-skin stylesheet strips the transform-based ones. */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.001ms !important;
+        animation-delay: 0s !important;
         animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
         scroll-behavior: auto !important;
       }
     }
@@ -120,6 +110,10 @@
 
   <!-- Theme tokens (plain JS) -->
   <script src="src/theme/skinTokens.js"></script>
+
+  <!-- Icon system + per-skin global styles (JSX) -->
+  <script type="text/babel" src="src/components/Icons.jsx"></script>
+  <script type="text/babel" src="src/theme/skinStyles.jsx"></script>
 
   <!-- Theme provider + helpers (JSX) -->
   <script type="text/babel" src="src/theme/SkinProvider.jsx"></script>

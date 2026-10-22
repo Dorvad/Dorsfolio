@@ -27,7 +27,20 @@ function SkinSwitcher({ position = "top-right", inline = false }) {
       if (!rootRef.current) return;
       if (!rootRef.current.contains(e.target)) setOpen(false);
     };
-    const onKey = (e) => { if (e.key === "Escape") setOpen(false); };
+    const onKey = (e) => {
+      if (e.key === "Escape") { setOpen(false); return; }
+      // Arrow keys move between options once the list is open
+      if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+        const opts = rootRef.current ? Array.from(rootRef.current.querySelectorAll('[role="option"]')) : [];
+        if (!opts.length) return;
+        e.preventDefault();
+        const idx = opts.indexOf(document.activeElement);
+        const next = e.key === "ArrowDown"
+          ? opts[(idx + 1) % opts.length]
+          : opts[(idx - 1 + opts.length) % opts.length];
+        next.focus();
+      }
+    };
     window.addEventListener("mousedown", onClick);
     window.addEventListener("keydown", onKey);
     return () => {
@@ -36,7 +49,7 @@ function SkinSwitcher({ position = "top-right", inline = false }) {
     };
   }, [open]);
 
-  const pick = (id) => { setSkin(id); setOpen(false); if (window.navigate) window.navigate("#/"); };
+  const pick = (id) => { setOpen(false); setSkin(id); if (window.navigate) window.navigate("#/"); };
 
   if (skin === "win95") {
     return (
@@ -52,6 +65,9 @@ function SkinSwitcher({ position = "top-right", inline = false }) {
     );
   }
 
+  const isMaterial = skin === "material";
+  const isCarbon = skin === "carbon";
+
   return (
     <div data-skin-switcher ref={rootRef} style={posStyle}>
       <button
@@ -60,9 +76,11 @@ function SkinSwitcher({ position = "top-right", inline = false }) {
         aria-expanded={open}
         aria-label={`Current interface: ${current.name}. Click to change.`}
         onClick={() => setOpen((v) => !v)}
+        onPointerDown={isMaterial ? window.m3Ripple : undefined}
+        className={"ds-btn ds-btn-ghost" + (isMaterial ? " m3-state" : "")}
         style={{
           display: "inline-flex", alignItems: "center", gap: "8px",
-          padding: "8px 14px",
+          padding: isCarbon ? "7px 10px 7px 12px" : "8px 12px 8px 14px",
           fontFamily: tokens.font,
           fontSize: "13px",
           color: tokens.text,
@@ -77,24 +95,28 @@ function SkinSwitcher({ position = "top-right", inline = false }) {
       >
         <SkinDot id={current.id} />
         <span>{current.name}</span>
-        <span aria-hidden="true" style={{ opacity: 0.6, fontSize: "10px" }}>▾</span>
+        <window.Icon name="chevronDown" size={14} style={{
+          opacity: 0.7,
+          transition: "transform 200ms var(--ds-ease)",
+          transform: open ? "rotate(180deg)" : "none"
+        }} />
       </button>
 
       {open && (
         <div
           role="listbox"
+          aria-label="Choose an interface"
+          className="ds-pop"
           style={{
             position: "absolute",
             top: position.includes("top") ? "calc(100% + 8px)" : "auto",
             bottom: position.includes("bottom") ? "calc(100% + 8px)" : "auto",
             right: position.includes("right") ? 0 : "auto",
             left: position.includes("left") ? 0 : "auto",
-            width: "260px",
-            background: tokens.surface || tokens.surfaceSolid,
-            backdropFilter: skin === "mac" ? tokens.blur : "none",
-            WebkitBackdropFilter: skin === "mac" ? tokens.blur : "none",
+            width: "272px",
+            background: tokens.surfaceSolid,
             border: `1px solid ${tokens.border}`,
-            boxShadow: tokens.shadow,
+            boxShadow: isCarbon ? "0 8px 24px rgba(0,0,0,0.5)" : (tokens.shadow || "0 12px 32px rgba(15,23,42,0.16)"),
             borderRadius: tokens.radius,
             padding: "6px",
             zIndex: 9001
@@ -107,6 +129,8 @@ function SkinSwitcher({ position = "top-right", inline = false }) {
               aria-selected={s.id === skin}
               type="button"
               onClick={() => pick(s.id)}
+              onPointerDown={isMaterial ? window.m3Ripple : undefined}
+              className={"ds-opt" + (isMaterial ? " m3-state" : "")}
               style={{
                 display: "grid",
                 gridTemplateColumns: "24px 1fr auto",
@@ -128,7 +152,7 @@ function SkinSwitcher({ position = "top-right", inline = false }) {
                 <div style={{ fontSize: "14px", fontWeight: 600 }}>{s.name}</div>
                 <div style={{ fontSize: "12px", color: tokens.muted, marginTop: "2px", overflow: "hidden", textOverflow: "ellipsis" }}>{s.tagline}</div>
               </div>
-              {s.id === skin && <span style={{ color: tokens.accent, fontSize: "14px" }}>✓</span>}
+              {s.id === skin && <window.Icon name="check" size={16} style={{ color: tokens.accent }} />}
             </button>
           ))}
         </div>
@@ -139,7 +163,6 @@ function SkinSwitcher({ position = "top-right", inline = false }) {
 
 // ---- Win95-specific switcher (looks like a real Win95 combo box) ----------
 function Win95SkinSwitcher({ rootRef, posStyle, open, setOpen, skins, current, pick }) {
-  const [hoverIdx, setHoverIdx] = React.useState(-1);
   const bevelRaised   = "inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080, inset 2px 2px 0 #dfdfdf, inset -2px -2px 0 #000000";
   const bevelInset    = "inset 1px 1px 0 #808080, inset -1px -1px 0 #ffffff, inset 2px 2px 0 #000000, inset -2px -2px 0 #dfdfdf";
 
@@ -175,35 +198,36 @@ function Win95SkinSwitcher({ rootRef, posStyle, open, setOpen, skins, current, p
           <SkinDot id={current.id} size={14} />
           <span style={{ flex: 1, textAlign: "left" }}>{current.name}</span>
         </span>
-        {/* Arrow button — raised */}
+        {/* Arrow button — raised, with a crisp pixel triangle */}
         <span aria-hidden="true" style={{
           display: "inline-flex", alignItems: "center", justifyContent: "center",
           width: "18px", height: "22px",
           background: "#c0c0c0",
-          boxShadow: open ? bevelInset : bevelRaised,
-          fontSize: "9px",
-          color: "#000"
-        }}>▼</span>
+          boxShadow: open ? bevelInset : bevelRaised
+        }}>
+          <svg width="8" height="4" viewBox="0 0 8 4" shapeRendering="crispEdges"><path d="M0 0h8L4 4z" fill="#000" /></svg>
+        </span>
       </button>
 
       {open && (
         <div
           role="listbox"
+          aria-label="Choose an interface"
+          className="w95-pop"
           style={{
             position: "absolute",
             top: "100%", right: 0,
             marginTop: "1px",
             width: "260px",
-            background: "#c0c0c0",
-            boxShadow: bevelRaised,
-            padding: "2px",
+            background: "#ffffff",
+            boxShadow: "0 0 0 1px #000",
+            padding: "1px",
             zIndex: 9001,
             fontFamily: '"MS Sans Serif", Tahoma, sans-serif'
           }}
         >
-          {skins.map((s, i) => {
+          {skins.map((s) => {
             const active = s.id === current.id;
-            const hovered = hoverIdx === i;
             return (
               <button
                 key={s.id}
@@ -211,16 +235,15 @@ function Win95SkinSwitcher({ rootRef, posStyle, open, setOpen, skins, current, p
                 aria-selected={active}
                 type="button"
                 onClick={() => pick(s.id)}
-                onMouseEnter={() => setHoverIdx(i)}
-                onMouseLeave={() => setHoverIdx(-1)}
+                className="w95-start-item"
                 style={{
                   display: "grid",
                   gridTemplateColumns: "20px 1fr auto",
                   gap: "8px", alignItems: "center",
                   width: "100%",
-                  padding: "5px 8px",
-                  background: hovered ? "#000080" : "transparent",
-                  color: hovered ? "#ffffff" : "#000000",
+                  padding: "4px 8px",
+                  background: active ? "#000080" : "transparent",
+                  color: active ? "#ffffff" : "#000000",
                   border: "none",
                   cursor: "pointer",
                   fontFamily: 'inherit', fontSize: "12px",
@@ -229,9 +252,8 @@ function Win95SkinSwitcher({ rootRef, posStyle, open, setOpen, skins, current, p
               >
                 <SkinDot id={s.id} size={14} />
                 <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                  {active ? <strong>{s.name}</strong> : s.name}
+                  {s.name}
                 </span>
-                <span style={{ fontSize: "11px" }}>{active ? "•" : ""}</span>
               </button>
             );
           })}
@@ -273,7 +295,9 @@ function SkinFooter({ variant = "default" }) {
 
   // Per-skin button styling
   let btnStyle;
+  let btnClass = "ds-btn ds-btn-ghost";
   if (skin === "win95") {
+    btnClass = "w95-btn";
     btnStyle = {
       padding: "3px 12px",
       background: "#c0c0c0",
@@ -285,8 +309,9 @@ function SkinFooter({ variant = "default" }) {
       cursor: "pointer"
     };
   } else if (skin === "material") {
+    btnClass += " m3-state";
     btnStyle = {
-      padding: "8px 16px",
+      padding: "8px 16px 8px 12px",
       background: "transparent",
       color: tokens.accent,
       fontFamily: tokens.font,
@@ -297,7 +322,7 @@ function SkinFooter({ variant = "default" }) {
     };
   } else if (skin === "carbon") {
     btnStyle = {
-      padding: "8px 14px",
+      padding: "8px 14px 8px 10px",
       background: "transparent",
       color: tokens.accent,
       fontFamily: tokens.font,
@@ -309,7 +334,7 @@ function SkinFooter({ variant = "default" }) {
   } else {
     // mac
     btnStyle = {
-      padding: "7px 14px",
+      padding: "7px 14px 7px 10px",
       background: "rgba(255,255,255,0.6)",
       backdropFilter: tokens.blur, WebkitBackdropFilter: tokens.blur,
       color: tokens.accent,
@@ -351,10 +376,13 @@ function SkinFooter({ variant = "default" }) {
       <button
         type="button"
         onClick={onPick}
-        style={btnStyle}
+        onPointerDown={skin === "material" ? window.m3Ripple : undefined}
+        className={btnClass}
+        style={{ ...btnStyle, display: "inline-flex", alignItems: "center", gap: "6px" }}
         aria-label="Return to the interface picker"
       >
-        ← Pick a different interface
+        {skin === "win95" ? <span aria-hidden="true">←</span> : <window.Icon name="arrowLeft" size={14} />}
+        Pick a different interface
       </button>
     </div>
   );

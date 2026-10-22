@@ -1,5 +1,7 @@
 // =============================================================================
 // IBM CARBON skin — dark, structured, sidebar nav, grid
+// Motion is "productive": 110–240 ms, entrance cubic-bezier(0,0,.38,.9),
+// standard cubic-bezier(.2,0,.38,.9). Nothing lingers.
 // =============================================================================
 
 function CarbonPortfolioShell({ children, route }) {
@@ -19,6 +21,14 @@ function CarbonPortfolioShell({ children, route }) {
     (id === "writing" && (route.name === "writing" || route.name === "writing-post")) ||
     (id === route.name);
 
+  // Close the mobile rail on Escape
+  React.useEffect(() => {
+    if (!navOpen) return;
+    const onKey = (e) => { if (e.key === "Escape") setNavOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [navOpen]);
+
   return (
     <div style={{
       minHeight: "100vh", background: "#161616",
@@ -26,7 +36,7 @@ function CarbonPortfolioShell({ children, route }) {
       display: "grid", gridTemplateRows: "48px 1fr"
     }}>
       {/* Header bar */}
-      <header style={{
+      <header className="cds-arrive-header" style={{
         position: "sticky", top: 0, zIndex: 60,
         height: "48px",
         background: "#161616",
@@ -36,9 +46,10 @@ function CarbonPortfolioShell({ children, route }) {
       }}>
         <button
           type="button"
-          aria-label="Toggle navigation"
+          aria-label={navOpen ? "Close navigation" : "Open navigation"}
+          aria-expanded={navOpen}
           onClick={() => setNavOpen((v) => !v)}
-          className="carbon-burger"
+          className="carbon-burger cds-nav-link"
           style={{
             width: 48, height: 48,
             background: "transparent", color: tokens.text,
@@ -46,9 +57,11 @@ function CarbonPortfolioShell({ children, route }) {
             cursor: "pointer",
             display: "none",
             alignItems: "center", justifyContent: "center",
-            fontSize: "18px"
-          }}>≡</button>
-        <a href="#/" style={{
+            padding: 0
+          }}>
+          <window.Icon name={navOpen ? "close" : "menu"} size={20} skin="carbon" />
+        </button>
+        <a href="#/" className="cds-nav-link" style={{
           display: "inline-flex", alignItems: "center", gap: "8px",
           padding: "0 16px", height: "48px",
           color: tokens.text, textDecoration: "none"
@@ -56,9 +69,9 @@ function CarbonPortfolioShell({ children, route }) {
           <span style={{ fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted }}>Dor</span>
           <span style={{ fontWeight: 600, fontSize: "15px" }}>Dorsfolio</span>
         </a>
-        <nav className="carbon-top-nav" style={{ display: "flex", height: "48px", marginLeft: "8px" }}>
+        <nav className="carbon-top-nav" aria-label="Primary" style={{ display: "flex", height: "48px", marginLeft: "8px" }}>
           {navItems.map((n) => (
-            <a key={n.id} href={n.href} style={{
+            <a key={n.id} href={n.href} className="cds-nav-link" aria-current={isActive(n.id) ? "page" : undefined} style={{
               padding: "0 16px", height: "48px",
               display: "inline-flex", alignItems: "center",
               color: isActive(n.id) ? tokens.text : tokens.muted,
@@ -77,7 +90,7 @@ function CarbonPortfolioShell({ children, route }) {
       {/* Body row */}
       <div style={{ display: "grid", gridTemplateColumns: "240px 1fr" }} className="carbon-body">
         {/* Side rail */}
-        <aside className="carbon-side" style={{
+        <aside className="carbon-side cds-arrive-side" aria-label="Side navigation" style={{
           background: "#161616",
           borderRight: `1px solid ${tokens.border}`,
           padding: "16px 0",
@@ -90,7 +103,7 @@ function CarbonPortfolioShell({ children, route }) {
               Navigate
             </div>
             {navItems.map((n) => (
-              <a key={n.id} href={n.href} onClick={() => setNavOpen(false)} style={{
+              <a key={n.id} href={n.href} className="cds-nav-link" onClick={() => setNavOpen(false)} aria-current={isActive(n.id) ? "page" : undefined} style={{
                 display: "flex", alignItems: "center",
                 padding: "10px 16px",
                 borderLeft: isActive(n.id) ? `3px solid ${tokens.accent}` : "3px solid transparent",
@@ -109,7 +122,7 @@ function CarbonPortfolioShell({ children, route }) {
           {(window.caseStudies || []).map((p) => {
             const active = route.name === "case-study" && route.slug === p.slug;
             return (
-              <a key={p.slug} href={`#/projects/${p.slug}`} onClick={() => setNavOpen(false)} style={{
+              <a key={p.slug} href={`#/projects/${p.slug}`} className="cds-nav-link" onClick={() => setNavOpen(false)} aria-current={active ? "page" : undefined} style={{
                 display: "flex", alignItems: "center", gap: "10px",
                 padding: "8px 16px",
                 borderLeft: active ? `3px solid ${tokens.accent}` : "3px solid transparent",
@@ -118,7 +131,7 @@ function CarbonPortfolioShell({ children, route }) {
                 fontSize: "13px",
                 textDecoration: "none"
               }}>
-                <span style={{ width: 6, height: 6, background: p.accent || tokens.accent }} />
+                <span style={{ width: 6, height: 6, background: p.accent || tokens.accent, flexShrink: 0 }} />
                 {p.title}
               </a>
             );
@@ -126,7 +139,7 @@ function CarbonPortfolioShell({ children, route }) {
         </aside>
 
         {/* Main */}
-        <main data-skin-scroll style={{
+        <main data-skin-scroll className="cds-arrive-main" style={{
           padding: "clamp(20px, 3vw, 40px) clamp(16px, 3vw, 40px) 64px",
           minWidth: 0
         }}>
@@ -145,9 +158,11 @@ function CarbonPortfolioShell({ children, route }) {
           .carbon-top-nav { display: none !important; }
           .carbon-burger { display: flex !important; }
           .carbon-body { grid-template-columns: 1fr !important; }
-          .carbon-side { display: ${navOpen ? "block" : "none"} !important; position: fixed !important; top: 48px; left: 0; right: 0; height: auto !important; max-height: calc(100vh - 48px); width: 100% !important; z-index: 80; }
+          .carbon-side { display: ${navOpen ? "block" : "none"} !important; position: fixed !important; top: 48px; left: 0; right: 0; height: auto !important; max-height: calc(100vh - 48px); width: 100% !important; z-index: 80; box-shadow: 0 16px 32px rgba(0,0,0,0.5); animation: cdsSlideDown 180ms cubic-bezier(0, 0, 0.38, 0.9) both; }
           .carbon-sidenav-pages { display: block; }
         }
+        @keyframes cdsSlideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+        @media (prefers-reduced-motion: reduce) { .carbon-side { animation: none !important; } }
       `}</style>
     </div>
   );
@@ -155,28 +170,24 @@ function CarbonPortfolioShell({ children, route }) {
 
 // ---- Project card --------------------------------------------------------
 function CarbonProjectCard({ project, tokens }) {
-  const [hover, setHover] = React.useState(false);
-  const reduced = window.useReducedMotion();
   const accent = project.accent || tokens.accent;
   return (
     <a
       href={`#/projects/${project.slug}`}
-      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      className="ds-card"
       style={{
         display: "grid", gridTemplateRows: "auto 1fr auto",
         textDecoration: "none", color: tokens.text,
-        background: hover ? tokens.surfaceAlt : tokens.surface,
+        background: tokens.surface,
         border: `1px solid ${tokens.border}`,
-        borderLeft: `3px solid ${hover ? accent : accent + "88"}`,
-        transition: reduced ? "none" : "background 180ms ease, border-left-color 180ms ease",
+        borderLeft: `3px solid ${accent}88`,
+        "--card-accent": accent,
         minHeight: "100%"
       }}
     >
       <div style={{ background: "#0c0c0c", overflow: "hidden" }}>
-        <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} style={{
-          width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block", opacity: 0.95,
-          transform: hover && !reduced ? "scale(1.04)" : "scale(1)",
-          transition: reduced ? "none" : "transform 350ms cubic-bezier(.2,.8,.2,1)"
+        <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} className="ds-card-img" style={{
+          width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block", opacity: 0.95
         }} />
       </div>
       <div style={{ padding: "16px 18px" }}>
@@ -199,7 +210,7 @@ function CarbonProjectCard({ project, tokens }) {
         letterSpacing: "0.06em"
       }}>
         <span>{project.status}</span>
-        <span style={{ color: tokens.accent }}>OPEN →</span>
+        <span style={{ color: tokens.accent, display: "inline-flex", alignItems: "center", gap: "6px" }}>OPEN <window.Icon name="arrowRight" size={14} skin="carbon" /></span>
       </div>
     </a>
   );
@@ -217,10 +228,10 @@ function CarbonCaseStudyLayout({ project }) {
         textTransform: "uppercase", letterSpacing: "0.08em",
         display: "flex", gap: "10px"
       }}>
-        <a href="#/" style={{ color: tokens.muted, textDecoration: "none" }}>Home</a>
-        <span>/</span>
-        <a href="#/projects" style={{ color: tokens.muted, textDecoration: "none" }}>Projects</a>
-        <span>/</span>
+        <a href="#/" className="ds-link" style={{ color: tokens.muted }}>Home</a>
+        <span aria-hidden="true">/</span>
+        <a href="#/projects" className="ds-link" style={{ color: tokens.muted }}>Projects</a>
+        <span aria-hidden="true">/</span>
         <span style={{ color: tokens.text }}>{project.slug}</span>
       </nav>
 
@@ -232,9 +243,6 @@ function CarbonCaseStudyLayout({ project }) {
           borderBottom: `1px solid ${tokens.border}`,
           padding: "clamp(20px, 3vw, 36px)"
         }}>
-          <div style={{ fontFamily: tokens.monoFont, fontSize: "11px", color: project.accent || tokens.accent, marginBottom: "12px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
-            {project.category} · {project.year}
-          </div>
           <h1 style={{
             fontFamily: tokens.font,
             fontSize: "clamp(32px, 5vw, 48px)",
@@ -248,8 +256,11 @@ function CarbonCaseStudyLayout({ project }) {
           <div style={{ fontFamily: tokens.font, fontSize: "clamp(16px, 1.8vw, 18px)", color: tokens.muted, lineHeight: 1.5, maxWidth: "60ch", textWrap: "pretty" }}>
             {project.subtitle}
           </div>
+          <div style={{ fontFamily: tokens.monoFont, fontSize: "11px", color: project.accent || tokens.accent, marginTop: "16px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+            {project.category} · {project.year}
+          </div>
 
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0", marginTop: "20px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "0", marginTop: "16px" }}>
             {(project.tags || []).map((t) => (
               <span key={t} style={{
                 padding: "4px 10px",
@@ -263,8 +274,8 @@ function CarbonCaseStudyLayout({ project }) {
         </div>
 
         {/* Cover image */}
-        <div style={{ borderBottom: `1px solid ${tokens.border}` }}>
-          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: project.coverImage, alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/7", objectFit: "cover", display: "block" }} />
+        <div style={{ borderBottom: `1px solid ${tokens.border}`, background: "#0c0c0c" }}>
+          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: window.resolveAsset(project.coverImage), alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/7", objectFit: "cover", display: "block" }} />
         </div>
 
         {/* Meta dashboard row */}
@@ -279,7 +290,7 @@ function CarbonCaseStudyLayout({ project }) {
             { k: "Year", v: project.year },
             { k: "Category", v: project.category },
             { k: "Status", v: project.status }
-          ].filter((r) => r.v).map((r, i) => (
+          ].filter((r) => r.v).map((r) => (
             <div key={r.k} style={{
               padding: "16px 18px",
               borderRight: `1px solid ${tokens.border}`,

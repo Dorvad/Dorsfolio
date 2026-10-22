@@ -1,17 +1,21 @@
 // =============================================================================
 // MATERIAL YOU skin — soft cards, expressive color, pill nav, FAB
+// Feedback follows Material 3: a state layer on hover/focus/press and a
+// ripple from the pointer on press (window.m3Ripple), emphasized easing.
 // =============================================================================
+
+const M3_NAV = [
+  { id: "home",     href: "#/",         label: "Home" },
+  { id: "projects", href: "#/projects", label: "Projects" },
+  { id: "writing",  href: "#/writing",  label: "Writing" },
+  { id: "gallery",  href: "#/gallery",  label: "Gallery" },
+  { id: "about",    href: "#/about",    label: "About" },
+  { id: "contact",  href: "#/contact",  label: "Contact" }
+];
 
 function MaterialPortfolioShell({ children, route }) {
   const tokens = window.skinTokens.get("material");
-  const navItems = [
-    { id: "home",     href: "#/",         label: "Home",     glyph: "⌂" },
-    { id: "projects", href: "#/projects", label: "Projects", glyph: "▦" },
-    { id: "writing",  href: "#/writing",  label: "Writing",  glyph: "✎" },
-    { id: "gallery",  href: "#/gallery",  label: "Gallery",  glyph: "⊞" },
-    { id: "about",    href: "#/about",    label: "About",    glyph: "★" },
-    { id: "contact",  href: "#/contact",  label: "Contact",  glyph: "✉" }
-  ];
+  const navItems = M3_NAV;
 
   const isActive = (id) =>
     (id === "home" && route.name === "home") ||
@@ -27,7 +31,7 @@ function MaterialPortfolioShell({ children, route }) {
       display: "flex", flexDirection: "column"
     }}>
       {/* Top bar */}
-      <header style={{
+      <header className="m3-arrive-bar" style={{
         position: "sticky", top: 0, zIndex: 50,
         background: "#fef7ffd0",
         backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
@@ -55,14 +59,17 @@ function MaterialPortfolioShell({ children, route }) {
           border: `1px solid ${tokens.border}`
         }}>
           {navItems.map((n) => (
-            <a key={n.id} href={n.href} style={{
-              padding: "8px 16px",
-              borderRadius: "999px",
-              textDecoration: "none",
-              fontSize: "14px", fontWeight: 500,
-              background: isActive(n.id) ? "#e8def8" : "transparent",
-              color: isActive(n.id) ? "#21005d" : tokens.text
-            }}>{n.label}</a>
+            <a key={n.id} href={n.href} className="m3-state" onPointerDown={window.m3Ripple}
+              aria-current={isActive(n.id) ? "page" : undefined}
+              style={{
+                padding: "8px 16px",
+                borderRadius: "999px",
+                textDecoration: "none",
+                fontSize: "14px", fontWeight: 500,
+                background: isActive(n.id) ? "#e8def8" : "transparent",
+                color: isActive(n.id) ? "#21005d" : tokens.text,
+                transition: "background 200ms cubic-bezier(0.2, 0, 0, 1), color 200ms cubic-bezier(0.2, 0, 0, 1)"
+              }}>{n.label}</a>
           ))}
         </nav>
         <window.SkinSwitcher inline />
@@ -73,7 +80,7 @@ function MaterialPortfolioShell({ children, route }) {
         flex: 1, padding: "clamp(20px, 4vw, 48px) clamp(16px, 4vw, 32px) 120px",
         overflowX: "hidden"
       }}>
-        <div style={{ maxWidth: "1080px", margin: "0 auto" }}>{children}</div>
+        <div className="m3-arrive-content" style={{ maxWidth: "1080px", margin: "0 auto" }}>{children}</div>
 
         <footer style={{
           maxWidth: "1080px", margin: "60px auto 0"
@@ -81,7 +88,7 @@ function MaterialPortfolioShell({ children, route }) {
       </div>
 
       {/* Mobile bottom nav */}
-      <nav aria-label="Mobile" className="material-bottom-nav" style={{
+      <nav aria-label="Mobile" className="material-bottom-nav m3-arrive-bottom" style={{
         position: "fixed", left: "16px", right: "16px", bottom: "16px",
         background: "#fff",
         borderRadius: "28px",
@@ -93,24 +100,38 @@ function MaterialPortfolioShell({ children, route }) {
         gap: "4px",
         zIndex: 60
       }}>
-        {navItems.map((n) => (
-          <a key={n.id} href={n.href} style={{
-            padding: "10px 6px",
-            borderRadius: "999px",
-            textDecoration: "none",
-            textAlign: "center",
-            fontSize: "12px", fontWeight: 600,
-            background: isActive(n.id) ? "#e8def8" : "transparent",
-            color: isActive(n.id) ? "#21005d" : tokens.text
-          }}>
-            <div style={{ fontSize: "16px", lineHeight: 1 }}>{n.glyph}</div>
-            <div style={{ marginTop: "2px" }}>{n.label}</div>
-          </a>
-        ))}
+        {navItems.map((n) => {
+          const active = isActive(n.id);
+          return (
+            <a key={n.id} href={n.href} className="m3-state" onPointerDown={window.m3Ripple}
+              aria-current={active ? "page" : undefined}
+              aria-label={n.label}
+              style={{
+                padding: "8px 4px 6px",
+                borderRadius: "20px",
+                textDecoration: "none",
+                textAlign: "center",
+                fontSize: "11px", fontWeight: 600,
+                color: active ? "#21005d" : tokens.muted,
+                display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
+                transition: "color 200ms cubic-bezier(0.2, 0, 0, 1)"
+              }}>
+              <span aria-hidden="true" style={{
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                width: 48, height: 28, borderRadius: "999px",
+                background: active ? "#e8def8" : "transparent",
+                transition: "background 240ms cubic-bezier(0.2, 0, 0, 1)"
+              }}>
+                <window.Icon name={window.NAV_ICONS[n.id]} size={20} filled={active} skin="material" />
+              </span>
+              <span className="material-bottom-label">{n.label}</span>
+            </a>
+          );
+        })}
       </nav>
 
       {/* FAB */}
-      <a href="#/contact" aria-label="Contact" title="Contact" className="material-fab" style={{
+      <a href="#/contact" aria-label="Contact" title="Contact" className="material-fab m3-state m3-arrive-fab" onPointerDown={window.m3Ripple} style={{
         position: "fixed", right: "20px", bottom: "100px",
         width: 56, height: 56,
         background: "#7d5260", color: "#fff",
@@ -118,20 +139,15 @@ function MaterialPortfolioShell({ children, route }) {
         display: "inline-flex", alignItems: "center", justifyContent: "center",
         textDecoration: "none",
         boxShadow: "0 6px 16px rgba(125,82,96,0.4)",
-        fontSize: "22px",
-        zIndex: 70
+        zIndex: 70,
+        transition: "box-shadow 200ms cubic-bezier(0.2, 0, 0, 1), transform 200ms cubic-bezier(0.2, 0, 0, 1)"
       }}>
-        ✉
-        <span aria-hidden="true" style={{
-          position: "absolute", inset: 0,
-          borderRadius: "18px",
-          border: "2px solid #7d5260",
-          animation: "pulseRing 2.4s ease-out 1.5s infinite",
-          pointerEvents: "none"
-        }} />
+        <window.Icon name="mail" size={24} filled skin="material" />
       </a>
 
       <style>{`
+        .material-fab:hover { box-shadow: 0 10px 24px rgba(125,82,96,0.45) !important; }
+        .material-fab:active { transform: scale(0.96); }
         @media (max-width: 720px) {
           .material-pill-nav { display: none !important; }
           .material-bottom-nav { display: grid !important; }
@@ -139,8 +155,8 @@ function MaterialPortfolioShell({ children, route }) {
           [data-skin-scroll] { padding-bottom: 190px !important; }
         }
         @media (max-width: 400px) {
-          .material-bottom-nav a > div:last-child { display: none !important; }
-          .material-bottom-nav a { padding: 14px 4px !important; }
+          .material-bottom-label { display: none !important; }
+          .material-bottom-nav a { padding: 8px 2px !important; }
         }
       `}</style>
     </div>
@@ -149,23 +165,18 @@ function MaterialPortfolioShell({ children, route }) {
 
 // ---- Project card --------------------------------------------------------
 function MaterialProjectCard({ project, tokens }) {
-  const [hover, setHover] = React.useState(false);
-  const reduced = window.useReducedMotion();
   const accent = project.accent || tokens.accent;
   return (
     <a
       href={`#/projects/${project.slug}`}
-      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      className="ds-card m3-state"
+      onPointerDown={window.m3Ripple}
       style={{
         display: "block", textDecoration: "none", color: tokens.text,
         borderRadius: "28px", overflow: "hidden",
         background: "#fff",
         border: `1px solid ${tokens.border}`,
-        boxShadow: hover
-          ? "0 10px 28px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06)"
-          : "0 1px 3px rgba(0,0,0,0.08)",
-        transform: hover && !reduced ? "translateY(-2px)" : "none",
-        transition: reduced ? "none" : "transform 220ms cubic-bezier(.2,.8,.2,1), box-shadow 220ms ease"
+        boxShadow: "0 1px 3px rgba(0,0,0,0.08)"
       }}
     >
       <div style={{
@@ -174,12 +185,10 @@ function MaterialProjectCard({ project, tokens }) {
       }}>
         <div style={{
           borderRadius: "20px", overflow: "hidden",
-          aspectRatio: "16/10"
+          aspectRatio: "16/10", background: "#fff"
         }}>
-          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={accent} alt={project.title} style={{
-            width: "100%", height: "100%", objectFit: "cover", display: "block",
-            transform: hover && !reduced ? "scale(1.04)" : "scale(1)",
-            transition: reduced ? "none" : "transform 350ms cubic-bezier(.2,.8,.2,1)"
+          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={accent} alt={project.title} className="ds-card-img" style={{
+            width: "100%", height: "100%", objectFit: "cover", display: "block"
           }} />
         </div>
       </div>
@@ -198,11 +207,11 @@ function MaterialProjectCard({ project, tokens }) {
           {project.subtitle}
         </div>
         <div style={{
-          marginTop: "16px", display: "inline-flex", alignItems: "center", gap: "8px",
-          padding: "8px 16px", borderRadius: "999px",
+          marginTop: "16px", display: "inline-flex", alignItems: "center", gap: "6px",
+          padding: "8px 14px 8px 16px", borderRadius: "999px",
           background: "#e8def8", color: "#21005d",
           fontSize: "13px", fontWeight: 600
-        }}>Open project →</div>
+        }}>Open project <window.Icon name="arrowRight" size={16} skin="material" /></div>
       </div>
     </a>
   );
@@ -215,9 +224,11 @@ function MaterialCaseStudyLayout({ project }) {
   return (
     <article>
       {/* breadcrumb */}
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px", fontSize: "13px" }}>
-        <a href="#/projects" style={{ color: accent, textDecoration: "none", fontWeight: 500 }}>← Projects</a>
-      </div>
+      <nav aria-label="Breadcrumb" style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px", fontSize: "13px" }}>
+        <a href="#/projects" className="m3-state" onPointerDown={window.m3Ripple} style={{ color: accent, textDecoration: "none", fontWeight: 500, display: "inline-flex", alignItems: "center", gap: "4px", padding: "6px 12px 6px 8px", margin: "-6px 0 0 -8px", borderRadius: "999px" }}>
+          <window.Icon name="arrowLeft" size={16} skin="material" /> Projects
+        </a>
+      </nav>
 
       {/* Tall hero card */}
       <div style={{
@@ -227,15 +238,6 @@ function MaterialCaseStudyLayout({ project }) {
         marginBottom: "24px",
         border: `1px solid ${accent}30`
       }}>
-        <div style={{
-          display: "inline-flex", alignItems: "center", gap: "8px",
-          padding: "4px 12px", borderRadius: "999px",
-          background: "#fff", color: accent,
-          fontSize: "11px", fontWeight: 600, letterSpacing: "0.04em",
-          marginBottom: "16px",
-          border: `1px solid ${accent}40`
-        }}>{project.category} · {project.year} · {project.status}</div>
-
         <h1 style={{
           fontFamily: tokens.displayFont,
           fontSize: "clamp(34px, 5vw, 52px)",
@@ -243,11 +245,18 @@ function MaterialCaseStudyLayout({ project }) {
           fontWeight: 600, margin: "0 0 12px",
           color: tokens.text, textWrap: "balance"
         }}>{project.title}</h1>
-        <div style={{ fontFamily: tokens.font, fontSize: "clamp(17px, 2vw, 19px)", color: tokens.muted, lineHeight: 1.5, maxWidth: "60ch", textWrap: "pretty", marginBottom: "20px" }}>
+        <div style={{ fontFamily: tokens.font, fontSize: "clamp(17px, 2vw, 19px)", color: tokens.muted, lineHeight: 1.5, maxWidth: "60ch", textWrap: "pretty", marginBottom: "16px" }}>
           {project.subtitle}
         </div>
 
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "20px", alignItems: "center" }}>
+          <span style={{
+            display: "inline-flex", alignItems: "center", gap: "8px",
+            padding: "4px 12px", borderRadius: "999px",
+            background: "#fff", color: accent,
+            fontSize: "11px", fontWeight: 600, letterSpacing: "0.04em",
+            border: `1px solid ${accent}40`
+          }}>{project.category} · {project.year} · {project.status}</span>
           {(project.tags || []).map((t) => (
             <span key={t} style={{
               padding: "4px 12px", borderRadius: "999px",
@@ -263,7 +272,7 @@ function MaterialCaseStudyLayout({ project }) {
           background: "#fff",
           boxShadow: "0 6px 24px rgba(0,0,0,0.08)"
         }}>
-          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: project.coverImage, alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }} />
+          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: window.resolveAsset(project.coverImage), alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }} />
         </div>
       </div>
 
