@@ -1056,5 +1056,351 @@ window.caseStudies = [
       },
       { type: "caseStudyGallery" }
     ]
+  },
+
+  // ---------------------------------------------------------------------------
+  // 6. Tiny Tempo — endless mobile rhythm game, one thumb, everyday acts
+  // ---------------------------------------------------------------------------
+  {
+    slug: "tiny-tempo",
+    title: "Tiny Tempo",
+    subtitle: "A rhythm game you play with one thumb — watch a tiny everyday act, then tap it back.",
+    category: "UX / Product",
+    categories: ["UX / Product", "Interaction Design", "UI & Branding"],
+    year: "2026",
+    role: "Product, game and UX design · Development · Original score by Alon Attaly",
+    status: "Pre-release · coming to Google Play",
+    coverImage: "/projects/tiny-tempo/cover.png",
+    accent: "#cf5134",
+    tags: ["Game UX", "Mobile UX", "Interaction Design", "Audio & Timing", "Design System", "Phaser", "Android"],
+    summary:
+      "Tiny Tempo is an endless mobile rhythm game. A hammer, a squeegee, a doorbell: each act plays you a bar, and then it is your turn. There is one input, a tap anywhere, and one rule, be on time. The interesting problems were never about buttons. They were about making a player feel exactly when their turn begins, judging a tap honestly on hardware that delays sound by a fifth of a second, and keeping a road of levels fair when it never ends.",
+    challenge:
+      "Call-and-response sounds simple until you build it. The answer starts on the very bar line the demonstration ends on, so a cue that arrives on that downbeat arrives too late to wind up for. A phone's audio output lags its screen by anywhere from 20 ms on a speaker to 300 ms over Bluetooth, which is more than the whole Good window. And an endless game that only ever gets longer, faster, denser and stricter stops being fun long before it stops being possible.",
+    outcome:
+      "A playable, near-release game with 36 everyday acts, a turn block that puts the handover under the thumb a beat ahead, a judge that measures taps against what the player actually hears, and a road whose difficulty is choreographed inside every area rather than ramped in one line. All of it drawn at runtime from one small design system, with the original score woven into the tempo itself.",
+    metrics: [
+      { label: "Acts", value: "36", hint: "Everyday scenes, one per level, in rotation" },
+      { label: "Judgement", value: "±55 ms", hint: "Perfect · Good inside ±130 ms" },
+      { label: "Tempo", value: "120 → 150", hint: "BPM, ramped task by task" },
+      { label: "Controls", value: "1 thumb", hint: "Tap anywhere · nothing to aim at" }
+    ],
+    recruiterInsight: {
+      headline: "A rhythm game where the whole interface is a tap — so timing, feedback and fairness had to carry everything a button normally would.",
+      problem: "In call-and-response the player's turn begins the instant the demonstration ends. Early builds announced it on that same downbeat, at the top of the screen, and players could not say when to act. Meanwhile every phone judges taps against sound it has not played yet.",
+      users: "Mobile players who like rhythm games, playing in portrait with one thumb, often with Bluetooth earbuds that delay the beat.",
+      role: "Product, game and UX design, and the build itself: a Phaser 4 and TypeScript game wrapped for Android with Capacitor, with an original score by Alon Attaly.",
+      contribution: "Designed the turn block that moves the handover to the thumb and a beat ahead; a per-route tap-offset calibration so Bluetooth and speaker each keep their own; a difficulty system choreographed inside each ten-level area; a result screen that turns a percentage into advice; and the Workshop design system every screen is drawn from at runtime.",
+      outcome: "A near-release game with 36 acts and an endless road that stays fair past level 100, plus a marketing site whose every moving thing is recorded from the build or ported from its code."
+    },
+    sections: [
+
+      // ── Opening ────────────────────────────────────────────────────────────
+      {
+        type: "image",
+        title: "Tiny Tempo",
+        image: "/projects/tiny-tempo/icon.jpg",
+        fit: "contain",
+        bg: "#cf5134",
+        caption: "The icon master — the one authored image in the whole project. Every other pixel in the game is geometry drawn at runtime."
+      },
+      {
+        type: "text",
+        title: "The situation",
+        body:
+          "Tiny Tempo is a portrait rhythm game built around a loop you already know from the playground: I play, you play. A hammer taps a nail three times; you tap it back. A squeegee wipes a window on the offbeat; you wipe it back. Each level is one everyday act and three to eight of these tasks, nothing waits between the two halves of a task, and nothing waits between one task and the next. The map is an endless road of levels grouped into ten-level areas, the acts rotate as the road goes on, and the tempo climbs from the music's own 120 BPM toward 150. The premise fits in a sentence. Making the sentence true on a phone took most of the design work."
+      },
+
+      // ── The problem ────────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "The challenge",
+        body:
+          "Three things made this harder than it looks. First, the handover: the player's bar begins on the exact beat the demonstration's bar ends, so any cue that fires on that downbeat is already late, and the first beat is gone before it registers. Second, the clock: a phone's speaker lags the screen by about 20 ms and Bluetooth earbuds by 150 to 300 ms, which is wider than the entire Good window, so a judge that trusts the device's schedule calls honest players early on every tap. Third, the road: an endless game whose only move is 'more' becomes a grind. Every dimension of difficulty cannot rise together, every level, forever."
+      },
+      {
+        type: "quote",
+        body:
+          "A word that arrives on the beat arrives too late to wind up for — and it arrives where the player is not looking.",
+        attribution: "From the turn-cue design notes"
+      },
+
+      // ── The principle ──────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "The design principle",
+        body:
+          "Get out of the act's way. The player is a thumb on a phone watching a tiny scene, and the interface's job is to make the scene legible, not to narrate it. Copy is sparse. Meaning is carried by composition, motion and the state of objects: a bead lights, a token crosses, a plank recesses into the bench. Text is reserved for the area, the act's name, the turn handover, the result, and settings a player can actually change. Everything that would normally be a label, a panel or a progress bar had to become a thing with weight under one light."
+      },
+      {
+        type: "featureList",
+        title: "What the player gets, and what they do not",
+        items: [
+          { title: "One input", body: "Tap anywhere. There is no second button, no swipe, no hold, and nothing on screen to aim at. Precision comes from timing, not from hitting a target." },
+          { title: "Judged on time, honestly", body: "Perfect inside ±55 ms, Good inside ±130 ms, measured against the sample the player is hearing rather than the one the device scheduled." },
+          { title: "Nothing written down", body: "Every task opens with the act playing its own bar. The rhythm is heard and seen, never read." },
+          { title: "No account", body: "Progress lives on the device, travels as a checksummed save code, and restoring can only ever add." }
+        ]
+      },
+      {
+        type: "video",
+        title: "Level one, as the game plays it",
+        src: "/projects/tiny-tempo/level-one.mp4",
+        poster: "/projects/tiny-tempo/level-one-poster.jpg",
+        aspect: "540/1168",
+        caption: "One whole task of the first level, recorded from the build on a virtual clock so every beat lands on its frame: the hammer's bar on the top row, the token crossing, the player's answer on the bottom row, and the table sliding on to the next."
+      },
+
+      // ── 1. The turn block ──────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "Moving the handover to the thumb, and a beat ahead",
+        body:
+          "The first version of the play screen flipped a headline from Watch to Your turn on the downbeat it announced, and recoloured a plaque at the top of the screen to match. Players kept missing their first beat, and when asked, they could not say when their turn had started. The redesign replaced the flip with a persistent object: the turn block, two rows at the bottom of the screen where the thumb already is. The top row is a shelf recessed into the bench, with a bead for each hit the act will play; the beads light as the act plays them. The bottom row is the player's, with sockets the player's taps fill. A single token travels from the shelf to the face across the last beats of the act's bar, and a count of three, two, one strikes under the player's row with Go on the downbeat. Nothing changes meaning between the two halves. Whose turn it is can be read at any moment rather than remembered from a flash."
+      },
+      {
+        type: "image",
+        title: "The turn block in the tutorial",
+        image: "/projects/tiny-tempo/screens/tutorial.jpg",
+        fit: "contain",
+        bg: "#eee8d8",
+        caption: "The lesson is taught on the same object every level uses: the hammer's row on top, the player's row below, the token between them, and a sign that names each moment only while the player is learning."
+      },
+      {
+        type: "insight",
+        title: "Design decision — anticipation beats announcement",
+        body:
+          "In a rhythm game the player has to be winding up a beat before the beat. A cue that is correct on the downbeat is still a failed cue. Every signal in the handover was moved to arrive early and to persist, and all of it was moved to where the thumb and the eyes already were."
+      },
+      {
+        type: "text",
+        title: "Rebuilding the tutorial twice",
+        body:
+          "The tutorial went through two rebuilds, and the reasons are instructive. The first taught a cue the game no longer had, used a row of beads labelled TAP TAP WAIT TAP that appears nowhere in a level, and paused at every tap, which taught players that the game waits for them when the whole point of the loop is that it does not. The second moved the lesson onto the turn block but still left out the count, said Get ready two beats out without saying when, and went from watching straight to performing. The third version teaches on the real block with the real count: one watched cycle at 72 BPM, then a try judged by the level's own controller, with a miss named rather than scored. Too early for a tap in the hammer's turn; That was your turn for a bar that went by."
+      },
+
+      // ── 2. The judge ───────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "Judging the tap against what the player hears",
+        body:
+          "The judge is a pure function that knows nothing about presentation: a tap time, a target time, two windows. The engineering around it is where the honesty lives. The game maps each tap's DOM timestamp onto the audio output timeline, so a tap is compared to the beat the player heard rather than the beat the device scheduled. Where the device cannot report its own delay, the player measures it: a bare metronome, eight taps, the median gap between tap and nearest beat becomes the offset. That offset applies only to judged input, never to the cues or the visuals, so the game never looks out of time in order to feel in time. And because one phone is 20 ms through its speaker and 200 ms through earbuds, each audio route keeps its own offset and the active route chooses which one the judge uses."
+      },
+      {
+        type: "image",
+        title: "Tap offset",
+        image: "/projects/tiny-tempo/screens/tap-offset.jpg",
+        fit: "contain",
+        bg: "#eee8d8",
+        caption: "The calibration screen. Eight taps on a bare beat, a counter instead of a progress bar, and the early-to-late lane that will show the lean once it is measured."
+      },
+      {
+        type: "insight",
+        title: "UX takeaway — fairness is an engineering property",
+        body:
+          "A player who is called early on every tap does not conclude that Bluetooth is slow. They conclude that the game is wrong. Trust in a rhythm game is built entirely out of the gap between what was heard and what was judged, and that gap is a measurement, not a feeling."
+      },
+
+      // ── 3. The road ────────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "An endless road that stays fair",
+        body:
+          "Difficulty comes from one curve, so no two knobs can ever contradict each other: tasks per level climb from three to eight, the tempo ceiling from 120 to 150 BPM, the pattern tier from plain quarter notes to dense eight-beat phrases, and the clear bar from 40 to 80 percent. Finer grids arrive as a second stage on the same curve, triplets from level 43 and sixteenths from level 59, and only where the tempo still leaves the thumb at least 110 ms between taps. Every level starts at the music's real tempo and ramps task by task toward its ceiling, and the backing track follows, so the beat grid and the music change speed together. Patterns are chosen with a per-level seed, so a level is identical on every attempt and can be learned."
+      },
+      {
+        type: "process",
+        title: "Choreography inside every ten-level area",
+        steps: [
+          { title: "Opener", body: "A way into the new area after the finale: one task shorter, a little slower." },
+          { title: "Pattern", body: "Two levels where rhythm leads and tempo steps back." },
+          { title: "Tempo", body: "Simpler rhythms, faster, no finer grid: speed for pattern." },
+          { title: "Endurance", body: "Two tasks longer, for pressure." },
+          { title: "Recovery", body: "Noticeably easier, mid-area." },
+          { title: "Combination", body: "Two levels where the dimensions start to combine." },
+          { title: "Challenge", body: "Everything up." },
+          { title: "Finale", body: "The area's own material, reprised at the top of its range. Nothing the road has not already shown." }
+        ]
+      },
+      {
+        type: "gallery",
+        title: "The map",
+        images: [
+          { src: "/projects/tiny-tempo/screens/map-pavement.jpg", caption: "Pavement — the second area. The frontier puck is cream with a dashed ring, cleared stops carry their stars, and the dock at the bottom names the next act with the map's one coral disc.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/screens/map-star-gate.jpg", caption: "A closed star gate. Stars are a bank, not a quota: the barrier says how many the road behind it has to give, and the loop it asks for is always 'go back and do a level better'.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/screens/map-dusk.jpg", caption: "Dusk — every area has an ink and a paper of its own, and the finale's plate names the act it closes on.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/screens/map-candy.jpg", caption: "Candy, past level 100. The same rules keep producing new ground; the road never ends and never repeats a level.", fit: "contain", bg: "#eee8d8" }
+        ]
+      },
+      {
+        type: "insight",
+        title: "Design decision — a plateau, on purpose",
+        body:
+          "Past level 60 the parameters hold while the seeded patterns keep changing. The road stays endless without becoming unfair, and the gates in front of each area are tuned so a player averaging 1.4 stars a level is never stopped, while the player who scrapes every level is only ever a few replays short."
+      },
+
+      // ── 4. The result ──────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "Turning a percentage into something a player can fix",
+        body:
+          "The first result screen said 72% and On the beat, and threw away everything the scorer knew. A rhythm game's most useful sentence is the one that turns 'I got 72%' into 'I am consistently early', because that is something a player can act on. The result now carries the medals, the stars with the thresholds they were earned against, a line that says what the run changed, and a Timing details tray: the counts of Perfect, Good and Miss, a hit-error bar with one tick per judged tap from early to late, the lean in milliseconds, and one piece of advice. The same fact is told during play, too: a Good says EARLY or LATE beside the verdict, a Perfect says nothing, because naming a side inside the Perfect window would send a player chasing milliseconds the game already calls right."
+      },
+      {
+        type: "image",
+        title: "A cleared level",
+        image: "/projects/tiny-tempo/screens/result.jpg",
+        fit: "contain",
+        bg: "#eee8d8",
+        caption: "The plaque hangs from the ceiling like the title sign. Three stars with their thresholds, the score, the Timing details control, the In the pocket mark for a flawless level, and a row that says what changed: a new best, up from 84%."
+      },
+      {
+        type: "text",
+        title: "Groove: shown by the room, not told by a meter",
+        body:
+          "Consecutive flawless tasks warm the room. The light shifts, the beat breathes, a brass stroke appears on the block, and a slip steps it back down without a word. It is not a combo, a multiplier or a currency, and nothing on screen counts it. The judge, the scorer, the stars, the hearts and the curve never read it, and a test fails the build if any of them so much as names it. A whole level played flawless is kept as a fact about the save: the map marks the stop for as long as the save exists."
+      },
+
+      // ── 5. Systems around the loop ─────────────────────────────────────────
+      {
+        type: "text",
+        title: "Reasons to come back that are not a shop",
+        body:
+          "Three stars on a designated level earns that act's keepsake, and the Scrapbook keeps them: one page per act, a found keepsake mounted on a card, an unfound one as a silhouette with the level that earns it printed underneath. There is no currency, no drop, no roll and no pack; a keepsake is a fact about a level's stars. Three small objectives a day point at different parts of the game, and finishing all three stamps the day on a card. Clearing level 100 opens Endless Mode: one continuous session that cycles through the acts the road has introduced, tempo climbing from 130 to 150 BPM, three Groove Lives, and the time survived as the score."
+      },
+      {
+        type: "gallery",
+        title: "Scrapbook, Endless and the save code",
+        images: [
+          { src: "/projects/tiny-tempo/screens/scrapbook.jpg", caption: "The Scrapbook: area badges stamped as the road opens, then one page per act with its keepsakes and the level that earns each.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/screens/endless-door.jpg", caption: "Endless Mode at the start of a run: the clock, the tempo and bar, three Groove Lives, and the first act already on stage.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/screens/save-code.jpg", caption: "Progress leaves the device as a checksummed code rather than an account. Restoring merges, so a code can only ever add.", fit: "contain", bg: "#eee8d8" }
+        ]
+      },
+
+      // ── 6. The Workshop ────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "The Workshop: a design system drawn at runtime",
+        body:
+          "Three visual directions were built side by side in a style lab, a matte studio, a brass-and-stained-wood tavern and the Workshop, and the Workshop won: thick outlines, painted materials, heavy squash, every surface an object with thickness under one warm key light from the upper left. The title hangs from the ceiling on ropes. The one primary action is a coral block sitting on a bench. Utility controls are pucks. The only brass on screen is the thing for sale. Four colours key the whole game, paper, ink, muted ink and coral, and everything else derives from them or from an act's own palette. Two typefaces, Fredoka for display and Nunito for body, are bundled so nothing depends on a system font Android does not ship. The explicit anti-reference was a web page: Georgia headlines and letter-spaced monospace eyebrows were removed for exactly that reason."
+      },
+      {
+        type: "gallery",
+        title: "The system in use",
+        images: [
+          { src: "/projects/tiny-tempo/screens/title.jpg", caption: "The title screen is an object composition, not a menu: the sign on ropes, the hammer, the bench, and the one coral block.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/screens/settings.jpg", caption: "Settings: the same panels with thickness, the same pucks, and brass reserved for the store.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/screens/title-endless.jpg", caption: "The title once Endless is open: the row makes room, the first-visit label sits on the puck until it has been opened.", fit: "contain", bg: "#eee8d8" }
+        ]
+      },
+      {
+        type: "featureList",
+        title: "Rules the system holds itself to",
+        items: [
+          { title: "Outlines are a dark shade of the fill, never black", body: "A letter that cannot carry an outline with 3:1 contrast is not given one; it lifts on cream instead." },
+          { title: "One light for the whole game", body: "Everything that casts a shadow, catches a rim or shades a face derives it from the same light, so every surface agrees about where it is." },
+          { title: "The thumb zone is absolute", body: "The turn block keeps a fixed distance from the bottom edge on every frame and grows in place, so it is anchored at the grip on a 16:9 phone and a 4:3 tablet alike." },
+          { title: "Dimming is never a wash", body: "A room is dimmed with an edge vignette tinted from the act's own paper; a green-black wash over cream and timber reads as dirt." }
+        ]
+      },
+      {
+        type: "image",
+        title: "Achievements",
+        image: "/projects/tiny-tempo/achievements.png",
+        fit: "contain",
+        bg: "#eee8d8",
+        caption: "The Play Games achievement set, drawn in the same vocabulary: bronze, silver and gold rings, each area's badge under its own sky, and the ribbon for a run that lasts."
+      },
+
+      // ── 7. The acts ────────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "Thirty-six everyday acts",
+        body:
+          "Each act is a small cartoon with its own palette, its own synthesized sounds and three endings. A strong finish, a rough one and, where the act earned it, a middle one. Scissors cut a star, a heart or an angel, and at 70 percent or better the paper unfolds cleanly; below 40 it tears. A bug squashes like rubber under the shoe and springs onto the toe when the player does well, and is never hurt. Acts arrive on a schedule: nine in the first area, then two an area to level 100, then one an area to 171, each on an area's easiest step and never on a finale. Every sound but seven recorded beats is synthesised at runtime, so nothing is downloaded but one music track and the fonts."
+      },
+      {
+        type: "gallery",
+        title: "The first area",
+        images: [
+          { src: "/projects/tiny-tempo/acts/hammer.jpg", caption: "Hammer & nail — level 1. Make it stick.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/window.jpg", caption: "Window cleaning — a tap is a squeegee stroke; clear glass reveals the view.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/bug.jpg", caption: "Bug & shoe — the bug always survives.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/saw.jpg", caption: "Saw & timber — accurate strokes deepen the kerf and throw sawdust.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/tomato.jpg", caption: "Knife & tomato", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/curl.jpg", caption: "Bicep curl — one more rep.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/cucumber.jpg", caption: "Knife & cucumber", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/banana.jpg", caption: "Knife & banana — easy does it.", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/paper.jpg", caption: "Scissors & paper — a star, a heart or an angel, unfolded cleanly or torn.", fit: "contain", bg: "#eee8d8" }
+        ]
+      },
+      {
+        type: "video",
+        title: "DJ scratch, one task",
+        src: "/projects/tiny-tempo/acts/scratch.mp4",
+        poster: "/projects/tiny-tempo/acts/scratch.jpg",
+        aspect: "432/532",
+        maxWidth: "min(432px, 100%)",
+        caption: "Recorded from the build like every clip on the site: the demonstration, a clean answer, the coda, and the slide to the next task, ending on its downbeat so the loop is seamless."
+      },
+      {
+        type: "gallery",
+        title: "Further down the road",
+        images: [
+          { src: "/projects/tiny-tempo/acts/egg.jpg", caption: "Egg cracking — level 11", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/bubble.jpg", caption: "Bubble wrap", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/light.jpg", caption: "Light switch — an elaborate room behind it", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/doorbell.jpg", caption: "Doorbell — a cat answers", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/fisherman.jpg", caption: "Fisherman — level 42", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/trombone.jpg", caption: "Trombone — a performed fanfare, and a performed wah-wah", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/clap.jpg", caption: "Clapping hands — the only act with a recording for the middle ending: a scattered few", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/snare.jpg", caption: "Snare drum", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/bongos.jpg", caption: "Bongos — find your groove", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/slushy.jpg", caption: "Slushy", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/barber.jpg", caption: "Barber — just a little off", fit: "contain", bg: "#eee8d8" },
+          { src: "/projects/tiny-tempo/acts/toothbrush.jpg", caption: "Toothbrush — level 92, the last act before Endless opens", fit: "contain", bg: "#eee8d8" }
+        ]
+      },
+
+      // ── 8. Shipping ────────────────────────────────────────────────────────
+      {
+        type: "text",
+        title: "Built to ship, not to demo",
+        body:
+          "The game runs under a 720 by 1280 design box that expands to the device's real aspect ratio, so layout code asks a live viewport for its frames instead of hardcoding coordinates, and every scene splits building its objects from placing them, because on Android a resize is routine. Every screen is checked on three frames: a 20:9 phone, a 16:9 phone and a 4:3 tablet. Around the loop sit the things a store listing needs and a prototype never has: hearts and two daily restarts, rewarded ads and replay timers, crash reporting with sourcemaps uploaded and then deleted, analytics behind a settings switch, Play Games achievements, a privacy policy and terms that state the product as it is in code, and a save that survives a new phone without an account."
+      },
+      {
+        type: "text",
+        title: "A website whose motion is the game's",
+        body:
+          "The marketing site refuses to be an impression of the game. Every clip on it is recorded from the dev build by a script that opens each act's first level, lets a debug auto-player answer the task, and records one whole task at 30 frames a second on a virtual clock, ending on the next downbeat so each loop is seamless. The playable stage on the homepage is a port of level one from the same numbers the game uses, and the figures on the page are read from the configuration. Nothing on the page loops on a period of its own: the beat is half a second and the bar two, as at 120 BPM."
+      },
+      {
+        type: "image",
+        title: "The share card",
+        image: "/projects/tiny-tempo/cover.png",
+        caption: "Rendered from the site's own stylesheet so the two cannot drift: the hanging sign, the tempo beads, the handset playing level one, and the four numbers the game is built on."
+      },
+
+      // ── Reflection ─────────────────────────────────────────────────────────
+      {
+        type: "insight",
+        title: "What this project taught me",
+        body:
+          "A game with one input has nowhere to hide. There is no layout to tidy, no control to relabel, no flow to shorten. Everything the player feels comes from timing, feedback and fairness, and all three turned out to be measurable: when a cue arrives relative to the beat, how far a tap lands from the sound that was heard, how often a decent player is stopped by a gate. The most useful habit I took from it is to write the rule down before drawing the screen, and to let a test hold the rule, so that a design decision stays a decision rather than drifting into whatever the last build happened to do."
+      },
+      {
+        type: "metrics",
+        title: "At a glance",
+        items: [
+          { label: "Acts", value: "36", hint: "Debuting from level 1 to level 171" },
+          { label: "Perfect window", value: "±55 ms", hint: "Good ±130 ms · extras count as misses" },
+          { label: "Levels per area", value: "10", hint: "Opener to finale, choreographed" },
+          { label: "Endless opens", value: "Level 100", hint: "Three Groove Lives · time survived" }
+        ]
+      },
+      { type: "caseStudyGallery" }
+    ]
   }
 ];

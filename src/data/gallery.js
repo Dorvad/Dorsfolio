@@ -136,6 +136,27 @@ window.galleryImages = [
   { src: "projects/mortal-shontal/fx-impact-ring.png",        caption: "Impact VFX — ringed burst, 6 frames",                     project: "Mortal Shontal", bg: "#17171b" },
   { src: "projects/mortal-shontal/fx-impact-star.png",        caption: "Impact VFX — star burst, 5 frames",                       project: "Mortal Shontal", bg: "#17171b" },
 
+  // ---- Tiny Tempo — endless mobile rhythm game ------------------------------
+  { src: "projects/tiny-tempo/cover.png",                   caption: "Tiny Tempo — share card: the hanging sign and level one on a handset", project: "Tiny Tempo" },
+  { src: "projects/tiny-tempo/icon.jpg",                    caption: "Tiny Tempo — icon master, the one authored image in the project", project: "Tiny Tempo" },
+  { src: "projects/tiny-tempo/screens/title.jpg",           caption: "Title screen — an object composition, not a menu",            project: "Tiny Tempo", bg: "#eee8d8" },
+  { src: "projects/tiny-tempo/screens/tutorial.jpg",        caption: "Tutorial — the turn block, taught on the real object",         project: "Tiny Tempo", bg: "#eee8d8" },
+  { src: "projects/tiny-tempo/screens/map-pavement.jpg",    caption: "The map — Pavement, the second area",                         project: "Tiny Tempo", bg: "#eee8d8" },
+  { src: "projects/tiny-tempo/screens/map-star-gate.jpg",   caption: "The map — a closed star gate",                                project: "Tiny Tempo", bg: "#eee8d8" },
+  { src: "projects/tiny-tempo/screens/map-dusk.jpg",        caption: "The map — Dusk, with the area finale ahead",                  project: "Tiny Tempo", bg: "#eee8d8" },
+  { src: "projects/tiny-tempo/screens/result.jpg",          caption: "Result — three stars, timing details, in the pocket",         project: "Tiny Tempo", bg: "#eee8d8" },
+  { src: "projects/tiny-tempo/screens/scrapbook.jpg",       caption: "Scrapbook — area badges and keepsakes",                       project: "Tiny Tempo", bg: "#eee8d8" },
+  { src: "projects/tiny-tempo/screens/settings.jpg",        caption: "Settings — the Workshop system applied to a utility screen",  project: "Tiny Tempo", bg: "#eee8d8" },
+  { src: "projects/tiny-tempo/screens/tap-offset.jpg",      caption: "Tap offset — calibrating the audio route in eight taps",      project: "Tiny Tempo", bg: "#eee8d8" },
+  { src: "projects/tiny-tempo/achievements.png",            caption: "Play Games achievement set",                                  project: "Tiny Tempo", bg: "#eee8d8" },
+  { src: "projects/tiny-tempo/acts/hammer.jpg",             caption: "Hammer & nail — level 1",                                     project: "Tiny Tempo" },
+  { src: "projects/tiny-tempo/acts/window.jpg",             caption: "Window cleaning",                                             project: "Tiny Tempo" },
+  { src: "projects/tiny-tempo/acts/paper.jpg",              caption: "Scissors & paper",                                            project: "Tiny Tempo" },
+  { src: "projects/tiny-tempo/acts/fisherman.jpg",          caption: "Fisherman",                                                   project: "Tiny Tempo" },
+  { src: "projects/tiny-tempo/acts/scratch.jpg",            caption: "DJ scratch",                                                  project: "Tiny Tempo" },
+  { src: "projects/tiny-tempo/acts/trombone.jpg",           caption: "Trombone",                                                    project: "Tiny Tempo" },
+  { src: "projects/tiny-tempo/acts/barber.jpg",             caption: "Barber",                                                      project: "Tiny Tempo" },
+
   // ---- Other / General ------------------------------------------------------
   { src: "gallery/freud-ai-logo.gif",            caption: "Freud.AI — brand logo",             project: "Freud.AI" },
   { src: "gallery/talentlms-dashboard.jpg",      caption: "TalentLMS — admin dashboard",       project: "L&D Work" },
