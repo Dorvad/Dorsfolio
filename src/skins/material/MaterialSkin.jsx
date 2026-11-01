@@ -130,9 +130,10 @@ function MaterialPortfolioShell({ children, route }) {
         })}
       </nav>
 
-      {/* FAB */}
-      <a href="#/contact" aria-label="Contact" title="Contact" className="material-fab m3-state m3-arrive-fab" onPointerDown={window.m3Ripple} style={{
-        position: "fixed", right: "20px", bottom: "100px",
+      {/* FAB — a shortcut to Contact. Phones already have Contact in the bottom
+          bar, and on the Contact page it would point at itself: hidden in both. */}
+      {route.name !== "contact" && <a href="#/contact" aria-label="Contact" title="Contact" className="material-fab m3-state m3-arrive-fab" onPointerDown={window.m3Ripple} style={{
+        position: "fixed", right: "24px", bottom: "24px",
         width: 56, height: 56,
         background: "#7d5260", color: "#fff",
         borderRadius: "18px",
@@ -143,7 +144,7 @@ function MaterialPortfolioShell({ children, route }) {
         transition: "box-shadow 200ms cubic-bezier(0.2, 0, 0, 1), transform 200ms cubic-bezier(0.2, 0, 0, 1)"
       }}>
         <window.Icon name="mail" size={24} filled skin="material" />
-      </a>
+      </a>}
 
       <style>{`
         .material-fab:hover { box-shadow: 0 10px 24px rgba(125,82,96,0.45) !important; }
@@ -151,8 +152,8 @@ function MaterialPortfolioShell({ children, route }) {
         @media (max-width: 720px) {
           .material-pill-nav { display: none !important; }
           .material-bottom-nav { display: grid !important; }
-          .material-fab { bottom: 96px !important; }
-          [data-skin-scroll] { padding-bottom: 190px !important; }
+          .material-fab { display: none !important; }
+          [data-skin-scroll] { padding-bottom: 120px !important; }
         }
         @media (max-width: 400px) {
           .material-bottom-label { display: none !important; }
@@ -172,7 +173,8 @@ function MaterialProjectCard({ project, tokens }) {
       className="ds-card m3-state"
       onPointerDown={window.m3Ripple}
       style={{
-        display: "block", textDecoration: "none", color: tokens.text,
+        display: "flex", flexDirection: "column", flex: 1,
+        textDecoration: "none", color: tokens.text,
         borderRadius: "28px", overflow: "hidden",
         background: "#fff",
         border: `1px solid ${tokens.border}`,
@@ -188,26 +190,28 @@ function MaterialProjectCard({ project, tokens }) {
           aspectRatio: "16/10", background: "#fff"
         }}>
           <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={accent} alt={project.title} className="ds-card-img" style={{
-            width: "100%", height: "100%", objectFit: "cover", display: "block"
+            width: "100%", height: "100%", objectFit: "cover", objectPosition: project.coverPosition || "50% 50%", display: "block"
           }} />
         </div>
       </div>
-      <div style={{ padding: "16px 20px 20px" }}>
+      <div style={{ padding: "16px 20px 20px", flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+        {/* Tonal chip: the label is the accent pulled toward on-surface, so a
+            light accent (green, amber) still reads at 11px. */}
         <div style={{
           display: "inline-flex", alignItems: "center", gap: "6px",
           padding: "4px 10px", borderRadius: "999px",
-          background: `${accent}1a`, color: accent,
+          background: `${accent}1a`, color: `color-mix(in srgb, ${accent} 55%, ${tokens.text})`,
           fontSize: "11px", fontWeight: 600, letterSpacing: "0.04em",
           marginBottom: "12px"
         }}>{project.category}</div>
         <div style={{ fontFamily: tokens.displayFont, fontSize: "20px", fontWeight: 600, marginBottom: "6px", letterSpacing: "-0.01em" }}>
           {project.title}
         </div>
-        <div style={{ fontFamily: tokens.font, fontSize: "14px", color: tokens.muted, lineHeight: 1.5, textWrap: "pretty" }}>
+        <div style={{ fontFamily: tokens.font, fontSize: "14px", color: tokens.muted, lineHeight: 1.5, textWrap: "pretty", marginBottom: "16px" }}>
           {project.subtitle}
         </div>
         <div style={{
-          marginTop: "16px", display: "inline-flex", alignItems: "center", gap: "6px",
+          marginTop: "auto", display: "inline-flex", alignItems: "center", gap: "6px",
           padding: "8px 14px 8px 16px", borderRadius: "999px",
           background: "#e8def8", color: "#21005d",
           fontSize: "13px", fontWeight: 600
@@ -253,7 +257,7 @@ function MaterialCaseStudyLayout({ project }) {
           <span style={{
             display: "inline-flex", alignItems: "center", gap: "8px",
             padding: "4px 12px", borderRadius: "999px",
-            background: "#fff", color: accent,
+            background: "#fff", color: `color-mix(in srgb, ${accent} 55%, ${tokens.text})`,
             fontSize: "11px", fontWeight: 600, letterSpacing: "0.04em",
             border: `1px solid ${accent}40`
           }}>{project.category} · {project.year} · {project.status}</span>
@@ -272,7 +276,7 @@ function MaterialCaseStudyLayout({ project }) {
           background: "#fff",
           boxShadow: "0 6px 24px rgba(0,0,0,0.08)"
         }}>
-          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: window.resolveAsset(project.coverImage), alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }} />
+          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: window.resolveAsset(project.coverImage), alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", objectPosition: project.coverPosition || "50% 50%", display: "block" }} />
         </div>
       </div>
 

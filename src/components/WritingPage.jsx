@@ -27,10 +27,16 @@ function useWritingSkin() {
 // ---------------------------------------------------------------------------
 // Newsletter signup card
 // ---------------------------------------------------------------------------
+const NEWSLETTER_HOME = "https://dorsnews.beehiiv.com/";
+
 function NewsletterSignup() {
   const embedRef = React.useRef(null);
   const { tokens, isCarbon, isWin95, isMaterial } = useWritingSkin();
   const accent = tokens.accent;
+  // The beehiiv form is a third-party embed that content blockers and slow
+  // networks routinely stop. If it never draws, the card offers a plain link
+  // instead of an empty box.
+  const [embedFailed, setEmbedFailed] = React.useState(false);
 
   React.useEffect(() => {
     const container = embedRef.current;
@@ -40,8 +46,12 @@ function NewsletterSignup() {
     script.async = true;
     script.src = "https://subscribe-forms.beehiiv.com/v3/loader.js";
     script.setAttribute("data-beehiiv-form", "69276f9b-7c4c-4545-81c3-fbcd9eeee4b8");
+    script.onerror = () => setEmbedFailed(true);
     container.appendChild(script);
-    return () => { container.innerHTML = ""; };
+    const check = setTimeout(() => {
+      if (!container.querySelector("iframe, form")) setEmbedFailed(true);
+    }, 6000);
+    return () => { clearTimeout(check); container.innerHTML = ""; };
   }, []);
 
   const cardStyle = {
@@ -91,6 +101,26 @@ function NewsletterSignup() {
         and things I'm building. No noise, no schedule pressure.
       </p>
       <div ref={embedRef} />
+      {embedFailed && (
+        <a
+          href={NEWSLETTER_HOME}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={isWin95 ? "w95-btn" : "ds-btn ds-btn-primary"}
+          style={{
+            display: "inline-flex", alignItems: "center", gap: "8px",
+            padding: isWin95 ? "4px 14px" : "11px 18px",
+            fontFamily: tokens.font, fontSize: "14px", fontWeight: 600,
+            textDecoration: "none",
+            color: isWin95 ? tokens.text : "#fff",
+            background: isWin95 ? tokens.surface : isCarbon ? "#0f62fe" : accent,
+            borderRadius: isWin95 || isCarbon ? 0 : (isMaterial ? "999px" : "10px"),
+            boxShadow: isWin95
+              ? "inset 1px 1px 0 #ffffff, inset -1px -1px 0 #808080, 1px 1px 0 #000000"
+              : "none"
+          }}
+        >Subscribe on beehiiv <window.Icon name="external" size={14} /></a>
+      )}
     </aside>
   );
 }

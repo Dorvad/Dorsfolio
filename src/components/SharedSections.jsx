@@ -94,7 +94,7 @@ function HomeSection() {
               ...anim("fadeUp", 160)
             }}>{info.intro}</p>
 
-            <div style={{
+            <div className="ds-cta-row" style={{
               display: "flex", flexWrap: "wrap", gap: "12px", marginTop: "24px",
               ...anim("fadeUp", 240)
             }}>
@@ -112,7 +112,7 @@ function HomeSection() {
         </div>
       </section>
 
-      <section style={{ marginTop: "48px", ...anim("fadeUp", 320) }}>
+      <section style={{ marginTop: "clamp(24px, 5vw, 48px)", ...anim("fadeUp", 320) }}>
         <SectionHeader title="Selected projects" hint="A few representative pieces" link={{ label: "All projects", href: "#/projects" }} tokens={tokens} />
         <SkinProjectGrid projects={projects} tokens={tokens} skin={skin} compact />
       </section>
@@ -176,7 +176,7 @@ function SectionHeader({ title, hint, link, tokens, level = 2 }) {
           lineHeight: 1.15,
           letterSpacing: isWin95 ? 0 : (level === 1 ? "-0.02em" : "-0.01em")
         }}>{title}</H>
-        {hint && <div style={{ fontFamily: tokens.font, fontSize: level === 1 ? "15px" : "13px", color: tokens.muted, marginTop: "6px" }}>{hint}</div>}
+        {hint && <div style={{ fontFamily: tokens.font, fontSize: level === 1 ? "15px" : "13px", color: tokens.muted, marginTop: "6px", textWrap: "pretty" }}>{hint}</div>}
       </div>
       {link && (
         <a href={link.href} className="ds-link" style={{
@@ -226,8 +226,17 @@ function SkinProjectGrid({ projects, tokens, skin, compact = false }) {
 // ---- Filter chips — shared by the projects grid and the gallery ---------
 function FilterChips({ options, active, onChange, label, tokens, skin }) {
   const isWin95 = skin === "win95";
+  // On phones the chips run as one swipeable row (see .ds-chip-row in
+  // skinStyles); the chosen chip is brought fully into view.
+  const select = (f, e) => {
+    onChange(f);
+    const el = e && e.currentTarget;
+    if (el && el.scrollIntoView) {
+      try { el.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" }); } catch (err) { /* older browsers */ }
+    }
+  };
   return (
-    <div role="tablist" aria-label={label} style={{
+    <div role="tablist" aria-label={label} className="ds-chip-row" style={{
       display: "flex", flexWrap: "wrap", gap: "8px",
       margin: "0 0 24px"
     }}>
@@ -239,11 +248,12 @@ function FilterChips({ options, active, onChange, label, tokens, skin }) {
             role="tab"
             aria-selected={isActive}
             type="button"
-            onClick={() => onChange(f)}
+            onClick={(e) => select(f, e)}
             onPointerDown={skin === "material" ? window.m3Ripple : undefined}
             className={isWin95 ? "w95-btn" : ("ds-chip" + (skin === "material" ? " m3-state" : ""))}
             style={{
               padding: isWin95 ? "3px 10px" : "8px 14px",
+              flexShrink: 0, whiteSpace: "nowrap",
               fontFamily: tokens.font, fontSize: "13px", fontWeight: isActive ? 600 : 500,
               cursor: "pointer",
               borderRadius: tokens.radius === "0px" ? 0 : "999px",

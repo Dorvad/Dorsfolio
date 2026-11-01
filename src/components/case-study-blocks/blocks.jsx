@@ -36,17 +36,28 @@ function BlockBody({ children, tokens }) {
   );
 }
 
+// Captions are full sentences, so they read in the body face, sentence case,
+// at a size that survives a phone screen.
 function Caption({ children, tokens }) {
   return (
     <div style={{
-      fontFamily: tokens.monoFont,
-      fontSize: "12px",
+      fontFamily: tokens.font,
+      fontSize: "13px",
+      lineHeight: 1.5,
       color: tokens.muted,
-      marginTop: "8px",
-      letterSpacing: "0.02em",
-      textTransform: "uppercase"
+      marginTop: "10px",
+      maxWidth: "68ch",
+      textWrap: "pretty"
     }}>{children}</div>
   );
+}
+
+// "1220/2712" → 0.45. Accepts the same strings CSS aspect-ratio does.
+function aspectValue(aspect) {
+  if (!aspect) return null;
+  const [w, h] = String(aspect).split("/").map(Number);
+  if (!w) return null;
+  return h ? w / h : w;
 }
 
 // ---- 1. TextBlock --------------------------------------------------------
@@ -66,30 +77,40 @@ function ImageBlock({ block, ctx }) {
   const openLightbox = () => window.lightboxOpen && window.lightboxOpen(
     [{ src: window.resolveAsset ? window.resolveAsset(block.image) : block.image, alt: block.caption || block.title || "" }], 0
   );
+  // `aspect` (optional) sets the frame, e.g. "1220/2712" for a phone capture.
+  // A portrait frame is held to phone width and centred, like a portrait video,
+  // so a single screen never balloons to the full column. `maxWidth` overrides.
+  const aspect = block.aspect || "16/10";
+  const portrait = (aspectValue(aspect) || 1.6) < 1;
   return (
     <section style={{ margin: "40px 0" }}>
       {block.title && <BlockTitle tokens={tokens}>{block.title}</BlockTitle>}
       {/* `bg` and `fit` are optional: `fit: "contain"` shows tall or square art whole
-          rather than cropping it to the 16/10 frame, and `bg` supplies a backdrop for
+          rather than cropping it to the frame, and `bg` supplies a backdrop for
           transparent art. Omitted, the block crops to 16/10 exactly as before. */}
-      <div style={{
-        background: block.bg || tokens.surfaceAlt || tokens.surfaceSolid,
-        border: `1px solid ${tokens.border}`,
-        borderRadius: tokens.radius,
-        overflow: "hidden",
-        boxShadow: tokens.shadow
+      <figure style={{
+        margin: portrait || block.maxWidth ? "0 auto" : 0,
+        maxWidth: block.maxWidth || (portrait ? "min(340px, 100%)" : undefined)
       }}>
-        <window.ProjectImage
-          src={block.image}
-          slug={project?.slug}
-          label={block.title || "image"}
-          accent={project?.accent}
-          alt={block.caption || block.title || ""}
-          onClick={openLightbox}
-          style={{ width: "100%", height: "auto", display: "block", aspectRatio: "16/10", objectFit: block.fit || "cover" }}
-        />
-      </div>
-      {block.caption && <Caption tokens={tokens}>{block.caption}</Caption>}
+        <div style={{
+          background: block.bg || tokens.surfaceAlt || tokens.surfaceSolid,
+          border: `1px solid ${tokens.border}`,
+          borderRadius: tokens.radius,
+          overflow: "hidden",
+          boxShadow: tokens.shadow
+        }}>
+          <window.ProjectImage
+            src={block.image}
+            slug={project?.slug}
+            label={block.title || "image"}
+            accent={project?.accent}
+            alt={block.caption || block.title || ""}
+            onClick={openLightbox}
+            style={{ width: "100%", height: "auto", display: "block", aspectRatio: aspect, objectFit: block.fit || "cover" }}
+          />
+        </div>
+        {block.caption && <Caption tokens={tokens}>{block.caption}</Caption>}
+      </figure>
     </section>
   );
 }
@@ -99,39 +120,58 @@ function GalleryBlock({ block, ctx }) {
   const { tokens, project } = ctx;
   const resolve = window.resolveAsset || (s => s);
   const lbItems = block.images.map(img => ({ src: resolve(img.src), alt: img.caption || "" }));
+  // `aspect` (optional, on the block or one image) sets the tile frame.
+  //   portrait  → a strip of equal-height tiles, each as wide as its own
+  //               aspect, so phone screens sit side by side at phone size and a
+  //               landscape capture in the same set simply runs wider;
+  //   very wide → one tile per row, so journey maps and banners stay legible;
+  //   otherwise → the 4/3 grid.
+  const blockAspect = block.aspect || "4/3";
+  const ratio = aspectValue(blockAspect) || 4 / 3;
+  const strip = ratio < 1;
+  const wide = ratio > 2.2;
   return (
     <section style={{ margin: "40px 0" }}>
       {block.title && <BlockTitle tokens={tokens}>{block.title}</BlockTitle>}
-      <div style={{
+      <div style={strip ? {
+        display: "flex", flexWrap: "wrap", alignItems: "flex-start",
+        gap: "16px", "--ds-strip-h": "clamp(280px, 62vw, 480px)"
+      } : {
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+        gridTemplateColumns: wide ? "minmax(0, 1fr)" : "repeat(auto-fit, minmax(220px, 1fr))",
         gap: "16px"
       }}>
-        {block.images.map((img, i) => (
-          <figure key={i} style={{ margin: 0 }}>
-            {/* `bg` gives transparent art (VFX sheets, cut-out sprites) a backdrop of
-                its own; `fit: "contain"` letterboxes wide frame strips instead of
-                cropping them. Both are optional — omitted, the tile behaves as before. */}
-            <div style={{
-              background: img.bg || tokens.surfaceAlt || tokens.surfaceSolid,
-              border: `1px solid ${tokens.border}`,
-              borderRadius: tokens.radius,
-              overflow: "hidden",
-              boxShadow: tokens.shadow
+        {block.images.map((img, i) => {
+          const aspect = img.aspect || blockAspect;
+          return (
+            <figure key={i} style={{
+              margin: 0,
+              ...(strip ? { width: `calc(var(--ds-strip-h) * ${aspectValue(aspect)})`, maxWidth: "100%" } : {})
             }}>
-              <window.ProjectImage
-                src={img.src}
-                slug={project?.slug}
-                label={img.caption || `image ${i + 1}`}
-                accent={project?.accent}
-                alt={img.caption || ""}
-                onClick={() => window.lightboxOpen && window.lightboxOpen(lbItems, i)}
-                style={{ width: "100%", aspectRatio: "4/3", objectFit: img.fit || "cover", display: "block" }}
-              />
-            </div>
-            {img.caption && <Caption tokens={tokens}>{img.caption}</Caption>}
-          </figure>
-        ))}
+              {/* `bg` gives transparent art (VFX sheets, cut-out sprites) a backdrop of
+                  its own; `fit: "contain"` letterboxes wide frame strips instead of
+                  cropping them. Both are optional — omitted, the tile behaves as before. */}
+              <div style={{
+                background: img.bg || tokens.surfaceAlt || tokens.surfaceSolid,
+                border: `1px solid ${tokens.border}`,
+                borderRadius: tokens.radius,
+                overflow: "hidden",
+                boxShadow: tokens.shadow
+              }}>
+                <window.ProjectImage
+                  src={img.src}
+                  slug={project?.slug}
+                  label={img.caption || `image ${i + 1}`}
+                  accent={project?.accent}
+                  alt={img.caption || ""}
+                  onClick={() => window.lightboxOpen && window.lightboxOpen(lbItems, i)}
+                  style={{ width: "100%", aspectRatio: aspect, objectFit: img.fit || block.fit || "cover", display: "block" }}
+                />
+              </div>
+              {img.caption && <Caption tokens={tokens}>{img.caption}</Caption>}
+            </figure>
+          );
+        })}
       </div>
     </section>
   );
@@ -837,11 +877,9 @@ function VideoBlock({ block, ctx }) {
         </video>
       </div>
       {caption && (
-        <div style={{
-          fontFamily: tokens.monoFont || tokens.font,
-          fontSize: "12px", color: tokens.muted,
-          marginTop: "10px", lineHeight: 1.4
-        }}>{caption}</div>
+        <div style={isPortrait ? { maxWidth: maxWidth || "min(360px, 100%)", margin: "0 auto" } : undefined}>
+          <Caption tokens={tokens}>{caption}</Caption>
+        </div>
       )}
     </section>
   );
@@ -959,10 +997,9 @@ function CaseStudyGalleryBlock({ block, ctx }) {
             </button>
             {img.caption && (
               <figcaption style={{
-                fontFamily: tokens.monoFont, fontSize: "11px",
-                color: tokens.muted, marginTop: "6px",
-                lineHeight: 1.3, letterSpacing: "0.02em",
-                textTransform: "uppercase",
+                fontFamily: tokens.font, fontSize: "12px",
+                color: tokens.muted, marginTop: "8px",
+                lineHeight: 1.4,
                 overflow: "hidden", textOverflow: "ellipsis",
                 whiteSpace: "nowrap", maxWidth: `${ITEM_W}px`
               }}>{img.caption}</figcaption>
