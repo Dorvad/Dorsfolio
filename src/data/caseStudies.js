@@ -12,16 +12,26 @@
 // HOW TO EDIT AN EXISTING CASE STUDY:
 //   - Edit any field in this file. Nothing is hardcoded in the skins.
 //   - To swap an image, just replace the file at the same path in projects/<slug>/
+//   - coverImage is cropped to 16:9 on cards and roughly 2:1 on the case study
+//     hero, so prefer landscape art. `coverPosition` (optional, CSS
+//     object-position, e.g. "50% 44%") moves the crop when the subject sits
+//     off-centre.
 //
 // SUPPORTED BLOCK TYPES (see components/case-study-blocks/):
 //   text         { type, title?, body }
-//   image        { type, title?, image, caption?, fit?, bg? }
-//   gallery      { type, title?, images: [{src, caption?, fit?, bg?}] }
-//     fit — objectFit for the tile. Defaults to "cover", which crops to the
-//           block's frame. Use "contain" for tall, square or very wide art
-//           (sprite sheets, frame strips, portrait cards) so nothing is cut off.
-//     bg  — CSS colour behind the image. Use it for transparent art that would
-//           otherwise wash out against a light skin, e.g. bg: "#17171b"
+//   image        { type, title?, image, caption?, fit?, bg?, aspect?, maxWidth? }
+//   gallery      { type, title?, aspect?, fit?, images: [{src, caption?, fit?, bg?, aspect?}] }
+//     fit    — objectFit for the tile. Defaults to "cover", which crops to the
+//              block's frame. Use "contain" for tall, square or very wide art
+//              (sprite sheets, frame strips, portrait cards) so nothing is cut off.
+//     bg     — CSS colour behind the image. Use it for transparent art that would
+//              otherwise wash out against a light skin, e.g. bg: "#17171b"
+//     aspect — the frame, as "width/height" (defaults: image 16/10, gallery 4/3).
+//              Give phone captures their real ratio, e.g. "1220/2712": a portrait
+//              image block is held to phone width, and a portrait gallery lays
+//              its screens side by side at phone size. A very wide gallery
+//              (over ~2.2:1) runs one image per row.
+//     maxWidth — image block only: caps and centres the frame, e.g. "min(760px, 100%)"
 //   metrics      { type, title?, items: [{label, value, hint?}] }
 //   quote        { type, body, attribution? }
 //   process      { type, title?, steps: [string | {title, body}] }
@@ -100,6 +110,8 @@ window.caseStudies = [
       {
         type: "gallery",
         title: "Key user journeys",
+        aspect: "2919/1049",
+        fit: "contain",
         images: [
           { src: "/projects/ezer-lachaim/journey-volunteers.jpg", caption: "Journey A — Manager navigates to Volunteers, filters the table by day of service, and opens a volunteer profile to review details." },
           { src: "/projects/ezer-lachaim/journey-rides.jpg", caption: "Journey B — Manager explores ride statistics by city and month, switches between chart types, then reviews performance data before logging out." }
@@ -352,6 +364,8 @@ window.caseStudies = [
         type: "image",
         title: "Analytics dashboard",
         image: "/projects/branchlab/analytics.jpg",
+        aspect: "1914/2785",
+        maxWidth: "min(560px, 100%)",
         caption: "Analytics show total plays, completion rates, choice breakdowns by scene, and drop-off points."
       },
       {
@@ -379,7 +393,10 @@ window.caseStudies = [
     year: "2025–2026",
     role: "Product design, UX, UI, product ownership — from prototype to shipped app",
     status: "Live on Google Play",
-    coverImage: "/projects/elmtrackr/dashboard-home.jpg",
+    // Landscape store art: the tall phone capture cropped to its Clock In button
+    // on every 16:9 card and hero. The phone screens live on in the sections.
+    coverImage: "/projects/elmtrackr/store-clarity-tablet.png",
+    coverPosition: "50% 44%",
     accent: "#5b35d5",
     tags: ["UX", "Mobile", "Android", "Wear OS", "Productivity", "Shipped"],
     summary:
@@ -418,9 +435,11 @@ window.caseStudies = [
       {
         type: "gallery",
         title: "Home dashboard",
+        aspect: "1220/2422",
+        fit: "contain",
         images: [
           { src: "/projects/elmtrackr/dashboard-idle.jpg", caption: "The home screen — work status front and center, monthly summary below." },
-          { src: "/projects/elmtrackr/dashboard-clock-in.jpg", caption: "Clock In is the primary action — one tap to start tracking. The June summary updates in real time as shifts are logged." }
+          { src: "/projects/elmtrackr/dashboard-clock-in.jpg", aspect: "2954/1750", caption: "Clock In is the primary action — one tap to start tracking. The June summary updates in real time as shifts are logged." }
         ]
       },
       {
@@ -442,6 +461,7 @@ window.caseStudies = [
         type: "image",
         title: "Monthly summary",
         image: "/projects/elmtrackr/dashboard-home.jpg",
+        aspect: "1220/2712",
         caption: "Monthly hour distribution — regular vs. overtime breakdown visible on the home screen."
       },
       {
@@ -454,6 +474,7 @@ window.caseStudies = [
         type: "image",
         title: "A busy month",
         image: "/projects/elmtrackr/dashboard-breakdown.jpg",
+        aspect: "1220/2712",
         caption: "93.4 hours across regular, overtime, and weekend work — the distribution visible at a glance."
       },
       {
@@ -503,22 +524,28 @@ window.caseStudies = [
       {
         type: "gallery",
         title: "Reports and pay breakdown",
+        aspect: "1220/2428",
+        fit: "contain",
         images: [
           { src: "/projects/elmtrackr/reports-insights.jpg", caption: "Reports — overtime, weekend, gross pay, and insight cards" },
           { src: "/projects/elmtrackr/reports-road-trip.jpg", caption: "Monthly report — pay summary and contextual insight" },
           { src: "/projects/elmtrackr/reports-basic.jpg", caption: "Reports view on a lighter month" },
-          { src: "/projects/elmtrackr/reports-travel-refunds.jpg", caption: "Travel refunds report — ₪475.10 reclaimed across 20 rides, broken down by provider (Lime and Dott)" }
+          { src: "/projects/elmtrackr/reports-travel-refunds.jpg", aspect: "2960/1424", caption: "Travel refunds report — ₪475.10 reclaimed across 20 rides, broken down by provider (Lime and Dott)" }
         ]
       },
       {
         type: "image",
         title: "Desktop view (web prototype)",
         image: "/projects/elmtrackr/dashboard-desktop.jpg",
+        aspect: "2943/2829",
+        maxWidth: "min(760px, 100%)",
         caption: "The prototype phase — the same data model rendered in a wider desktop layout before the product went native."
       },
       {
         type: "gallery",
         title: "Configuration and features",
+        aspect: "1220/2423",
+        fit: "contain",
         images: [
           { src: "/projects/elmtrackr/settings-payroll.jpg", caption: "Payroll settings — weekend days and hourly base rates by time of day" },
           { src: "/projects/elmtrackr/settings-features.jpg", caption: "Manage Features — toggles for travel refunds, paid projects, insights, and clock styles" }

@@ -285,7 +285,7 @@ function MacProjectCard({ project, tokens }) {
           accent={project.accent}
           alt={project.title}
           className="ds-card-img"
-          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: project.coverPosition || "50% 50%", display: "block" }}
         />
       </div>
       <div style={{ padding: "16px 18px 18px" }}>
@@ -355,7 +355,7 @@ function MacCaseStudyLayout({ project }) {
             accent={project.accent}
             alt={project.title}
             onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: window.resolveAsset(project.coverImage), alt: project.title }], 0)}
-            style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }}
+            style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", objectPosition: project.coverPosition || "50% 50%", display: "block" }}
           />
         </div>
 

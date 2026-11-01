@@ -187,7 +187,7 @@ function CarbonProjectCard({ project, tokens }) {
     >
       <div style={{ background: "#0c0c0c", overflow: "hidden" }}>
         <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} className="ds-card-img" style={{
-          width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block", opacity: 0.95
+          width: "100%", aspectRatio: "16/9", objectFit: "cover", objectPosition: project.coverPosition || "50% 50%", display: "block", opacity: 0.95
         }} />
       </div>
       <div style={{ padding: "16px 18px" }}>
@@ -256,7 +256,8 @@ function CarbonCaseStudyLayout({ project }) {
           <div style={{ fontFamily: tokens.font, fontSize: "clamp(16px, 1.8vw, 18px)", color: tokens.muted, lineHeight: 1.5, maxWidth: "60ch", textWrap: "pretty" }}>
             {project.subtitle}
           </div>
-          <div style={{ fontFamily: tokens.monoFont, fontSize: "11px", color: project.accent || tokens.accent, marginTop: "16px", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+          <div style={{ fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted, marginTop: "16px", letterSpacing: "0.12em", textTransform: "uppercase", display: "flex", alignItems: "center", gap: "8px" }}>
+            <span aria-hidden="true" style={{ width: 8, height: 8, background: project.accent || tokens.accent, flexShrink: 0 }} />
             {project.category} · {project.year}
           </div>
 
@@ -275,7 +276,7 @@ function CarbonCaseStudyLayout({ project }) {
 
         {/* Cover image */}
         <div style={{ borderBottom: `1px solid ${tokens.border}`, background: "#0c0c0c" }}>
-          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: window.resolveAsset(project.coverImage), alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/7", objectFit: "cover", display: "block" }} />
+          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: window.resolveAsset(project.coverImage), alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "2/1", objectFit: "cover", objectPosition: project.coverPosition || "50% 50%", display: "block" }} />
         </div>
 
         {/* Meta dashboard row */}

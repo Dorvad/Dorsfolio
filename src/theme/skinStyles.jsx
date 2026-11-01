@@ -259,6 +259,36 @@ body { caret-color: var(--ds-accent); }
 :root[data-skin="carbon"] .ds-chip[aria-selected="false"]:hover, :root[data-skin="carbon"] .ds-chip[aria-pressed="false"]:hover { background: #353535 !important; }
 :root[data-skin="mac"] .ds-chip:active, :root[data-skin="material"] .ds-chip:active { transform: scale(0.97); }
 
+/* Phones: one swipeable row instead of four or five wrapped rows of chips.
+   The row bleeds to the content edge and fades out where it is cut, so the
+   cut reads as "more this way" rather than as clipping. */
+@media (max-width: 640px) {
+  .ds-chip-row {
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: 12px;
+    padding: 2px 32px 4px 2px;
+    margin-right: -12px !important;
+    -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+            mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+  }
+  .ds-chip-row::-webkit-scrollbar { display: none; }
+}
+
+/* ---- Hero calls to action ------------------------------------------------- */
+/* Where three buttons cannot share a line, the primary takes the first line
+   and the two secondary actions split the second, instead of one orphan. */
+@media (max-width: 480px) {
+  :root[data-skin="mac"] .ds-cta-row > :first-child { flex: 1 1 100%; justify-content: center; }
+  :root[data-skin="mac"] .ds-cta-row > :not(:first-child) { flex: 1 1 0; justify-content: center; }
+}
+@media (max-width: 380px) {
+  .ds-cta-row > :first-child { flex: 1 1 100%; justify-content: center; }
+  .ds-cta-row > :not(:first-child) { flex: 1 1 0; justify-content: center; }
+}
+
 /* ---- Gallery thumbnails --------------------------------------------------- */
 .ds-thumb { transition: transform 220ms var(--ds-ease), box-shadow 220ms ease, outline-color 120ms; }
 .ds-thumb .ds-thumb-cap { transition: opacity 180ms ease, transform 220ms var(--ds-ease); transform: translateY(4px); }
@@ -291,6 +321,13 @@ body { caret-color: var(--ds-accent); }
 .ds-choice:active { transform: scale(0.985); }
 .ds-choice .ds-choice-preview { transition: transform 260ms cubic-bezier(.2,.8,.2,1), filter 260ms ease, opacity 200ms ease; filter: saturate(0.6); opacity: 0.82; }
 .ds-choice:hover .ds-choice-preview, .ds-choice:focus-visible .ds-choice-preview { transform: scale(1.08) rotate(-1.5deg); filter: saturate(1); opacity: 1; }
+/* Small phones: the miniature world steps aside so a label never runs to
+   three lines ("I'm a / Windows / person"). It is decorative; the brand mark
+   and label already name the choice. */
+@media (max-width: 374px) {
+  .ds-choice { gap: 12px !important; padding-left: 14px !important; }
+  .ds-choice .ds-choice-preview { display: none !important; }
+}
 .ds-choice .ds-choice-arrow { transition: transform 200ms cubic-bezier(.2,.8,.2,1), color 160ms ease; }
 .ds-choice:hover .ds-choice-arrow, .ds-choice:focus-visible .ds-choice-arrow { transform: translateX(4px); color: #1c1c1e !important; }
 

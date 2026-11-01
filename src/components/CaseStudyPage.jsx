@@ -165,15 +165,17 @@ function CaseStudyRecruiterInsight({ recruiterInsight, tokens }) {
       )}
 
       {rows.length > 0 && (
+        // Flex rather than grid: with five rows a grid leaves "Outcome" alone in
+        // a quarter-width cell; here the last row grows to fill the line.
         <dl style={{
           margin: 0,
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+          display: "flex", flexWrap: "wrap",
           gap: isWin95 ? "2px" : "10px",
           ...(isWin95 ? { background: tokens.border, border: `1px solid ${tokens.border}` } : {})
         }}>
           {rows.map((r) => (
             <div key={r.k} style={{
+              flex: "1 1 200px", minWidth: 0,
               padding: "14px 16px",
               background: tokens.surfaceAlt || tokens.surfaceSolid,
               border: isWin95 ? "none" : `1px solid ${tokens.border}`,
@@ -212,7 +214,7 @@ function CaseStudyMeta({ project, tokens, variant = "default" }) {
       padding: variant === "row" ? "16px 0" : "0"
     }}>
       {rows.map((r) => (
-        <div key={r.k} style={{ display: "grid", gap: "4px" }}>
+        <div key={r.k} style={{ display: "grid", gap: "4px", alignContent: "start" }}>
           <dt style={{
             fontFamily: tokens.monoFont, fontSize: "11px",
             color: tokens.muted, textTransform: "uppercase", letterSpacing: "0.08em"
@@ -254,14 +256,14 @@ function RelatedProjects({ slug, tokens }) {
               background: tokens.surfaceAlt || tokens.surfaceSolid
             }}
           >
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: tokens.monoFont, fontSize: "11px", color: p.accent || tokens.accent, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted, marginBottom: "6px", textTransform: "uppercase", letterSpacing: "0.08em" }}>
               <span aria-hidden="true" style={{ width: 6, height: 6, borderRadius: tokens.radius === "0px" ? 0 : 99, background: p.accent || tokens.accent }} />
               {p.category}
             </div>
             <div className="ds-tile-title" style={{ fontFamily: tokens.font, fontSize: "16px", fontWeight: 600, color: tokens.text, marginBottom: "4px" }}>
               {p.title}
             </div>
-            <div style={{ fontFamily: tokens.font, fontSize: "13px", color: tokens.muted, lineHeight: 1.4 }}>
+            <div style={{ fontFamily: tokens.font, fontSize: "13px", color: tokens.muted, lineHeight: 1.45, textWrap: "pretty" }}>
               {p.subtitle}
             </div>
           </a>

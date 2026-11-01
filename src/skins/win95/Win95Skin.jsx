@@ -108,7 +108,7 @@ function Win95PortfolioShell({ children, route }) {
             fontFamily: tokens.font, fontSize: "12px", fontWeight: 700
           }}>
             <span aria-hidden="true" style={{ display: "inline-block", width: 16, height: 16, background: "#c0c0c0", boxShadow: W95.bevelOut, color: "#000080", fontSize: "11px", textAlign: "center", lineHeight: "14px" }}>D</span>
-            <span style={{ flex: 1 }}>{w95TitleFor(route)} — Dorsfolio</span>
+            <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{w95TitleFor(route)} — Dorsfolio</span>
             <Win95TitleButtons />
           </div>
 
@@ -325,7 +325,8 @@ function Win95ProjectCard({ project, tokens }) {
     <a href={`#/projects/${project.slug}`}
       className="w95-card"
       style={{
-        display: "block", textDecoration: "none", color: tokens.text,
+        display: "flex", flexDirection: "column", flex: 1,
+        textDecoration: "none", color: tokens.text,
         background: W95.surface, boxShadow: W95.bevelOut, padding: "2px"
       }}>
       <div className="w95-card-title" style={{
@@ -335,14 +336,14 @@ function Win95ProjectCard({ project, tokens }) {
         fontFamily: tokens.font, fontSize: "11px", fontWeight: 700
       }}>
         <span aria-hidden="true" style={{ display: "inline-block", width: 14, height: 14, background: project.accent, boxShadow: W95.bevelOut }} />
-        <span style={{ flex: 1 }}>{project.title}</span>
+        <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{project.title}</span>
         <Win95TitleButtons />
       </div>
-      <div style={{ padding: "10px" }}>
+      <div style={{ padding: "10px", flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
         <div style={{
-          background: "#fff", boxShadow: W95.bevelIn, padding: "4px"
+          background: "#fff", boxShadow: W95.bevelIn, padding: "4px", alignSelf: "stretch"
         }}>
-          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", display: "block" }} />
+          <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", objectPosition: project.coverPosition || "50% 50%", display: "block" }} />
         </div>
         <div style={{ marginTop: "10px", display: "flex", alignItems: "center", gap: "6px", fontFamily: tokens.monoFont, fontSize: "11px", color: tokens.muted }}>
           <span style={{ width: 8, height: 8, background: project.accent }} />
@@ -350,7 +351,8 @@ function Win95ProjectCard({ project, tokens }) {
         </div>
         <div style={{ fontFamily: tokens.font, fontSize: "14px", fontWeight: 700, marginTop: "6px" }}>{project.title}</div>
         <div style={{ fontFamily: tokens.font, fontSize: "12px", color: tokens.muted, marginTop: "4px", lineHeight: 1.4, textWrap: "pretty" }}>{project.subtitle}</div>
-        <div style={{ marginTop: "10px", display: "inline-flex" }}>
+        {/* The Open button sits on the window's bottom edge in every card */}
+        <div style={{ marginTop: "auto", paddingTop: "10px", display: "inline-flex" }}>
           <span style={{
             padding: "2px 10px", fontFamily: tokens.font, fontSize: "12px",
             background: W95.surface, boxShadow: W95.buttonRaised
@@ -381,12 +383,12 @@ function Win95CaseStudyLayout({ project }) {
           fontSize: "12px", fontWeight: 700
         }}>
           <span aria-hidden="true" style={{ display: "inline-block", width: 14, height: 14, background: project.accent, boxShadow: W95.bevelOut }} />
-          <span style={{ flex: 1 }}>{project.title} — {project.category}</span>
+          <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{project.title} — {project.category}</span>
           <Win95TitleButtons />
         </div>
         <div style={{ padding: "10px" }}>
           <div style={{ background: "#fff", boxShadow: W95.bevelIn, padding: "4px" }}>
-            <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: window.resolveAsset(project.coverImage), alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", display: "block" }} />
+            <window.ProjectImage src={project.coverImage} slug={project.slug} label={project.title} accent={project.accent} alt={project.title} onClick={() => window.lightboxOpen && window.lightboxOpen([{ src: window.resolveAsset(project.coverImage), alt: project.title }], 0)} style={{ width: "100%", aspectRatio: "16/8", objectFit: "cover", objectPosition: project.coverPosition || "50% 50%", display: "block" }} />
           </div>
         </div>
       </div>
